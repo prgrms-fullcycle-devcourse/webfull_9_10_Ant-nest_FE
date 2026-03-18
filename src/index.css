@@ -1,0 +1,56 @@
+@import 'tailwindcss';
+@import './styles/fonts.css';
+
+@theme {
+  /* 기본 */
+  --color-white:            #fff;
+  --color-black:            #000;
+
+  /* 메인 */
+  --color-primary:          #5AB261;
+  --color-secondary:        #F8876E;
+
+  /* 서브 */
+  --color-gray:             #B3B3B3;
+  --color-gray-light:       #F1F1F1;
+  --color-gray-dark:        #8D8D8D;
+
+  /* 텍스트 */
+  --color-text-default:     #788678;
+  --color-text-subtle:      #1E293B;
+  --color-text-placeholder: #CFD3D0;
+
+  /* 폰트 */
+  --font-sans:              'Noto Sans KR', system-ui, sans-serif;
+  --font-handwriting:       'AinMom', cursive;
+  --font-mono:              ui-monospace, Consolas, monospace;
+}
+
+:root {
+  /* 그림자 (Tailwind @theme 미지원 → CSS 변수로 유지) */
+  --shadow-top:    0px -2px 10px 0px #0000001A;
+  --shadow-middle: 0px 0px 8.2px 0px #0000000D;
+  --shadow-bottom: 0px 2px 6px 0px #0000001A;
+
+  font: 18px/145% var(--font-sans);
+  letter-spacing: 0.18px;
+  color: theme(--color-text-default);
+  background: theme(--color-white);
+  font-synthesis: none;
+  text-rendering: optimizeLegibility;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+
+  @media (max-width: 1024px) {
+    font-size: 16px;
+  }
+}
+
+#root {
+  min-height: 100svh;
+}
+
+body {
+  margin: 0;
+  font-family: var(--font-sans);
+}
