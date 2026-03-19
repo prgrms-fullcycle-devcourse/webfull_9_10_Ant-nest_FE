@@ -14,14 +14,9 @@ export default function HomePage() {
       </p>
 
       <div style={{ display: 'flex', gap: '16px', flexWrap: 'wrap' }}>
-        {[
-          { to: '/diary', label: '다이어리', desc: '오늘의 감정을 기록해요' },
-          { to: '/calendar', label: '캘린더', desc: '지난 기록을 돌아봐요' },
-          { to: '/community', label: '커뮤니티', desc: '다른 사람들과 공유해요' },
-        ].map(({ to, label, desc }) => (
           <Link
-            key={to}
-            to={to}
+            key={'/diary/new'}
+            to={'/diary/new'}
             style={{
               flex: '1 1 200px',
               padding: '24px',
@@ -32,10 +27,9 @@ export default function HomePage() {
               transition: 'box-shadow 0.2s',
             }}
           >
-            <div style={{ fontWeight: 600, marginBottom: '4px' }}>{label}</div>
-            <div style={{ fontSize: '14px', color: 'var(--text)' }}>{desc}</div>
+            <div style={{ fontWeight: 600, marginBottom: '4px' }}>일기 작성하기</div>
+            <div style={{ fontSize: '14px', color: 'var(--text)' }}>오늘의 감정을 기록해요</div>
           </Link>
-        ))}
       </div>
 
       {!isAuthenticated && (
