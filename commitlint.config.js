@@ -1,4 +1,4 @@
-module.exports = {
+export default {
     // 초기 세팅 커밋은 모든 규칙 무시
     ignores: [
         (message) => /^(INIT|SETUP|BOOTSTRAP)\b/.test(message),
