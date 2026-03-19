@@ -1,8 +1,7 @@
 import { NavLink, Outlet, useNavigate } from 'react-router-dom';
 import { useAuthStore } from '../store/authStore';
-import Navbar from './Navbar';
 
-export default function MainLayout() {
+export default function PlainLayout() {
   const { isAuthenticated, logout } = useAuthStore();
   const navigate = useNavigate();
 
@@ -44,8 +43,11 @@ export default function MainLayout() {
             로그인
           </NavLink>
         )}
-
-        <Navbar />
+        <NavLink
+        to="/"
+        >
+          홈
+        </NavLink>
       </header>
 
       <main style={{ flex: 1, padding: '24px' }}>
