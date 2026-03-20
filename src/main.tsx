@@ -19,7 +19,7 @@ const queryClient = new QueryClient({
 
 createRoot(document.getElementById('root')!).render(
   <StrictMode>
-    <Theme>
+    <Theme style={{ fontFamily: 'var(--font-sans)' }}>
       <QueryClientProvider client={queryClient}>
         <App />
         <ReactQueryDevtools initialIsOpen={false} />
