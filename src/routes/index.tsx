@@ -1,6 +1,6 @@
 import { createBrowserRouter, Navigate } from 'react-router-dom';
 import MainLayout from '../layouts/MainLayout';
-// import AuthLayout from '../layouts/AuthLayout';
+import AuthLayout from '../layouts/AuthLayout';
 import HomePage from '../pages/HomePage';
 import LoginPage from '../pages/auth/LoginPage';
 import SignupPage from '../pages/auth/SignupPage';
@@ -29,11 +29,17 @@ export const router = createBrowserRouter([
   {
     element: <PlainLayout />,
     children: [
-      { path: '/login', element: <LoginPage /> },                 // 로그인
-      { path: '/signup', element: <SignupPage /> },               // 회원가입
       { path: '/diary/new', element: <DiaryCreatePage /> },       // 일기작성
       { path: '/diary/:id', element: <DiaryDetailPage />},        // 내 일기 상세 페이지
       { path: '/community/:id', element: <CommunityDetailPage />} // 달래광장 상세 페이지
+    ],
+  },
+  // 로그인
+  {
+    element: <AuthLayout />,
+    children: [
+      { path: '/login', element: <LoginPage /> },                 // 로그인
+      { path: '/signup', element: <SignupPage /> },               // 회원가입
     ],
   },
   // 잘못된 경로 처리

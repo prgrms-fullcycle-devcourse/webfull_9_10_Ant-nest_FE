@@ -68,6 +68,6 @@
   font-family: 'AinMom';
   font-weight: 400;
   font-style: normal;
-  font-display: swap;
-  src: url('../assets/fonts/ain/나눔손글씨 아인맘 손글씨.ttf') format('truetype');
+  font-display: block;
+  src: url('../assets/fonts/ain/ainMom.ttf') format('truetype');
 }
