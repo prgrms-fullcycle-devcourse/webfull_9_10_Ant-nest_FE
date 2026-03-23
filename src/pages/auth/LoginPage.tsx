@@ -17,7 +17,7 @@ export default function LoginPage() {
   let message = false
 
   return (
-    <div className="relative h-screen bg-[var(--color-bg)]">
+    <div className="relative h-screen">
       <div className="absolute m-auto inset-0 max-w-[30rem] w-full h-[30rem]">
         <div className="absolute left-0 right-0 top-[-30%]">
           <div className="m-auto w-[4rem]">
