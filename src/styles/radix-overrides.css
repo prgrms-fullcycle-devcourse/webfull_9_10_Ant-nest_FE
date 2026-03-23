@@ -1,0 +1,32 @@
+button, .rt-TextFieldRoot {
+    border-radius: 12px !important;
+    font-family: var(--font-sans) !important;
+}
+
+/** 공통 **/
+.rt-TextFieldRoot:where(:has(.rt-TextFieldInput:focus)) {
+    outline: 0
+}
+.rt-TextFieldInput {
+    font-size: 1rem;
+    font-weight: 500;
+    color: var(--color-text-default);
+}
+.rt-TextFieldInput::placeholder {
+    font-family: var(--font-sans);
+}
+.input-shadow {
+    border: 1px solid var(--color-gray-light);
+    box-shadow: var(--shadow-middle) !important;
+}
+
+/** 버튼 **/
+button {
+    cursor: pointer !important;
+}
+.rt-BaseButton:where(.rt-variant-solid) {
+    background-color: var(--color-primary);
+}
+.rt-BaseButton:where(.rt-variant-solid):where(:hover) {
+    background-color: #53a259;
+}
