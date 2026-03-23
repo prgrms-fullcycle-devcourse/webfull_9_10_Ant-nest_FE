@@ -35,6 +35,9 @@
   /* 둥글기 */
   --radius-sm: 12px;
   --radius-md: 16px;
+
+  /* 반응형 사이즈 */
+  --breakpoint-sm2: 30.5rem; /* 커스텀 이름 */
 }
 
 :root {

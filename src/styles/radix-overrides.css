@@ -30,3 +30,8 @@ button {
 .rt-BaseButton:where(.rt-variant-solid):where(:hover) {
     background-color: #53a259;
 }
+
+/** 체크박스 **/
+.rt-BaseCheckboxRoot:where(.rt-variant-surface):where([data-state='checked'], [data-state='indeterminate'])::before {
+    background-color: var(--color-primary);
+}
