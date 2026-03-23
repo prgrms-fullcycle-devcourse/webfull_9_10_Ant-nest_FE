@@ -5,7 +5,7 @@ import {EyeClosedIcon, EyeOpenIcon} from "@radix-ui/react-icons";
 
 interface FormFieldProps {
     className?: string;
-    label: string;
+    label?: string;
     helpText?: string;
     value: string | number;                    // 입력 데이터
     placeholder: string;
@@ -19,7 +19,12 @@ export default function FormField({ className, label, helpText, value, placehold
 
     return (
         <div className={className ?? ''}>
-            <b className="pl-[0.8rem] text-base text-[var(--color-text-default)]">{label}</b>
+            {
+                label && <b className="pl-[0.8rem] text-base text-[var(--color-text-default)]
+            max-sm2:text-sm
+            ">{label}</b>
+            }
+
             <TextField.Root
                 className="relative mt-[0.5rem] [&.rt-TextFieldRoot]:!h-[3.7rem] [&>input]:!py-0 [&>input]:!pr-[0.8rem] [&>input]:!pl-[1.4rem] input-shadow"
                 value={value}
