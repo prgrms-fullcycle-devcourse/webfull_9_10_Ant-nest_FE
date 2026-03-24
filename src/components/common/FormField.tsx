@@ -1,6 +1,7 @@
 import {TextField, IconButton} from "@radix-ui/themes";
 import {useState} from "react";
 import {EyeClosedIcon, EyeOpenIcon} from "@radix-ui/react-icons";
+import {cn} from "@/utils/cn.ts";
 
 
 interface FormFieldProps {
@@ -18,7 +19,7 @@ export default function FormField({ className, label, helpText, value, placehold
     const [show, setShow] = useState(false)
 
     return (
-        <div className={className ?? ''}>
+        <div className={cn(className)}>
             {
                 label && <b className="pl-[0.8rem] text-base text-[var(--color-text-default)]
             max-sm2:text-sm
@@ -26,7 +27,9 @@ export default function FormField({ className, label, helpText, value, placehold
             }
 
             <TextField.Root
-                className="relative mt-[0.5rem] [&.rt-TextFieldRoot]:!h-[3.7rem] [&>input]:!py-0 [&>input]:!pr-[0.8rem] [&>input]:!pl-[1.4rem] input-shadow"
+                className={cn("relative mt-[0.5rem] [&.rt-TextFieldRoot]:!h-[3.7rem] [&>input]:!py-0 [&>input]:!pr-[0.8rem] [&>input]:!pl-[1.4rem] input-shadow",
+                    error ? "is-error" : helpText ? "is-success" : ""
+                )}
                 value={value}
                 placeholder={placeholder}
                 type={type === 'password' ? (show ? 'text' : 'password') : type}
@@ -40,7 +43,7 @@ export default function FormField({ className, label, helpText, value, placehold
                     </TextField.Slot>
                 ) as React.ReactNode}
             </TextField.Root>
-            <p>{error || helpText}</p>
+            {(error || helpText) && <p>{error || helpText}</p>}
         </div>
     );
 }

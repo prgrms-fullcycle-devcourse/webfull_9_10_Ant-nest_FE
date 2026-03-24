@@ -6,7 +6,7 @@ import { useAuth } from '../../hooks/useAuth';
 import {Button, Checkbox, Flex, Text} from "@radix-ui/themes";
 
 /** 컴포넌트 **/
-import FormField from "@/components/signin/FormField.tsx";
+import FormField from "@/components/common/FormField.tsx";
 
 /** 이미지 **/
 import imgCharacter from '@/assets/images/characters/character-draw.gif'
@@ -18,9 +18,11 @@ export default function LoginPage() {
 
   return (
     <div className="relative h-screen">
-      <div className="absolute m-auto inset-0 max-w-[30rem] w-full h-[30rem]">
-        <div className="absolute left-0 right-0 top-[-30%]
-        max-sm2:top-[-18%]
+      <div className="absolute top-[25%] m-auto inset-0 max-w-[30rem] w-full
+      max-sm2:top-[20%]
+      ">
+        <div className="absolute left-0 right-0 top-[-25%]
+        max-sm2:top-[-13%]
         ">
           <div className="m-auto w-[4rem]
           max-sm2:w-[3rem]

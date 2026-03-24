@@ -3,7 +3,7 @@ import { useForm } from 'react-hook-form';
 import { useAuth } from '../../hooks/useAuth';
 import type { SignupRequest } from '../../types';
 import imgCharacter from "@/assets/images/characters/character-draw.gif";
-import FormField from "@/components/signin/FormField.tsx";
+import FormField from "@/components/common/FormField.tsx";
 import {Button} from "@radix-ui/themes";
 import {useState} from "react";
 import Header from "@/components/common/Header.tsx";
@@ -16,18 +16,24 @@ export default function SignupPage() {
 
 
   return (
-      <div className="relative h-screen">
+      <div className="relative h-auto min-h-screen">
           <Header
             text="회원가입"
           />
 
-          <div className="absolute m-auto inset-0 max-w-[30rem] w-full h-[30rem]">
-              <div className="absolute left-0 right-0 top-[-16%] m-auto w-[4rem]">
+          <div className="absolute top-[25%] m-auto inset-0 max-w-[30rem] w-full
+          max-sm2:top-[20%]
+          ">
+              <div className="absolute left-0 right-0 top-[-16%] m-auto w-[4rem]
+              max-sm2:top-[-8%]
+              ">
                   <img src={imgCharacter} alt="" />
               </div>
 
-              {/* 로그인 */}
-              <div className="pt-[4rem] pr-[3rem] pb-[3rem] pl-[3rem] rounded-[4rem] bg-white shadow-middle">
+              {/* 회원가입 */}
+              <div className="pt-[4rem] pr-[3rem] pb-[3rem] pl-[3rem] rounded-[4rem] bg-white shadow-middle
+              max-sm2:p-[2rem] max-sm2:boxshadow-none max-sm2:bg-transparent max-sm2:shadow-none
+              ">
                   <form className="block">
                       <FormField
                           label={'이메일'}
@@ -64,7 +70,9 @@ export default function SignupPage() {
                           onChange={setPassword}
                       />
 
-                      <Button type="button" variant="solid" className="!mt-[2rem] !w-full !h-[4rem] !text-[1.3rem] !font-bold !text-base green-btn]">로그인</Button>
+                      <Button type="button" variant="solid" className="!mt-[3.1rem] !w-full !h-[4rem] !text-[1.3rem] !font-bold !text-base green-btn]
+                        max-sm2:!text-[1.2rem]
+                        ">회원가입</Button>
                   </form>
               </div>
           </div>
