@@ -48,7 +48,7 @@ export default function MainLayout() {
         <Navbar />
       </header>
 
-      <main style={{ flex: 1, padding: '24px' }}>
+      <main className='flex-1'>
         <Outlet />
       </main>
     </div>
