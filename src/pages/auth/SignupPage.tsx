@@ -1,81 +1,166 @@
 import { Link } from 'react-router-dom';
-import { useForm } from 'react-hook-form';
 import { useAuth } from '../../hooks/useAuth';
-import type { SignupRequest } from '../../types';
-import imgCharacter from "@/assets/images/characters/character-draw.gif";
-import FormField from "@/features/auth/components/FormField.tsx";
-import {Button} from "@radix-ui/themes";
-import {useState} from "react";
-import Header from "@/components/common/Header.tsx";
+import { Controller, useForm } from 'react-hook-form';
+import {
+  validateEmail,
+  validateNickname,
+  validatePassword,
+  validatePasswordConfirm,
+} from '@/features/auth/utils/validate.ts';
+
+// ----------- Component -----------
+import FormField from '@/features/auth/components/FormField.tsx';
+import Header from '@/components/common/Header.tsx';
+import { Button } from '@radix-ui/themes';
+
+// ----------- IMG -----------
+import imgCharacter from '@/assets/images/characters/character-draw.gif';
+
+interface SignupFormValues {
+  email: string;
+  nickname: string;
+  password: string;
+  passwordConfirm: string;
+}
 
 export default function SignupPage() {
-    const [email, setEmail] = useState('')
-    const [name, setName] = useState('')
-    const [password, setPassword] = useState('')
-    const [passwordCheck, setPasswordCheck] = useState('')
+  const {
+    control,
+    handleSubmit,
+    watch,
+    formState: { isValid, isSubmitting },
+  } = useForm<SignupFormValues>({ mode: 'onChange' });
 
+  const password = watch('password');
+
+  const onSubmit = async (data: SignupFormValues) => {
+    console.log(data);
+  };
 
   return (
-      <div className="relative h-auto min-h-screen">
-          <Header
-            text="회원가입"
-          />
+    <div className="relative h-auto min-h-screen">
+      <Header text="회원가입" />
 
-          <div className="absolute top-[25%] m-auto inset-0 max-w-[30rem] w-full
-          max-sm2:top-[20%]
-          ">
-              <div className="absolute left-0 right-0 top-[-16%] m-auto w-[4rem]
-              max-sm2:top-[-8%]
-              ">
-                  <img src={imgCharacter} alt="" />
-              </div>
+      <div
+        className="absolute top-[25%] m-auto inset-0 max-w-[30rem] w-full
+          max-sm2:top-[20%]"
+      >
+        <div
+          className="absolute left-0 right-0 top-[-16%] m-auto w-[4rem]
+              max-sm2:top-[-8%]"
+        >
+          <img src={imgCharacter} alt="" />
+        </div>
 
-              {/* 회원가입 */}
-              <div className="pt-[4rem] pr-[3rem] pb-[3rem] pl-[3rem] rounded-[4rem] bg-white shadow-middle
-              max-sm2:p-[2rem] max-sm2:boxshadow-none max-sm2:bg-transparent max-sm2:shadow-none
-              ">
-                  <form className="block">
-                      <FormField
-                          label={'이메일'}
-                          value={email}
-                          type={'email'}
-                          placeholder={'이메일를 입력해주세요.'}
-                          onChange={setEmail}
-                      />
+        {/* 회원가입 */}
+        <div
+          className="pt-[4rem] pr-[3rem] pb-[3rem] pl-[3rem] rounded-[4rem] bg-white shadow-middle
+              max-sm2:p-[2rem] max-sm2:boxshadow-none max-sm2:bg-transparent max-sm2:shadow-none"
+        >
+          <form className="block" onSubmit={handleSubmit(onSubmit)}>
+            <Controller
+              name="email"
+              defaultValue=""
+              control={control}
+              rules={{ validate: validateEmail }}
+              render={({ field, fieldState }) => (
+                <FormField
+                  label="이메일"
+                  type="email"
+                  placeholder="example@email.com"
+                  value={field.value}
+                  error={fieldState.error?.message}
+                  success={
+                    fieldState.isDirty && !fieldState.error
+                      ? '사용 가능한 이메일입니다.'
+                      : undefined
+                  }
+                  onChange={field.onChange}
+                />
+              )}
+            />
 
-                      <FormField
-                          className="mt-[1.3rem]"
-                          label={'닉네임'}
-                          value={name}
-                          type={'text'}
-                          placeholder={'비밀번호를 입력해주세요.'}
-                          onChange={setName}
-                      />
+            <Controller
+              name="nickname"
+              defaultValue=""
+              control={control}
+              rules={{ validate: validateNickname }}
+              render={({ field, fieldState }) => (
+                <FormField
+                  className="mt-[1.5rem]"
+                  label="닉네임"
+                  type="text"
+                  placeholder="2~10자리 닉네임 입력"
+                  value={field.value}
+                  error={fieldState.error?.message}
+                  success={
+                    fieldState.isDirty && !fieldState.error
+                      ? '사용 가능한 닉네임입니다.'
+                      : undefined
+                  }
+                  onChange={field.onChange}
+                />
+              )}
+            />
 
-                      <FormField
-                          className="mt-[1.3rem]"
-                          label={'비밀번호'}
-                          value={password}
-                          type={'password'}
-                          placeholder={'비밀번호를 입력해주세요.'}
-                          onChange={setPassword}
-                      />
+            <Controller
+              name="password"
+              control={control}
+              defaultValue=""
+              rules={{ validate: validatePassword }}
+              render={({ field, fieldState }) => (
+                <FormField
+                  className="mt-[1.5rem]"
+                  label="비밀번호"
+                  type="password"
+                  placeholder="8~20자리 영문, 숫자, 특수문자 조합"
+                  value={field.value}
+                  error={fieldState.error?.message}
+                  success={
+                    fieldState.isDirty && !fieldState.error
+                      ? '사용 가능한 비밀번호입니다.'
+                      : undefined
+                  }
+                  onChange={field.onChange}
+                />
+              )}
+            />
 
-                      <FormField
-                          className="mt-[1.3rem]"
-                          label={'비밀번호 확인'}
-                          value={passwordCheck}
-                          type={'password'}
-                          placeholder={'비밀번호를 입력해주세요.'}
-                          onChange={setPasswordCheck}
-                      />
+            <Controller
+              name="passwordConfirm"
+              defaultValue=""
+              control={control}
+              rules={{ validate: validatePasswordConfirm(password) }}
+              render={({ field, fieldState }) => (
+                <FormField
+                  className="mt-[1.5rem]"
+                  label="비밀번호 확인"
+                  type="password"
+                  placeholder="비밀번호 확인"
+                  value={field.value}
+                  error={fieldState.error?.message}
+                  success={
+                    fieldState.isDirty && !fieldState.error
+                      ? '사용 가능한 닉네임입니다.'
+                      : undefined
+                  }
+                  onChange={field.onChange}
+                />
+              )}
+            />
 
-                      <Button type="button" variant="solid" className="!mt-[3.1rem] !w-full !h-[4rem] !text-[1.3rem] !font-bold !text-base green-btn]
-                        max-sm2:!text-[1.2rem]
-                        ">회원가입</Button>
-                  </form>
-              </div>
-          </div>
+            <Button
+              type="submit"
+              variant="solid"
+              className="!mt-[3.1rem] !w-full !h-[4rem] !text-[1.3rem] !font-bold !text-base green-btn]
+                        max-sm2:!text-[1.2rem]"
+              disabled={isSubmitting || !isValid}
+            >
+              회원가입
+            </Button>
+          </form>
+        </div>
       </div>
+    </div>
   );
 }
