@@ -38,10 +38,10 @@ button {
     box-shadow: var(--shadow-middle) !important;
 }
 .input-shadow.is-error {
-
+    box-shadow: 0px 0px 8.2px 0px var(--color-secondary) !important;
 }
 .input-shadow.is-success {
-
+    box-shadow: 0px 0px 8.2px 0px var(--color-primary) !important;
 }
 .icon-btn.rt-BaseButton:where(.rt-variant-outline).rt-Button:where(.rt-r-size-2):where(:not(.rt-variant-ghost)) {
     padding-left: 0;

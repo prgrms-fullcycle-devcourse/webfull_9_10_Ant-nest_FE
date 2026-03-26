@@ -3,7 +3,7 @@ import { useForm } from 'react-hook-form';
 import { useAuth } from '../../hooks/useAuth';
 import type { SignupRequest } from '../../types';
 import imgCharacter from "@/assets/images/characters/character-draw.gif";
-import FormField from "@/components/common/FormField.tsx";
+import FormField from "@/features/auth/components/FormField.tsx";
 import {Button} from "@radix-ui/themes";
 import {useState} from "react";
 import Header from "@/components/common/Header.tsx";
@@ -44,16 +44,16 @@ export default function SignupPage() {
                       />
 
                       <FormField
-                          className="mt-[1.5rem]"
+                          className="mt-[1.3rem]"
                           label={'닉네임'}
-                          value={password}
+                          value={name}
                           type={'text'}
                           placeholder={'비밀번호를 입력해주세요.'}
-                          onChange={setPassword}
+                          onChange={setName}
                       />
 
                       <FormField
-                          className="mt-[1.5rem]"
+                          className="mt-[1.3rem]"
                           label={'비밀번호'}
                           value={password}
                           type={'password'}
@@ -62,12 +62,12 @@ export default function SignupPage() {
                       />
 
                       <FormField
-                          className="mt-[1.5rem]"
+                          className="mt-[1.3rem]"
                           label={'비밀번호 확인'}
-                          value={password}
+                          value={passwordCheck}
                           type={'password'}
                           placeholder={'비밀번호를 입력해주세요.'}
-                          onChange={setPassword}
+                          onChange={setPasswordCheck}
                       />
 
                       <Button type="button" variant="solid" className="!mt-[3.1rem] !w-full !h-[4rem] !text-[1.3rem] !font-bold !text-base green-btn]
