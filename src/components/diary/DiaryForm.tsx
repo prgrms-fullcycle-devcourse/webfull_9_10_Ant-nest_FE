@@ -22,7 +22,7 @@ export default function DiaryForm({
   setTitle,
   content,
   setContent,
-  handleAddImages
+  handleAddImages,
   handleRemoveImage
 }: DiaryFormProps) {
   return (
@@ -69,7 +69,7 @@ export default function DiaryForm({
           {images.length > 0 && (
             <div className="mt-[4px] flex flex-wrap gap-3">
               {images.map((image, index) => (
-                <div key={${image.file.name}-${index}}
+                <div key={`${image.file.name}-${index}`}
                   className="relative">
                   <img
                     src={image.preview}
