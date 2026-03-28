@@ -22,8 +22,9 @@ export interface LoginRequest {
 
 export interface SignupRequest {
   email: string;
-  password: string;
   nickname: string;
+  password: string;
+  checkPassword: string;
 }
 
 export interface AuthResponse {

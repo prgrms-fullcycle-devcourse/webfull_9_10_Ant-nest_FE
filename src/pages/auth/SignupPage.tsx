@@ -1,18 +1,21 @@
-import { Link } from 'react-router-dom';
-import { useAuth } from '../../hooks/useAuth';
 import { Controller, useForm } from 'react-hook-form';
+import {
+  useSignupMutation,
+  useCheckEmail,
+  useCheckNickname,
+} from '@/features/auth/hooks/useAuth.tsx';
+
 import {
   validateEmail,
   validateNickname,
   validatePassword,
   validatePasswordConfirm,
 } from '@/features/auth/utils/validate.ts';
-
 // ----------- Component -----------
 import FormField from '@/features/auth/components/FormField.tsx';
 import Header from '@/components/common/Header.tsx';
-import { Button } from '@radix-ui/themes';
 
+import { Button } from '@radix-ui/themes';
 // ----------- IMG -----------
 import imgCharacter from '@/assets/images/characters/character-draw.gif';
 
@@ -28,13 +31,41 @@ export default function SignupPage() {
     control,
     handleSubmit,
     watch,
+    setError,
     formState: { isValid, isSubmitting },
   } = useForm<SignupFormValues>({ mode: 'onChange' });
 
   const password = watch('password');
+  const email = watch('email');
+  const nickname = watch('nickname');
 
-  const onSubmit = async (data: SignupFormValues) => {
-    console.log(data);
+  useCheckEmail(email, setError);
+  useCheckNickname(nickname, setError);
+
+  const signupMutation = useSignupMutation();
+
+  // [fix] form onSubmit={handleSubmit(onSubmit)} 과 이중 중첩되지 않도록 수정
+  const onSubmit = (data: SignupFormValues) => {
+    signupMutation.mutate(data, {
+      onError: (error: any) => {
+        const status = error?.response?.status;
+        const message = error?.response?.data?.message ?? '';
+
+        if (status === 400) {
+          setError('password', { message });
+        }
+
+        if (status === 409) {
+          if (message.includes('이메일')) {
+            setError('email', { message });
+          }
+
+          if (message.includes('닉네임')) {
+            setError('nickname', { message });
+          }
+        }
+      },
+    });
   };
 
   return (
@@ -141,7 +172,7 @@ export default function SignupPage() {
                   error={fieldState.error?.message}
                   success={
                     fieldState.isDirty && !fieldState.error
-                      ? '사용 가능한 닉네임입니다.'
+                      ? '비밀번호가 일치합니다.' // [fix] '사용 가능한 닉네임입니다.' → 올바른 메시지로 수정
                       : undefined
                   }
                   onChange={field.onChange}
