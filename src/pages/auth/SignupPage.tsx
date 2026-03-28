@@ -44,7 +44,6 @@ export default function SignupPage() {
 
   const signupMutation = useSignupMutation();
 
-  // [fix] form onSubmit={handleSubmit(onSubmit)} 과 이중 중첩되지 않도록 수정
   const onSubmit = (data: SignupFormValues) => {
     signupMutation.mutate(data, {
       onError: (error: any) => {
@@ -53,15 +52,18 @@ export default function SignupPage() {
 
         if (status === 400) {
           setError('password', { message });
+          return;
         }
 
         if (status === 409) {
           if (message.includes('이메일')) {
             setError('email', { message });
+            return;
           }
 
           if (message.includes('닉네임')) {
             setError('nickname', { message });
+            return;
           }
         }
       },

@@ -3,13 +3,15 @@ import { useMutation } from '@tanstack/react-query'; // [fix] 사용하지 않�
 import { useDebounce } from '@/hooks/useDebounce.ts';
 import { useEffect } from 'react';
 import { validateEmail, validateNickname } from '@/features/auth/utils/validate.ts';
-import type { SignupRequest } from '@/types';
+import type { LoginRequest, SignupRequest } from '@/types';
 import type { UseFormSetError } from 'react-hook-form';
 import {
-  addUser,
+  signupUser,
   checkEmailDuplicate,
   checkNicknameDuplicate,
-} from '@/features/auth/services/authService.tsx'; // [fix] setError 타입 import 추가
+  loginUser,
+} from '@/features/auth/services/authService.tsx';
+import { useAuthStore } from '@/store/authStore.ts'; // [fix] setError 타입 import 추가
 
 interface SignupFormValues {
   email: string;
@@ -57,16 +59,39 @@ export const useCheckNickname = (nickname: string, setError: UseFormSetError<Sig
 };
 
 /**
- * 회원가입 mutation 훅
+ * 회원가입 데이터 생성 훅
  **/
 export const useSignupMutation = () => {
   const navigate = useNavigate();
 
   return useMutation({
-    mutationFn: (data: SignupRequest) => addUser(data),
+    mutationFn: (data: SignupRequest) => signupUser(data),
 
     onSuccess: (data) => {
       navigate('/login', { replace: true });
+    },
+  });
+};
+
+/**
+ * 로그인 데이터 확인 훅
+ **/
+export const useLoginMutation = () => {
+  const navigate = useNavigate();
+  const { login } = useAuthStore();
+
+  return useMutation({
+    mutationFn: (data: LoginRequest) => loginUser(data),
+
+    onSuccess: (data, variables) => {
+      if (variables.autoLogin) {
+        localStorage.setItem('token', data.accessToken);
+      } else {
+        sessionStorage.setItem('token', data.accessToken);
+      }
+
+      login(data.userId, data.accessToken);
+      navigate('/', { replace: true });
     },
   });
 };

@@ -1,10 +1,16 @@
 import api from '@/services/api.ts';
-import type { AuthResponse, SignupRequest } from '@/types';
+import type {
+  ApiResponse,
+  LoginRequest,
+  LoginResponse,
+  SignupRequest,
+  SignupResponse,
+} from '@/types';
 
 /**
- * * 이메일 중복 여부를 확인한다.
- *  * @param email
- *  * @returns 이메일 중복 여부
+ * 이메일 중복 여부를 확인한다.
+ * @param email
+ * @returns 이메일 중복 여부
  **/
 export const checkEmailDuplicate = (email: string) => {
   return api
@@ -13,9 +19,9 @@ export const checkEmailDuplicate = (email: string) => {
 };
 
 /**
- * * 닉네임 중복 여부를 확인한다.
- *  * @param nickname
- *  * @returns 닉네임 중복 여부
+ * 닉네임 중복 여부를 확인한다.
+ * @param nickname
+ * @returns 닉네임 중복 여부
  **/
 export const checkNicknameDuplicate = (nickname: string) => {
   return api
@@ -23,6 +29,20 @@ export const checkNicknameDuplicate = (nickname: string) => {
     .then((res) => res.data.isDuplicate);
 };
 
-export const addUser = (data: SignupRequest) => {
-  return api.post<AuthResponse>('/auth/signup', data).then((res) => res.data);
+/**
+ * 회원가입 요청을 보낸다.
+ * @param data
+ * @returns 회원가입 응답 데이터
+ **/
+export const signupUser = (data: SignupRequest) => {
+  return api.post<ApiResponse<SignupResponse>>('/auth/signup', data).then((res) => res.data);
+};
+
+/**
+ * 로그인 요청을 보낸다.
+ * @param data
+ * @returns 로그인 응답 데이터
+ **/
+export const loginUser = (data: LoginRequest) => {
+  return api.post<ApiResponse<LoginResponse>>('/auth/login', data).then((res) => res.data);
 };

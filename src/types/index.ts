@@ -1,8 +1,11 @@
 // ===== API =====
 export interface ApiResponse<T> {
-  data: T;
+  statusCode: number;
+  timestamp: string;
+  path: string;
   message: string;
-  success: boolean;
+  data: T;
+  error: string | null;
 }
 
 // ===== 사용자 =====
@@ -15,11 +18,6 @@ export interface User {
 }
 
 // ===== 인증 =====
-export interface LoginRequest {
-  email: string;
-  password: string;
-}
-
 export interface SignupRequest {
   email: string;
   nickname: string;
@@ -27,8 +25,18 @@ export interface SignupRequest {
   checkPassword: string;
 }
 
-export interface AuthResponse {
-  user: User;
+export interface SignupResponse {
+  userId: null | number;
+}
+
+export interface LoginRequest {
+  email: string;
+  password: string;
+}
+
+export interface LoginResponse {
+  userId: number;
+  nickname: string;
   accessToken: string;
 }
 
