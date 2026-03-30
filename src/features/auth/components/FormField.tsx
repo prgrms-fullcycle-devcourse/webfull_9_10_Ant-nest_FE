@@ -6,23 +6,23 @@ import { cn } from '@/utils/cn.ts';
 interface FormFieldProps {
   className?: string;
   label?: string;
-  success?: string;
-  value: string | number; // 입력 데이터
+  value: string | number;
   placeholder: string;
   type?: 'number' | 'email' | 'password' | 'text';
-  onChange: (value: string) => void; // 데이터 넘겨주기
-  error?: string; // 타입체크 에러메시지
+  onChange: (value: string) => void;
+  error?: string;
+  success?: string;
 }
 
 export default function FormField({
   className,
   label,
-  success,
   value,
   placeholder,
   type,
   onChange,
   error,
+  success,
 }: FormFieldProps) {
   const [show, setShow] = useState(false);
 
@@ -41,7 +41,7 @@ export default function FormField({
       <TextField.Root
         className={cn(
           'relative mt-[0.5rem] [&.rt-TextFieldRoot]:!h-[3.7rem] [&>input]:!py-0 [&>input]:!pr-[0.8rem] [&>input]:!pl-[1.4rem] input-shadow',
-          { 'is-error': error, 'is-success': success },
+          { 'is-error': !!error, 'is-success': !error && !!success },
         )}
         value={value}
         placeholder={placeholder}
@@ -66,14 +66,15 @@ export default function FormField({
             </TextField.Slot>
           ) as React.ReactNode)}
       </TextField.Root>
+
       {(error || success) && (
         <b
           className={cn('inline-block mt-[0.6rem] text-sm', {
-            'text-[var(--color-primary)]': success,
-            'text-[var(--color-secondary)]': error,
+            'text-[var(--color-secondary)]': !!error,
+            'text-[var(--color-primary)]': !error && !!success,
           })}
         >
-          {error || success}
+          {error ?? success}
         </b>
       )}
     </div>
