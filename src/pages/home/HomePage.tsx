@@ -1,8 +1,9 @@
 import { Link, useNavigate } from 'react-router-dom';
 import { useAuthStore } from '../../store/authStore';
 import { useState } from 'react';
-import myCharacter from '../../assets/images/characters/DALLAE_ANIMATE_1.gif'
+import myCharacter from '@/assets/images/characters/DALLAE_ANIMATE_1.gif'
 import { Pencil1Icon } from '@radix-ui/react-icons';
+
 export default function HomePage() {
   // const { isAuthenticated, user } = useAuthStore();
   const { user } = useAuthStore();
