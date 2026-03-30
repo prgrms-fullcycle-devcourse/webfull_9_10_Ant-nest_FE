@@ -1,6 +1,8 @@
 @import 'tailwindcss';
+@import "react-calendar/dist/Calendar.css";
 @import './styles/fonts.css';
 @import './styles/radix-overrides.css';
+@import "./styles/calendar.css";
 
 @theme {
   /* 기본 */
@@ -9,6 +11,7 @@
 
   /* 메인 */
   --color-primary:          #5AB261;
+  --color-primary-light:    #FCFCF4;
   --color-secondary:        #F8876E;
   --color-bg:               #FFFEFA;
 

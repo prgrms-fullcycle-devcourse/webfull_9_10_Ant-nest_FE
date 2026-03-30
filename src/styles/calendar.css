@@ -1,0 +1,73 @@
+/** 커스텀 **/
+.calendar-header {
+    position: relative;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    height: 6rem;
+
+    & .rt-BaseButton:where(.rt-variant-solid) {
+        color: var(--color-gray-dark);
+        background-color: transparent;
+    }
+
+    & .prev-btn {
+        position: absolute;
+        left: 0;
+    }
+
+    & .next-btn {
+        position: absolute;
+        right: 0;
+    }
+
+    & .list-btn {
+        position: absolute;
+        right: 9%;
+        padding: 0;
+    }
+
+    & svg {
+        width: 1.7rem;
+        height: 1.7rem;
+    }
+
+    & > span {
+        font-size: 0.95rem;
+        color: var(--color-gray);
+    }
+}
+
+/** react-calendar 디자인 수정 **/
+.react-calendar {
+    width: 100%;
+    border: 0;
+}
+
+.react-calendar__navigation__label__labelText {
+    font-size: 0.95rem;
+    color: var(--color-gray)
+}
+
+.react-calendar__month-view__weekdays__weekday,
+.react-calendar__month-view__days__day--weekend,
+.react-calendar__month-view__days__day {
+    font-size: 0.95rem;
+    font-weight: 400;
+    color: var(--color-gray);
+}
+.react-calendar__month-view__weekdays {
+    margin-bottom: 1rem;
+
+    & abbr {
+        text-decoration: none;
+    }
+}
+
+
+.react-calendar__month-view__days__day {
+    & img {
+        margin: 0.3rem auto 0;
+        width: 2rem;
+    }
+}
