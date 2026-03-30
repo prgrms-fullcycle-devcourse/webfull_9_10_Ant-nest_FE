@@ -1,0 +1,55 @@
+button, .rt-TextFieldRoot {
+    border-radius: 12px !important;
+    font-family: var(--font-sans) !important;
+}
+
+/** 공통 **/
+.rt-TextFieldRoot:where(:has(.rt-TextFieldInput:focus)) {
+    outline: 0
+}
+.rt-TextFieldInput {
+    font-size: 1rem;
+    font-weight: 500;
+    color: var(--color-text-default);
+}
+.rt-TextFieldInput::placeholder {
+    font-family: var(--font-sans);
+}
+
+/** 버튼 **/
+button {
+    cursor: pointer !important;
+}
+.rt-BaseButton:where(.rt-variant-solid) {
+    background-color: var(--color-primary);
+}
+.rt-BaseButton:where(.rt-variant-solid):where(:hover) {
+    background-color: #53a259;
+}
+
+/** 체크박스 **/
+.rt-BaseCheckboxRoot:where(.rt-variant-surface):where([data-state='checked'], [data-state='indeterminate'])::before {
+    background-color: var(--color-primary);
+}
+
+/** 커스텀 **/
+.input-shadow {
+    border: 1px solid var(--color-gray-light);
+    box-shadow: var(--shadow-middle) !important;
+}
+.input-shadow.is-error {
+    box-shadow: 0px 0px 8.2px 0px var(--color-secondary) !important;
+}
+.input-shadow.is-success {
+    box-shadow: 0px 0px 8.2px 0px var(--color-primary) !important;
+}
+.icon-btn.rt-BaseButton:where(.rt-variant-outline).rt-Button:where(.rt-r-size-2):where(:not(.rt-variant-ghost)) {
+    padding-left: 0;
+    padding-right: 0;
+    box-shadow: none;
+    background-color: var(--color-white) !important;
+}
+.icon-btn svg {
+    width: 2rem;
+    height: 2rem;
+}

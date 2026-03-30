@@ -1,101 +1,199 @@
-import { Link } from 'react-router-dom';
-import { useForm } from 'react-hook-form';
-import { useAuth } from '../../hooks/useAuth';
-import type { SignupRequest } from '../../types';
+import { Controller, useForm } from 'react-hook-form';
+import {
+  useSignupMutation,
+  useCheckEmail,
+  useCheckNickname,
+} from '@/features/auth/hooks/useAuth.tsx';
+
+import {
+  validateEmail,
+  validateNickname,
+  validatePassword,
+  validatePasswordConfirm,
+} from '@/features/auth/utils/validate.ts';
+// ----------- Component -----------
+import FormField from '@/features/auth/components/FormField.tsx';
+import Header from '@/components/common/Header.tsx';
+
+import { Button } from '@radix-ui/themes';
+// ----------- IMG -----------
+import imgCharacter from '@/assets/images/characters/character-draw.gif';
+
+interface SignupFormValues {
+  email: string;
+  nickname: string;
+  password: string;
+  passwordConfirm: string;
+}
 
 export default function SignupPage() {
-  const { signup } = useAuth();
   const {
-    register,
+    control,
     handleSubmit,
-    formState: { errors },
-  } = useForm<SignupRequest>();
+    watch,
+    setError,
+    formState: { isValid, isSubmitting },
+  } = useForm<SignupFormValues>({ mode: 'onChange' });
 
-  const onSubmit = (data: SignupRequest) => {
-    signup.mutate(data);
-  };
+  const password = watch('password');
+  const email = watch('email');
+  const nickname = watch('nickname');
 
-  const inputStyle: React.CSSProperties = {
-    width: '100%',
-    padding: '10px 12px',
-    border: '1px solid var(--border)',
-    borderRadius: '8px',
-    fontSize: '15px',
-    color: 'var(--text-h)',
-    background: 'var(--bg)',
-    boxSizing: 'border-box',
+  useCheckEmail(email, setError);
+  useCheckNickname(nickname, setError);
+
+  const signupMutation = useSignupMutation();
+
+  const onSubmit = (data: SignupFormValues) => {
+    signupMutation.mutate(data, {
+      onError: (error: any) => {
+        const status = error?.response?.status;
+        const message = error?.response?.data?.message ?? '';
+
+        if (status === 400) {
+          setError('password', { message });
+          return;
+        }
+
+        if (status === 409) {
+          if (message.includes('이메일')) {
+            setError('email', { message });
+            return;
+          }
+
+          if (message.includes('닉네임')) {
+            setError('nickname', { message });
+            return;
+          }
+        }
+      },
+    });
   };
 
   return (
-    <div>
-      <h2 style={{ marginBottom: '24px', textAlign: 'center' }}>회원가입</h2>
+    <div className="relative h-auto min-h-screen">
+      <Header text="회원가입" />
 
-      <form onSubmit={handleSubmit(onSubmit)} style={{ display: 'flex', flexDirection: 'column', gap: '16px' }}>
-        <div>
-          <input
-            {...register('nickname', { required: '닉네임을 입력해주세요', minLength: { value: 2, message: '닉네임은 2자 이상이어야 합니다' } })}
-            type="text"
-            placeholder="닉네임"
-            style={inputStyle}
-          />
-          {errors.nickname && (
-            <p style={{ color: 'red', fontSize: '12px', marginTop: '4px' }}>{errors.nickname.message}</p>
-          )}
-        </div>
-
-        <div>
-          <input
-            {...register('email', { required: '이메일을 입력해주세요' })}
-            type="email"
-            placeholder="이메일"
-            style={inputStyle}
-          />
-          {errors.email && (
-            <p style={{ color: 'red', fontSize: '12px', marginTop: '4px' }}>{errors.email.message}</p>
-          )}
-        </div>
-
-        <div>
-          <input
-            {...register('password', { required: '비밀번호를 입력해주세요', minLength: { value: 8, message: '비밀번호는 8자 이상이어야 합니다' } })}
-            type="password"
-            placeholder="비밀번호 (8자 이상)"
-            style={inputStyle}
-          />
-          {errors.password && (
-            <p style={{ color: 'red', fontSize: '12px', marginTop: '4px' }}>{errors.password.message}</p>
-          )}
-        </div>
-
-        {signup.error && (
-          <p style={{ color: 'red', fontSize: '13px' }}>회원가입에 실패했습니다. 다시 시도해주세요.</p>
-        )}
-
-        <button
-          type="submit"
-          disabled={signup.isPending}
-          style={{
-            padding: '11px',
-            background: 'var(--accent)',
-            color: '#fff',
-            border: 'none',
-            borderRadius: '8px',
-            fontSize: '15px',
-            fontWeight: 600,
-            cursor: signup.isPending ? 'not-allowed' : 'pointer',
-            opacity: signup.isPending ? 0.7 : 1,
-          }}
+      <div
+        className="absolute top-[25%] m-auto inset-0 max-w-[30rem] w-full
+          max-sm2:top-[20%]"
+      >
+        <div
+          className="absolute left-0 right-0 top-[-16%] m-auto w-[4rem]
+              max-sm2:top-[-8%]"
         >
-          {signup.isPending ? '가입 중...' : '회원가입'}
-        </button>
-      </form>
+          <img src={imgCharacter} alt="" />
+        </div>
 
-      <p style={{ textAlign: 'center', marginTop: '20px', fontSize: '14px', color: 'var(--text)' }}>
-        이미 계정이 있으신가요?{' '}
-        <Link to="/login" style={{ color: 'var(--accent)' }}>
-          로그인
-        </Link>
-      </p>
+        {/* 회원가입 */}
+        <div
+          className="pt-[4rem] pr-[3rem] pb-[3rem] pl-[3rem] rounded-[4rem] bg-white shadow-middle
+              max-sm2:p-[2rem] max-sm2:boxshadow-none max-sm2:bg-transparent max-sm2:shadow-none"
+        >
+          <form className="block" onSubmit={handleSubmit(onSubmit)}>
+            <Controller
+              name="email"
+              defaultValue=""
+              control={control}
+              rules={{ validate: validateEmail }}
+              render={({ field, fieldState }) => (
+                <FormField
+                  label="이메일"
+                  type="email"
+                  placeholder="example@email.com"
+                  value={field.value}
+                  error={fieldState.error?.message}
+                  success={
+                    fieldState.isDirty && !fieldState.error
+                      ? '사용 가능한 이메일입니다.'
+                      : undefined
+                  }
+                  onChange={field.onChange}
+                />
+              )}
+            />
+
+            <Controller
+              name="nickname"
+              defaultValue=""
+              control={control}
+              rules={{ validate: validateNickname }}
+              render={({ field, fieldState }) => (
+                <FormField
+                  className="mt-[1.5rem]"
+                  label="닉네임"
+                  type="text"
+                  placeholder="2~10자리 닉네임 입력"
+                  value={field.value}
+                  error={fieldState.error?.message}
+                  success={
+                    fieldState.isDirty && !fieldState.error
+                      ? '사용 가능한 닉네임입니다.'
+                      : undefined
+                  }
+                  onChange={field.onChange}
+                />
+              )}
+            />
+
+            <Controller
+              name="password"
+              control={control}
+              defaultValue=""
+              rules={{ validate: validatePassword }}
+              render={({ field, fieldState }) => (
+                <FormField
+                  className="mt-[1.5rem]"
+                  label="비밀번호"
+                  type="password"
+                  placeholder="8~20자리 영문, 숫자, 특수문자 조합"
+                  value={field.value}
+                  error={fieldState.error?.message}
+                  success={
+                    fieldState.isDirty && !fieldState.error
+                      ? '사용 가능한 비밀번호입니다.'
+                      : undefined
+                  }
+                  onChange={field.onChange}
+                />
+              )}
+            />
+
+            <Controller
+              name="passwordConfirm"
+              defaultValue=""
+              control={control}
+              rules={{ validate: validatePasswordConfirm(password) }}
+              render={({ field, fieldState }) => (
+                <FormField
+                  className="mt-[1.5rem]"
+                  label="비밀번호 확인"
+                  type="password"
+                  placeholder="비밀번호 확인"
+                  value={field.value}
+                  error={fieldState.error?.message}
+                  success={
+                    fieldState.isDirty && !fieldState.error
+                      ? '비밀번호가 일치합니다.' // [fix] '사용 가능한 닉네임입니다.' → 올바른 메시지로 수정
+                      : undefined
+                  }
+                  onChange={field.onChange}
+                />
+              )}
+            />
+
+            <Button
+              type="submit"
+              variant="solid"
+              className="!mt-[3.1rem] !w-full !h-[4rem] !text-[1.3rem] !font-bold !text-base green-btn]
+                        max-sm2:!text-[1.2rem]"
+              disabled={isSubmitting || !isValid}
+            >
+              회원가입
+            </Button>
+          </form>
+        </div>
+      </div>
     </div>
   );
 }
