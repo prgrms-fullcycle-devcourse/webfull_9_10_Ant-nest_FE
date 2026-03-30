@@ -34,6 +34,7 @@ export const router = createBrowserRouter([
       { path: '/community/:id', element: <CommunityDetailPage />} // 달래광장 상세 페이지
     ],
   },
+
   // 로그인
   {
     element: <AuthLayout />,
