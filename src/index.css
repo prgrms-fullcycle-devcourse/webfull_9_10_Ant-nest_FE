@@ -19,7 +19,9 @@
   /* 서브 */
   --color-gray:             #B3B3B3;
   --color-gray-light:       #F1F1F1;
+  --color-gray-light2:       #FAFAFA;
   --color-gray-dark:        #8D8D8D;
+
 
   /* 텍스트 */
   --color-text-default:     #788678;

@@ -64,10 +64,34 @@
     }
 }
 
+.react-calendar__tile--now {
+    background-color: var(--color-primary-light);
+}
+
+.react-calendar__tile {
+    &:enabled:hover,
+    &:enabled:focus {
+        background-color: transparent;
+    }
+}
 
 .react-calendar__month-view__days__day {
+    &.is-active {
+        & abbr {
+            color: var(--color-white);
+            background-color: var(--color-primary);
+        }
+    }
+
+    & abbr {
+        display: inline-block;
+        width: 2rem;
+        height: 1.35rem;
+        border-radius: 50px;
+    }
+
     & img {
-        margin: 0.3rem auto 0;
+        margin: 0.1rem auto 0;
         width: 2rem;
     }
 }
