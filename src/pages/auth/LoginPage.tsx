@@ -1,6 +1,7 @@
-import { Link } from 'react-router-dom';
+import { Link, useNavigate } from 'react-router-dom';
 import { Controller, useForm } from 'react-hook-form';
 import { useLoginMutation } from '@/features/auth/hooks/useAuth.tsx';
+import { useAuthStore } from '@/store/authStore.ts';
 import { motion, useAnimate } from 'motion/react';
 import { useEffect, useRef } from 'react';
 
@@ -30,6 +31,8 @@ export default function LoginPage() {
     defaultValues: { autoLogin: true },
   });
   const loginMutation = useLoginMutation();
+  const { loginAsGuest } = useAuthStore();
+  const navigate = useNavigate();
   const [scope, animate] = useAnimate();
   const formRef = useRef<HTMLDivElement>(null);
   const textRef = useRef<HTMLDivElement>(null);
@@ -154,7 +157,7 @@ export default function LoginPage() {
               </Button>
 
               <b className="block mt-4 text-[var(--color-primary)] text-center text-sm">
-                <Link to="/">게스트로 시작하기</Link>
+                <button onClick={() => { loginAsGuest(); navigate('/'); }}>게스트로 시작하기</button>
               </b>
             </form>
           </div>

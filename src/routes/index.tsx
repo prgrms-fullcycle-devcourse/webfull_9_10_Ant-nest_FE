@@ -15,8 +15,8 @@ import PlainLayout from '../layouts/PlainLayout';
 import { useAuthStore } from '@/store/authStore.ts';
 
 function PrivateRoute() {
-  const isAuthenticated = useAuthStore((state) => state.isAuthenticated);
-  return isAuthenticated ? <Outlet /> : <Navigate to="/login" replace />;
+  const { isAuthenticated, isGuest } = useAuthStore();
+  return (isAuthenticated || isGuest) ? <Outlet /> : <Navigate to="/login" replace />;
 }
 
 function GuestRoute() {
