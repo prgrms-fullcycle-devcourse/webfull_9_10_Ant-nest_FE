@@ -1,3 +1,5 @@
+import { Button } from "@radix-ui/themes";
+
 interface DiaryBottomBarProps {
   isPublic: boolean;
   onTogglePublic: () => void;
@@ -25,12 +27,12 @@ export default function DiaryBottomBar({ isPublic, onTogglePublic, onSave }: Dia
         </div>
 
         {/* 저장 버튼 */}
-        <button
+        
+        <Button
           onClick={onSave}
-          className="w-[116px] h-[54px] rounded-[14px] bg-[#66BB6A] text-white font-semibold text-[16px] border-none cursor-pointer"
-        >
-          저장
-        </button>
+          className="basicButton"
+        >저장
+        </Button>
 
       </div>
     </div>

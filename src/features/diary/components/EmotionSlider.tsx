@@ -1,3 +1,6 @@
+import { ChevronLeftIcon, ChevronRightIcon } from "@radix-ui/react-icons"
+import { IconButton } from "@radix-ui/themes";
+
 interface Emotion {
   id: string;
   label: string;
@@ -29,13 +32,16 @@ export default function EmotionSlider({
   return (
       <div className="emotionWrap mb-8">
         <div className="text-[#8d8d8d] flex items-center justify-between">
-          <button className={`bg-transparent border-none text-[24px] shrink-0 transition-all
-            ${currentSlide === 0 ? 'cursor-default invisible' : 'cursor-pointer visible'}`}
-            onClick = {handlePrevSlide}
-            disabled = {currentSlide === 0}
-          >
-            {'<'}
-          </button>
+          {currentSlide !== 0 && (
+            <IconButton
+              variant="ghost"
+              className="backButton !text-[#8d8d8d]"
+              onClick={handlePrevSlide}
+            >
+              <ChevronLeftIcon className="w-[24px] h-[24px]" />
+            </IconButton>
+          )}
+
           <div className="flex flex-1 justify-center min-w-0 py-[2px] overflow-visible">
             {visibleEmotions.map((emotion) => (
               <button key={emotion.id}
@@ -50,13 +56,15 @@ export default function EmotionSlider({
               </button>
             ))}
           </div>
-          <button className={`bg-transparent border-none text-[24px] shrink-0 transition-all
-            ${currentSlide >= emotions.length - emotionsPerview ? 'cursor-default invisible' : 'cursor-pointer visible'}`}
-            onClick={handleNextSlide}
-            disabled={currentSlide === emotions.length - emotionsPerview}
-          >
-            {'>'}
-          </button>
+          {currentSlide < emotions.length - emotionsPerview && (
+            <IconButton
+              variant="ghost"
+              className="nextButton !text-[#8d8d8d]"
+              onClick={handleNextSlide}
+            >
+              <ChevronRightIcon className="w-[24px] h-[24px]" />
+            </IconButton>
+          )}
         </div>
       </div>
 
