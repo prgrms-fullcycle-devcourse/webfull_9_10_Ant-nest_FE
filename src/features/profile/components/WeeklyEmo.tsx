@@ -1,5 +1,5 @@
 import { EMOTIONS } from '@/constants/emotions';
-import noneImg from '@/assets/images/icons/community-reaction-icons.png';
+import noneImg from '@/assets/images/emotions/emotion-blank.png';
 import type { TWeeklyEmoItem } from '@/pages/profile/ProfilePage';
 
 const WEEK_LABELS = ['월', '화', '수', '목', '금', '토', '일'];
