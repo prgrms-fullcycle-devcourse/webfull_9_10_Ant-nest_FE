@@ -1,18 +1,20 @@
 import { useState } from 'react';
-import joy from '../../../assets/images/emotions/illu-happy.png'
-import heart from '../../../assets/images/emotions/emotion-excited.png'
-import panic from '../../../assets/images/emotions/emotion-absurd.png'
-import sad from '../../../assets/images/emotions/emotion-depressed.png'
-import angry from '../../../assets/images/emotions/emotion-angry.png'
-import normal from '../../../assets/images/emotions/illu-default.png'
-import gross from '../../../assets/images/emotions/emotion-disgusted.png'
-import tired from '../../../assets/images/emotions/emotion-tired.png'
+import { useNavigate } from 'react-router-dom';
+import joy from '../../../../assets/images/emotions/illu-happy.png'
+import heart from '../../../../assets/images/emotions/emotion-excited.png'
+import panic from '../../../../assets/images/emotions/emotion-absurd.png'
+import sad from '../../../../assets/images/emotions/emotion-depressed.png'
+import angry from '../../../../assets/images/emotions/emotion-angry.png'
+import normal from '../../../../assets/images/emotions/illu-default.png'
+import gross from '../../../../assets/images/emotions/emotion-disgusted.png'
+import tired from '../../../../assets/images/emotions/emotion-tired.png'
 
-import reactionToggle from '../../../assets/images/icons/community-reaction-icons.png'
-import trashCan from '../../../assets/images/icons/trashcan.svg'
-import edit from '../../../assets/images/icons/edit.svg'
+import reactionToggle from '../../../../assets/images/icons/community-reaction-icons.png'
+import trashCan from '../../../../assets/images/icons/trashcan.svg'
+import edit from '../../../../assets/images/icons/edit.svg'
 import {ReactionEmojisToggle} from './PostCardReactionToggle'
-import type { Emojis, Post } from '@/pages/community/types';
+import type { Emojis, Post } from '@/features/community/types/community.types';
+import { Button } from '@radix-ui/themes';
 
 // 프로필 이모지
 const profileEmojis : Emojis[] = [
@@ -38,9 +40,10 @@ const reactionEmojis : Emojis[] = [
 const PostCard = ( {post} : {post:Post})=>{
   const {id, question, answer, isMine} = post;
   const [showReactions, setShowReactions] = useState<true|false>(false);
+  const navigate = useNavigate();
 
   return (
-    <article className={`h-[290px] rounded-2xl p-4 shadow-[var(--shadow-middle)] m-4 
+    <article className={`min-h-[300px] rounded-2xl p-4 shadow-[var(--shadow-middle)] m-4 
       ${isMine === true ? 'bg-[#FCFCF4]' : 'bg-white'}`}>
       
       <div className="mb-3 flex items-start gap-2">
@@ -54,9 +57,15 @@ const PostCard = ( {post} : {post:Post})=>{
 
         {
           isMine === true &&
-          <div className='mt-1 ml-auto flex item-start gap-2.5 scale-110'>
-              <img src={edit}></img>
-              <img src={trashCan}></img>
+          <div className='mt-1 ml-auto flex items-center gap-2.5 scale-110'>
+              <a onClick={()=>navigate(`/diary/${id}`)}>
+                <img src={edit}></img>
+              </a>
+              <Button
+                variant='ghost'
+                >
+                <img src={trashCan}></img>
+              </Button>
           </div>  
         }
       </div>
@@ -73,7 +82,11 @@ const PostCard = ( {post} : {post:Post})=>{
         </p>
 
         <div className="mt-1 flex justify-end">
-          <button className="text-sm text-gray-400">상세보기</button>
+
+          <a
+            className="!text-sm !text-gray-400"
+            onClick={()=>navigate(`/community/${id}`)}
+          >상세보기</a>
         </div>
       </div>
 
@@ -82,9 +95,12 @@ const PostCard = ( {post} : {post:Post})=>{
         {showReactions && <ReactionEmojisToggle reactionEmojis={reactionEmojis}/>}
 
         {/* 버튼 클릭 시 감정 버튼들 나옴 */}
-        <button onClick={() => setShowReactions((prev) => !prev)}>
+        <Button
+          variant='ghost'
+          onClick={() => setShowReactions((prev) => !prev)}
+        >
           <img src={reactionToggle} className='h-8 w-8'/>
-        </button>
+        </Button>
         <p className='text-s ml-2 text-[var(--color-text-default)] mt-1'>7</p>
       </div>
     </article>
