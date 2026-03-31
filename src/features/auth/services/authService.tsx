@@ -5,7 +5,7 @@ import type {
   LoginResponse,
   SignupRequest,
   SignupResponse,
-} from '@/types';
+} from '@/types/index.types.ts';
 
 /**
  * 이메일 중복 여부를 확인한다.

@@ -1,6 +1,6 @@
 import { create } from 'zustand';
 import { persist } from 'zustand/middleware';
-import type { User } from '../types';
+import type { User } from '../types/index.types.ts';
 
 interface AuthState {
   user: User | null;
@@ -18,11 +18,9 @@ export const useAuthStore = create<AuthState>()(
       token: null,
       isAuthenticated: false,
 
-      login: (user, token) =>
-        set({ user, token, isAuthenticated: true }),
+      login: (user, token) => set({ user, token, isAuthenticated: true }),
 
-      logout: () =>
-        set({ user: null, token: null, isAuthenticated: false }),
+      logout: () => set({ user: null, token: null, isAuthenticated: false }),
 
       updateUser: (partial) => {
         const current = get().user;
@@ -35,6 +33,6 @@ export const useAuthStore = create<AuthState>()(
       name: 'auth-storage',
       // token만 localStorage에 저장 (민감 정보 최소화)
       partialize: (state) => ({ token: state.token, user: state.user }),
-    }
-  )
+    },
+  ),
 );

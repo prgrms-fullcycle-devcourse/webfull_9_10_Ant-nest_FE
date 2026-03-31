@@ -3,7 +3,7 @@ import { useMutation } from '@tanstack/react-query'; // [fix] 사용하지 않�
 import { useDebounce } from '@/hooks/useDebounce.ts';
 import { useEffect } from 'react';
 import { validateEmail, validateNickname } from '@/features/auth/utils/validate.ts';
-import type { LoginRequest, SignupRequest } from '@/types';
+import type { LoginRequest, SignupRequest } from '@/types/index.types.ts';
 import type { UseFormSetError } from 'react-hook-form';
 import {
   signupUser,

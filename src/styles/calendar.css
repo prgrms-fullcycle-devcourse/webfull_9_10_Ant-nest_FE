@@ -7,6 +7,7 @@
     height: 6rem;
 
     & .rt-BaseButton:where(.rt-variant-solid) {
+        padding: 0 1rem 0 0.3rem;
         color: var(--color-gray-dark);
         background-color: transparent;
     }
@@ -23,7 +24,7 @@
 
     & .list-btn {
         position: absolute;
-        right: 9%;
+        right: 3.5rem;
         padding: 0;
     }
 
@@ -73,6 +74,13 @@
     &:enabled:focus {
         background-color: transparent;
     }
+
+    &.is-today {
+        &:enabled:hover,
+        &:enabled:focus {
+            background-color: var(--color-primary-light);
+        }
+    }
 }
 
 .react-calendar__month-view__days__day {
@@ -87,6 +95,7 @@
         display: inline-block;
         width: 2rem;
         height: 1.35rem;
+        line-height: 1.4;
         border-radius: 50px;
     }
 
