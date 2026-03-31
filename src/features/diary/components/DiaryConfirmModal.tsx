@@ -1,3 +1,5 @@
+import { Button } from "@radix-ui/themes";
+
 interface DiaryConfirmModalProps {
   isOpen: boolean;
   title: string;
@@ -24,24 +26,24 @@ export default function DiaryConfirmModal({
     >
       <div
         onClick={(e) => e.stopPropagation()}
-        className="w-full max-w-[420px] bg-white rounded-[18px] px-[24px] pt-[40px] pb-[28px] flex flex-col items-center gap-[8px] shadow-[0_16px_40px_rgba(0,0,0,0.2)]"
+        className="w-full max-w-[372px] h-[226px] bg-white rounded-[22px] px-[24px] pt-[40px] pb-[28px] flex flex-col items-center gap-[8px] shadow-[0_16px_40px_rgba(0,0,0,0.2)]"
       >
         <p className="text-[18px] font-extrabold text-[#111] text-center">{title}</p>
-        <p className="text-[14px] text-[#B0B0B0] text-center mb-[16px]">{description}</p>
+        <p className="text-[14px] text-[#B0B0B0] text-center mt-[20px]">{description}</p>
 
-        <div className="flex gap-[10px]">
-          <button
+        <div className="flex gap-[30px] mt-[30px]">
+          <Button
             onClick={onCancel}
-            className="w-[120px] h-[42px] rounded-[12px] bg-[#E5E7EB] text-white text-[15px] font-bold border-none cursor-pointer"
+            className="basicButton !bg-[#CFD3D0]"
           >
             취소
-          </button>
-          <button
+          </Button>
+          <Button
             onClick={onConfirm}
-            className="w-[120px] h-[42px] rounded-[12px] bg-[#66BB6A] text-white text-[15px] font-extrabold border-none cursor-pointer"
+            className="basicButton"
           >
             {confirmLabel}
-          </button>
+          </Button>
         </div>
       </div>
     </div>

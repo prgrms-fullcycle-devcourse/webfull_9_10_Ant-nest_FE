@@ -1,21 +1,17 @@
 
 import { useState } from 'react';
-import peacefulImg from '../../assets/images/emotions/illu-default.png';
-import happyImg from '../../assets/images/emotions/illu-happy.png';
-import excitedImg from '../../assets/images/emotions/emotion-excited.png';
-import absurdImg from '../../assets/images/emotions/emotion-absurd.png';
-import depressedImg from '../../assets/images/emotions/emotion-depressed.png';
-import angryImg from '../../assets/images/emotions/emotion-angry.png';
-import tiredImg from '../../assets/images/emotions/emotion-tired.png';
-import disgustedImg from '../../assets/images/emotions/emotion-disgusted.png';
 
-import DiaryHeader from '../../components/diary/DiaryHeader';
-import DiaryQuestion from '../../components/diary/DiaryQuestion';
-import EmotionSlider from '../../components/diary/EmotionSlider';
-import DiaryForm from '../../components/diary/DiaryForm';
-import DiaryBottomBar from '../../components/diary/DiaryBottomBar';
-import DiaryConfirmModal from '../../components/diary/DiaryConfirmModal';
+import DiaryHeader from '../../features/diary/components/DiaryHeader';
+import DiaryQuestion from '../../features/diary/components/DiaryQuestion';
+import EmotionSlider from '../../features/diary/components/EmotionSlider';
+import DiaryForm from '../../features/diary/components/DiaryForm';
+import DiaryBottomBar from '../../features/diary/components/DiaryBottomBar';
+import DiaryConfirmModal from '../../features/diary/components/DiaryConfirmModal';
 import { useNavigate } from 'react-router-dom';
+import { EMOTIONS } from '../../features/diary/utils/emotions';
+import { formatDateStr } from '../../features/diary/utils/formatDate';
+
+
 
 export default function DiaryCreatePage() {
   const navigate = useNavigate();
@@ -29,25 +25,20 @@ export default function DiaryCreatePage() {
   const [exitModalOpen, setExitModalOpen] = useState(false);
   const [saveModalOpen, setSaveModalOpen] = useState(false);
   const [previewImage, setPreviewImage] = useState<string | null>(null);
+  const [question, setQuestion] = useState('오늘 당신을 미소 짓게 만든 것은 무엇인가요?');
 
-  const emotions = [
-    {id: 'peaceful', label: '평온', img: peacefulImg},
-    {id: 'happy', label: '행복', img: happyImg},
-    {id: 'excited', label: '설렘', img: excitedImg},
-    {id: 'absurd', label: '황당', img: absurdImg},
-    {id: 'depressed', label: '우울', img: depressedImg},
-    {id: 'angry', label: '화남', img: angryImg},
-    {id: 'tired', label: '피곤', img: tiredImg},
-    {id: 'disgusted', label: '역겨움', img: disgustedImg}
-  ]
+
 
   const emotionsPerview = 5;
   const startIndex = currentSlide;
-  const visibleEmotions = emotions.slice(startIndex, startIndex + emotionsPerview);
-  const selectedEmotionData = emotions.find((e) => e.id === selectedEmotion);
+  const visibleEmotions = EMOTIONS.slice(startIndex, startIndex + emotionsPerview);
+  const selectedEmotionData = EMOTIONS.find((e) => e.id === selectedEmotion);
+  // emotionId 꺼내기
+  const emotionId = selectedEmotionData?.emotionId;
 
-  const today = new Date();
-  const dateStr = `${today.getFullYear()}년 ${today.getMonth() + 1}월 ${today.getDate()}일`;
+
+
+  const dateStr = formatDateStr(new Date());
 
 
   const handlePrevSlide = () => {
@@ -55,7 +46,7 @@ export default function DiaryCreatePage() {
   };
 
   const handleNextSlide = () => {
-    setCurrentSlide((prev) => Math.min(prev + 1, emotions.length - emotionsPerview));
+    setCurrentSlide((prev) => Math.min(prev + 1, EMOTIONS.length - emotionsPerview));
   };
   
   const handleAddImages = (e: React.ChangeEvent<HTMLInputElement>) => {
@@ -85,18 +76,20 @@ export default function DiaryCreatePage() {
   
   const handleSave = () => {
     // TODO: API 연동
-    console.log({ title, content, selectedEmotion, isPublic, images });
+    console.log({ title, content, emotionId, isPublic, images });
     setSaveModalOpen(false);
     navigate('/');
-  };
+  };  
 
   
   return (
     <div className="diaryCreateWrap">
       <DiaryHeader onBack={() => setExitModalOpen(true)} />
-      <DiaryQuestion />
+      <DiaryQuestion
+        question={question}
+      />
       <EmotionSlider
-        emotions={emotions}
+        emotions={EMOTIONS}
         currentSlide={currentSlide}
         selectedEmotion={selectedEmotion}
         setSelectedEmotion={setSelectedEmotion}

@@ -27,6 +27,29 @@ button {
     background-color: #53a259;
 }
 
+.basicButton {
+    background-color: #5AB261;
+    color:white;
+    border-radius: 16px;
+    width:116px;
+    height:54px;
+    font-weight: bold;
+    font-size: 16px;
+}
+
+.backButton,
+.nextButton {
+    background-color:transparent;
+    border:none;
+    width:24px;
+    height:24px;
+}
+
+.backButton:hover,
+.nextButton:hover {
+    background-color:transparent;
+}
+
 /** 체크박스 **/
 .rt-BaseCheckboxRoot:where(.rt-variant-surface):where([data-state='checked'], [data-state='indeterminate'])::before {
     background-color: var(--color-primary);
