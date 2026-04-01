@@ -11,7 +11,8 @@ import {
   loginUser,
 } from '@/features/auth/services/authService.tsx';
 import { useAuthStore } from '@/store/authStore.ts';
-import type { LoginRequest, SignupRequest } from '@/features/auth/types/auth.types.ts'; // [fix] setError 타입 import 추가
+import type { LoginRequest, SignupRequest } from '@/features/auth/types/auth.types.ts';
+import type { User } from '@/types'; // [fix] setError 타입 import 추가
 
 interface SignupFormValues {
   email: string;
@@ -67,7 +68,7 @@ export const useSignupMutation = () => {
   return useMutation({
     mutationFn: (data: SignupRequest) => signupUser(data),
 
-    onSuccess: (data) => {
+    onSuccess: () => {
       navigate('/login', { replace: true });
     },
   });
@@ -85,12 +86,19 @@ export const useLoginMutation = () => {
 
     onSuccess: (data, variables) => {
       if (variables.autoLogin) {
-        localStorage.setItem('token', data.accessToken);
+        localStorage.setItem('token', data.data.accessToken);
       } else {
-        sessionStorage.setItem('token', data.accessToken);
+        sessionStorage.setItem('token', data.data.accessToken);
       }
 
-      login(data.userId, data.accessToken);
+      const user: User = {
+        id: data.data.userId,
+        email: variables.email,
+        nickname: data.data.nickname,
+        createdAt: '',
+      };
+
+      login(user, data.data.accessToken);
       navigate('/', { replace: true });
     },
   });

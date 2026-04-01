@@ -39,7 +39,7 @@ export default function LoginPage() {
 
   const onSubmit = (data: LoginFormValues) => {
     loginMutation.mutate(data, {
-      onError: (error: any) => {
+      onError: () => {
         setError('email', { message: '이메일 또는 비밀번호가 올바르지 않습니다.' });
       },
     });
@@ -157,7 +157,14 @@ export default function LoginPage() {
               </Button>
 
               <b className="block mt-4 text-[var(--color-primary)] text-center text-sm">
-                <button onClick={() => { loginAsGuest(); navigate('/'); }}>게스트로 시작하기</button>
+                <button
+                  onClick={() => {
+                    loginAsGuest();
+                    navigate('/');
+                  }}
+                >
+                  게스트로 시작하기
+                </button>
               </b>
             </form>
           </div>

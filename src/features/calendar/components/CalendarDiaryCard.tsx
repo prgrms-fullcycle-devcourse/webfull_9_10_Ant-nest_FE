@@ -5,11 +5,11 @@ import iconDelete from '@/assets/images/icons/trashcan.svg';
 import emoji from '@/assets/images/emotions/emotion-absurd.png';
 
 export default function CalendarDiaryCard() {
-  const setEmoji = () => {
-    let emoji = 'emoji';
-
-    return `@/assets/images/icons/${emoji}.svg`;
-  };
+  // const setEmoji = () => {
+  //   let emoji = 'emoji';
+  //
+  //   return `@/assets/images/icons/${emoji}.svg`;
+  // };
 
   return (
     <div className="pr-[1rem] pb-[1rem] shadow-[var(--shadow-middle)] rounded-2xl">

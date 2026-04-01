@@ -7,6 +7,8 @@ type TProfile = {
   nickname: string;
   totalDiaries: number;
   totalSharedDiaries: number;
+  registrationDate?: number;
+  attendance?: number;
 };
 
 type TProfileCardProps = {

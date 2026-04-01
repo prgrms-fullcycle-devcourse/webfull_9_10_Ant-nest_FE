@@ -24,7 +24,7 @@ export default function DiaryCalendar() {
         showNavigation={false}
         showNeighboringMonth={false}
         activeStartDate={value as Date}
-        formatDay={(locale, date) => date.getDate().toString()}
+        formatDay={(_locale, date) => date.getDate().toString()}
         onChange={setValue}
         tileClassName={({ date, view }) => {
           if (view !== 'month') return null;
@@ -45,7 +45,7 @@ export default function DiaryCalendar() {
 
           return null;
         }}
-        tileContent={({ date, view }) => {
+        tileContent={({ view }) => {
           if (view !== 'month') return null;
 
           return <img src={flower} alt="" />;
