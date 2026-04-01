@@ -1,4 +1,4 @@
-import { createBrowserRouter, Navigate } from 'react-router-dom';
+import { createBrowserRouter, Navigate, Outlet } from 'react-router-dom';
 import MainLayout from '../layouts/MainLayout';
 import AuthLayout from '../layouts/AuthLayout';
 import HomePage from '../pages/home/HomePage';
@@ -12,35 +12,55 @@ import DiaryListPage from '../pages/diary/DiaryListPage';
 import DiaryDetailPage from '../pages/diary/DiaryDetailPage';
 import CommunityDetailPage from '../pages/community/CommunityDetailPage';
 import PlainLayout from '../layouts/PlainLayout';
+import { useAuthStore } from '@/store/authStore.ts';
+
+function PrivateRoute() {
+  const { isAuthenticated, isGuest } = useAuthStore();
+  return (isAuthenticated || isGuest) ? <Outlet /> : <Navigate to="/login" replace />;
+}
+
+function GuestRoute() {
+  const isAuthenticated = useAuthStore((state) => state.isAuthenticated);
+  return isAuthenticated ? <Navigate to="/" replace /> : <Outlet />;
+}
 
 export const router = createBrowserRouter([
-  //  Navbar 있는 페이지
   {
-    element: <MainLayout />,
+    element: <GuestRoute />,
     children: [
-      { path: '/', element: <HomePage /> },                       // 기본 페이지 (홈)
-      { path: '/diary/calendar', element: <CalendarPage /> },     // 내 일기목록(달력)
-      { path: '/diary', element: <DiaryListPage /> },             // 내 일기목록(채팅)
-      { path: '/community', element: <CommunityPage /> },         // 달래광장
-      { path: '/profile', element: <ProfilePage /> },             // 마이페이지
+      // 로그인
+      {
+        element: <AuthLayout />,
+        children: [
+          { path: '/login', element: <LoginPage /> }, // 로그인
+          { path: '/signup', element: <SignupPage /> }, // 회원가입
+        ],
+      },
     ],
   },
-  // Navbar 없는 페이지
   {
-    element: <PlainLayout />,
+    element: <PrivateRoute />,
     children: [
-      { path: '/diary/new', element: <DiaryCreatePage /> },       // 일기작성
-      { path: '/diary/:id', element: <DiaryDetailPage />},        // 내 일기 상세 페이지
-      { path: '/community/:id', element: <CommunityDetailPage />} // 달래광장 상세 페이지
-    ],
-  },
-
-  // 로그인
-  {
-    element: <AuthLayout />,
-    children: [
-      { path: '/login', element: <LoginPage /> },                 // 로그인
-      { path: '/signup', element: <SignupPage /> },               // 회원가입
+      //  Navbar 있는 페이지
+      {
+        element: <MainLayout />,
+        children: [
+          { path: '/', element: <HomePage /> }, // 기본 페이지 (홈)
+          { path: '/diary/calendar', element: <CalendarPage /> }, // 내 일기목록(달력)
+          { path: '/diary', element: <DiaryListPage /> }, // 내 일기목록(채팅)
+          { path: '/community', element: <CommunityPage /> }, // 달래광장
+          { path: '/profile', element: <ProfilePage /> }, // 마이페이지
+        ],
+      },
+      // Navbar 없는 페이지
+      {
+        element: <PlainLayout />,
+        children: [
+          { path: '/diary/new', element: <DiaryCreatePage /> }, // 일기작성
+          { path: '/diary/:id', element: <DiaryDetailPage /> }, // 내 일기 상세 페이지
+          { path: '/community/:id', element: <CommunityDetailPage /> }, // 달래광장 상세 페이지
+        ],
+      },
     ],
   },
   // 잘못된 경로 처리

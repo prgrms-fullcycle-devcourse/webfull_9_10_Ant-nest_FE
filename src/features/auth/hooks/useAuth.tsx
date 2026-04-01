@@ -3,7 +3,6 @@ import { useMutation } from '@tanstack/react-query'; // [fix] 사용하지 않�
 import { useDebounce } from '@/hooks/useDebounce.ts';
 import { useEffect } from 'react';
 import { validateEmail, validateNickname } from '@/features/auth/utils/validate.ts';
-import type { LoginRequest, SignupRequest } from '@/types';
 import type { UseFormSetError } from 'react-hook-form';
 import {
   signupUser,
@@ -11,7 +10,8 @@ import {
   checkNicknameDuplicate,
   loginUser,
 } from '@/features/auth/services/authService.tsx';
-import { useAuthStore } from '@/store/authStore.ts'; // [fix] setError 타입 import 추가
+import { useAuthStore } from '@/store/authStore.ts';
+import type { LoginRequest, SignupRequest } from '@/features/auth/types/auth.types.ts'; // [fix] setError 타입 import 추가
 
 interface SignupFormValues {
   email: string;
