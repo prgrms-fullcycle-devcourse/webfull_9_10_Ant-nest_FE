@@ -12,7 +12,7 @@ import {
 } from '@/features/auth/services/authService.tsx';
 import { useAuthStore } from '@/store/authStore.ts';
 import type { LoginRequest, SignupRequest } from '@/features/auth/types/auth.types.ts';
-import type { User } from '@/types'; // [fix] setError 타입 import 추가
+import type { User } from '@/types/index.types.ts';
 
 interface SignupFormValues {
   email: string;
