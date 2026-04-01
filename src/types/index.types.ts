@@ -16,6 +16,10 @@ export interface User {
   profileImage?: string;
   createdAt: string;
 }
+// ===== 캘린더 / 다이어리목록 =====
+export type ValuePiece = Date | null;
+
+export type Value = ValuePiece | [ValuePiece, ValuePiece];
 
 // ===== 다이어리 =====
 export interface Diary {

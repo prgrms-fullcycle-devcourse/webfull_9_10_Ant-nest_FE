@@ -1,3 +1,4 @@
+import { useNavigate } from 'react-router-dom';
 import { Button } from '@radix-ui/themes';
 
 /** 이미지 **/
@@ -5,10 +6,13 @@ import list from '@/assets/images/icons/icon-list.svg';
 
 interface Props {
   value: any;
+  move: 'calendar' | 'diary';
   onChange: (date: Date) => void;
 }
 
-export default function CalendarHeader({ value, onChange }: Props) {
+export default function CalendarHeader({ value, move, onChange }: Props) {
+  const navigate = useNavigate();
+
   const prevMonth = () => {
     const date = new Date(value);
 
@@ -23,7 +27,10 @@ export default function CalendarHeader({ value, onChange }: Props) {
     onChange(date);
   };
 
-  const moveList = () => {};
+  const moveList = () => {
+    const route = move === 'calendar' ? 'diary/calendar' : 'diary';
+    navigate(`/${route}`);
+  };
 
   return (
     <header className="calendar-header">

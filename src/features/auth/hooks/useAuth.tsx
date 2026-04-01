@@ -2,8 +2,9 @@ import { useNavigate } from 'react-router-dom';
 import { useMutation } from '@tanstack/react-query'; // [fix] 사용하지 않는 useQuery import 제거
 import { useDebounce } from '@/hooks/useDebounce.ts';
 import { useEffect } from 'react';
-import { validateEmail, validateNickname } from '@/features/auth/utils/validate.ts';
 import type { UseFormSetError } from 'react-hook-form';
+import { validateEmail, validateNickname } from '@/features/auth/utils/validate.ts';
+import type { LoginRequest, SignupRequest } from '@/features/auth/types/auth.types.ts';
 import {
   signupUser,
   checkEmailDuplicate,
@@ -11,7 +12,6 @@ import {
   loginUser,
 } from '@/features/auth/services/authService.tsx';
 import { useAuthStore } from '@/store/authStore.ts';
-import type { LoginRequest, SignupRequest } from '@/features/auth/types/auth.types.ts'; // [fix] setError 타입 import 추가
 
 interface SignupFormValues {
   email: string;

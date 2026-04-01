@@ -8,7 +8,7 @@ import CalendarHeader from '@/components/common/CalendarHeader.tsx';
 import flower from '@/assets/images/illustrations/illu-flower.png';
 
 /** 타입 **/
-import type { Value } from '@/features/calendar/types/calendar.types.ts';
+import type { Value } from '@/types/index.types.ts';
 
 export default function DiaryCalendar() {
   const [value, setValue] = useState<Value>(new Date());
@@ -16,7 +16,7 @@ export default function DiaryCalendar() {
 
   return (
     <div>
-      <CalendarHeader value={value} onChange={setValue} />
+      <CalendarHeader move="diary" value={value} onChange={setValue} />
 
       <Calendar
         calendarType="gregory"
