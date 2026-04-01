@@ -1,16 +1,16 @@
 import { useCommunityStore } from '@/store/communityStore';
 import React from 'react'
 import EmotionFilterEmojis from './EmotionFilterEmojis';
-import type { Emojis } from '@/pages/community/types';
-import joy from '../../../assets/images/emotions/illu-happy.png'
-import heart from '../../../assets/images/emotions/emotion-excited.png'
-import panic from '../../../assets/images/emotions/emotion-absurd.png'
-import sad from '../../../assets/images/emotions/emotion-depressed.png'
-import angry from '../../../assets/images/emotions/emotion-angry.png'
-import normal from '../../../assets/images/emotions/illu-default.png'
-import gross from '../../../assets/images/emotions/emotion-disgusted.png'
-import tired from '../../../assets/images/emotions/emotion-tired.png'
-
+import type { Emojis } from '@/features/community/types/community.types';
+import joy from '../../../../assets/images/emotions/illu-happy.png'
+import heart from '../../../../assets/images/emotions/emotion-excited.png'
+import panic from '../../../../assets/images/emotions/emotion-absurd.png'
+import sad from '../../../../assets/images/emotions/emotion-depressed.png'
+import angry from '../../../../assets/images/emotions/emotion-angry.png'
+import normal from '../../../../assets/images/emotions/illu-default.png'
+import gross from '../../../../assets/images/emotions/emotion-disgusted.png'
+import tired from '../../../../assets/images/emotions/emotion-tired.png'
+import { Button } from '@radix-ui/themes';
 // 필터용 감정 이모지
 const filterEmojis : Emojis[] = [
     { id: 1, name: 'joy', url: joy },
@@ -31,16 +31,16 @@ const FilterBottomSheet = () => {
         <div>
             <div className="fixed inset-0 z-50 bg-black/25"
                 onClick={()=>activeBottomSheet==="filter"&&setActiveBottomSheet(null)}>
-                <div className="absolute bottom-0 left-0 w-full h-65 rounded-t-2xl bg-white p-5 pr-6">
+                <div className="absolute bottom-0 left-0 w-full min-h-70 rounded-t-2xl bg-white p-5 pr-6">
             
                     <div onClick={(e) => e.stopPropagation()}>
                     <div className='flex justify-end gap-6'>
-                        <button className='text-[#F8876E] text-[15px] font-medium'>
+                        <Button variant="ghost" className='!text-[#F8876E] !text-[15px] !font-medium'>
                             전체 선택
-                        </button>
-                        <button className='text-[var(--color-primary)] text-[15px] font-medium'>
+                        </Button>
+                        <Button variant="ghost" className='!text-[var(--color-primary)] !text-[15px] !font-medium'>
                             적용
-                        </button>
+                        </Button>
                     </div>
 
                     <div>

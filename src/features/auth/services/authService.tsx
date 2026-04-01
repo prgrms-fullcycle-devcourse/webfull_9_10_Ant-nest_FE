@@ -1,11 +1,11 @@
 import api from '@/services/api.ts';
+import type { ApiResponse } from '@/types/index.types.ts';
 import type {
-  ApiResponse,
   LoginRequest,
   LoginResponse,
   SignupRequest,
   SignupResponse,
-} from '@/types/index.types.ts';
+} from '@/features/auth/types/auth.types.ts';
 
 /**
  * 이메일 중복 여부를 확인한다.

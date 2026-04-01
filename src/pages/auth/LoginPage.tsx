@@ -1,6 +1,9 @@
-import { Link } from 'react-router-dom';
+import { Link, useNavigate } from 'react-router-dom';
 import { Controller, useForm } from 'react-hook-form';
 import { useLoginMutation } from '@/features/auth/hooks/useAuth.tsx';
+import { useAuthStore } from '@/store/authStore.ts';
+import { motion, useAnimate } from 'motion/react';
+import { useEffect, useRef } from 'react';
 
 import { Button, Checkbox, Flex, Text } from '@radix-ui/themes';
 
@@ -16,6 +19,8 @@ interface LoginFormValues {
   autoLogin: boolean;
 }
 
+let animationPlayed = false;
+
 export default function LoginPage() {
   const {
     handleSubmit,
@@ -26,6 +31,11 @@ export default function LoginPage() {
     defaultValues: { autoLogin: true },
   });
   const loginMutation = useLoginMutation();
+  const { loginAsGuest } = useAuthStore();
+  const navigate = useNavigate();
+  const [scope, animate] = useAnimate();
+  const formRef = useRef<HTMLDivElement>(null);
+  const textRef = useRef<HTMLDivElement>(null);
 
   const onSubmit = (data: LoginFormValues) => {
     loginMutation.mutate(data, {
@@ -34,6 +44,31 @@ export default function LoginPage() {
       },
     });
   };
+
+  useEffect(() => {
+    if (animationPlayed) return;
+
+    const el = scope.current;
+    if (!el) return;
+
+    const rect = el.getBoundingClientRect();
+    const x = window.innerWidth / 2 - rect.left - rect.width / 2;
+    const y = window.innerHeight / 2 - rect.top - rect.height / 2;
+
+    const sequence = async () => {
+      if (formRef.current) animate(formRef.current, { opacity: 0 }, { duration: 0 });
+      if (textRef.current) animate(textRef.current, { opacity: 0 }, { duration: 0 });
+      await animate(el, { x, y, opacity: 0, scale: 5 }, { duration: 0 });
+      await animate(el, { opacity: 1 }, { duration: 0.5 });
+      await new Promise((resolve) => setTimeout(resolve, 2000));
+      await animate(el, { x: 0, y: 0, scale: 1 }, { duration: 0.8, ease: [0, 0.71, 0.2, 1.01] });
+      if (formRef.current) animate(formRef.current, { opacity: 1 }, { duration: 0.5 });
+      if (textRef.current) await animate(textRef.current, { opacity: 1 }, { duration: 0.5 });
+      animationPlayed = true;
+    };
+
+    sequence();
+  }, []);
 
   return (
     <div className="relative h-screen">
@@ -45,13 +80,11 @@ export default function LoginPage() {
           className="absolute left-0 right-0 top-[-25%]
         max-sm2:top-[-13%]"
         >
-          <div
-            className="m-auto w-[4rem]
-          max-sm2:w-[3rem]"
-          >
+          <motion.div ref={scope} className="m-auto w-[4rem] max-sm2:w-[3rem]">
             <img src={imgCharacter} alt="" />
-          </div>
+          </motion.div>
           <h2
+            ref={textRef}
             className="font-handwriting text-[5rem] leading-[0.7] text-center
           max-sm2:text-[4rem]"
           >
@@ -60,85 +93,87 @@ export default function LoginPage() {
         </div>
 
         {/* 로그인 */}
-        <div
-          className="pt-[4rem] pr-[3rem] pb-[3rem] pl-[3rem] rounded-[4rem] bg-white shadow-middle
+        <div ref={formRef}>
+          <div
+            className="pt-[4rem] pr-[3rem] pb-[3rem] pl-[3rem] rounded-[4rem] bg-white shadow-middle
         max-sm2:p-[2rem] max-sm2:boxshadow-none max-sm2:bg-transparent max-sm2:shadow-none"
-        >
-          <form className="block" onSubmit={handleSubmit(onSubmit)}>
-            <Controller
-              name="email"
-              defaultValue=""
-              control={control}
-              render={({ field }) => (
-                <FormField
-                  type="email"
-                  value={field.value}
-                  placeholder="이메일을 입력해주세요."
-                  onChange={field.onChange}
-                />
+          >
+            <form className="block" onSubmit={handleSubmit(onSubmit)}>
+              <Controller
+                name="email"
+                defaultValue=""
+                control={control}
+                render={({ field }) => (
+                  <FormField
+                    type="email"
+                    value={field.value}
+                    placeholder="이메일을 입력해주세요."
+                    onChange={field.onChange}
+                  />
+                )}
+              />
+
+              <Controller
+                name="password"
+                defaultValue=""
+                control={control}
+                render={({ field }) => (
+                  <FormField
+                    className="mt-[1.5rem]"
+                    type="password"
+                    placeholder="비밀번호를 입력해주세요."
+                    value={field.value}
+                    onChange={field.onChange}
+                  />
+                )}
+              />
+
+              {errors.email?.message && (
+                <p className="mt-[0.4rem] pl-[0.6rem] font-bold text-sm text-[var(--color-secondary)]">
+                  {errors.email?.message}
+                </p>
               )}
-            />
 
-            <Controller
-              name="password"
-              defaultValue=""
-              control={control}
-              render={({ field }) => (
-                <FormField
-                  className="mt-[1.5rem]"
-                  type="password"
-                  placeholder="비밀번호를 입력해주세요."
-                  value={field.value}
-                  onChange={field.onChange}
-                />
-              )}
-            />
+              <Controller
+                name="autoLogin"
+                control={control}
+                render={({ field }) => (
+                  <Text as="label" size="2" className="inline-block !mt-[1rem]">
+                    <Flex gap="2">
+                      <Checkbox checked={field.value} onCheckedChange={field.onChange} />
+                      자동로그인
+                    </Flex>
+                  </Text>
+                )}
+              />
 
-            {errors.email?.message && (
-              <p className="mt-[0.4rem] pl-[0.6rem] font-bold text-sm text-[var(--color-secondary)]">
-                {errors.email?.message}
-              </p>
-            )}
-
-            <Controller
-              name="autoLogin"
-              control={control}
-              render={({ field }) => (
-                <Text as="label" size="2" className="inline-block !mt-[1rem]">
-                  <Flex gap="2">
-                    <Checkbox checked={field.value} onCheckedChange={field.onChange} />
-                    자동로그인
-                  </Flex>
-                </Text>
-              )}
-            />
-
-            <Button
-              type="submit"
-              variant="solid"
-              className="!mt-[1rem] !w-full !h-[4rem] !text-[1.3rem] !font-bold !text-base green-btn]
+              <Button
+                type="submit"
+                variant="solid"
+                className="!mt-[1rem] !w-full !h-[4rem] !text-[1.3rem] !font-bold !text-base green-btn]
             max-sm2:!text-[1.2rem]"
-            >
-              로그인
-            </Button>
+              >
+                로그인
+              </Button>
 
-            <b className="block mt-4 text-[var(--color-primary)] text-center text-sm">
-              <Link to="/">게스트로 시작하기</Link>
-            </b>
-          </form>
-        </div>
+              <b className="block mt-4 text-[var(--color-primary)] text-center text-sm">
+                <button onClick={() => { loginAsGuest(); navigate('/'); }}>게스트로 시작하기</button>
+              </b>
+            </form>
+          </div>
 
-        {/* 안내 */}
-        <div
-          className="mt-[2rem] text-center
+          {/* 안내 */}
+          <div
+            className="mt-[2rem] text-center
         max-sm2:mt-0"
-        >
-          <p className="text-[var(--color-text-default)] text-sm font-bold">
-            아직 회원이 아니신가요?{' '}
-            <Link to="/signup" className="text-[var(--color-secondary)]">
-              회원가입
-            </Link>
-          </p>
+          >
+            <p className="text-[var(--color-text-default)] text-sm font-bold">
+              아직 회원이 아니신가요?{' '}
+              <Link to="/signup" className="text-[var(--color-secondary)]">
+                회원가입
+              </Link>
+            </p>
+          </div>
         </div>
       </div>
     </div>

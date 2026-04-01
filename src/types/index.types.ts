@@ -21,29 +21,6 @@ export type ValuePiece = Date | null;
 
 export type Value = ValuePiece | [ValuePiece, ValuePiece];
 
-// ===== 인증 =====
-export interface SignupRequest {
-  email: string;
-  nickname: string;
-  password: string;
-  checkPassword: string;
-}
-
-export interface SignupResponse {
-  userId: null | number;
-}
-
-export interface LoginRequest {
-  email: string;
-  password: string;
-}
-
-export interface LoginResponse {
-  userId: number;
-  nickname: string;
-  accessToken: string;
-}
-
 // ===== 다이어리 =====
 export interface Diary {
   id: number;

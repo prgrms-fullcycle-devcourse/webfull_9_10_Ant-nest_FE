@@ -1,12 +1,12 @@
 import React from 'react';
-import { CommunityHeader } from "@/components/community/Header/CommunityHeader";
-import PostCard from "../../components/community/PostCard/PostCard";
-import { FilterButton } from "@/components/community/Filter/EmotionFilterButton";
-import { SortButton } from '@/components/community/Sorting/SortButton';
-import FilterBottomSheet from '@/components/community/Filter/EmotionFilterBottomSheet';
-import SortBottomSheet from '@/components/community/Sorting/SortBottomSheet';
+import { CommunityHeader } from "@/features/community/components/Header/CommunityHeader";
+import PostCard from "../../features/community/components/PostCard/PostCard";
+import { FilterButton } from "@/features/community/components/Filter/EmotionFilterButton";
+import { SortButton } from '@/features/community/components/Sorting/SortButton';
+import FilterBottomSheet from '@/features/community/components/Filter/EmotionFilterBottomSheet';
+import SortBottomSheet from '@/features/community/components/Sorting/SortBottomSheet';
 import { useCommunityStore } from '@/store/communityStore';
-import type { Post } from './types';
+import type { Post } from '../../features/community/types/community.types';
 
 // 목업 데이터
 const mockPosts : Post[] = [

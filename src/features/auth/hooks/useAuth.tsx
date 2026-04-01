@@ -11,7 +11,8 @@ import {
   checkNicknameDuplicate,
   loginUser,
 } from '@/features/auth/services/authService.tsx';
-import { useAuthStore } from '@/store/authStore.ts'; // [fix] setError 타입 import 추가
+import { useAuthStore } from '@/store/authStore.ts';
+import type { LoginRequest, SignupRequest } from '@/features/auth/types/auth.types.ts'; // [fix] setError 타입 import 추가
 
 interface SignupFormValues {
   email: string;

@@ -6,7 +6,9 @@ interface AuthState {
   user: User | null;
   token: string | null;
   isAuthenticated: boolean;
+  isGuest: boolean;
   login: (user: User, token: string) => void;
+  loginAsGuest: () => void;
   logout: () => void;
   updateUser: (user: Partial<User>) => void;
 }
@@ -17,10 +19,16 @@ export const useAuthStore = create<AuthState>()(
       user: null,
       token: null,
       isAuthenticated: false,
+      isGuest: false,
 
-      login: (user, token) => set({ user, token, isAuthenticated: true }),
+      login: (user, token) =>
+        set({ user, token, isAuthenticated: true, isGuest: false }),
 
-      logout: () => set({ user: null, token: null, isAuthenticated: false }),
+      loginAsGuest: () =>
+        set({ isGuest: true }),
+
+      logout: () =>
+        set({ user: null, token: null, isAuthenticated: false, isGuest: false }),
 
       updateUser: (partial) => {
         const current = get().user;
@@ -33,6 +41,6 @@ export const useAuthStore = create<AuthState>()(
       name: 'auth-storage',
       // token만 localStorage에 저장 (민감 정보 최소화)
       partialize: (state) => ({ token: state.token, user: state.user }),
-    },
-  ),
+    }
+  )
 );

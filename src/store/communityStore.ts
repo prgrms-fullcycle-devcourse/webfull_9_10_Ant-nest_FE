@@ -1,4 +1,4 @@
-import type { BottomSheetTab, HeaderTab } from "@/pages/community/types";
+import type { BottomSheetTab, HeaderTab } from "@/features/community/types/community.types";
 import { create } from "zustand";
 
 interface CommunityState {
