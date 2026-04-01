@@ -1,5 +1,5 @@
 import api from '@/services/api.ts';
-import type { ApiResponse } from '@/types';
+import type { ApiResponse } from '@/types/index.types.ts';
 import type {
   LoginRequest,
   LoginResponse,
