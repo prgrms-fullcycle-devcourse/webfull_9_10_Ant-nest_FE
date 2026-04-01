@@ -49,6 +49,12 @@ button {
 .nextButton:hover {
     background-color:transparent;
 }
+/* ghost 버튼 */
+.rt-BaseButton:where(.rt-variant-ghost) {
+  background-color: transparent !important;
+  box-shadow: none !important;
+}
+
 
 /** 체크박스 **/
 .rt-BaseCheckboxRoot:where(.rt-variant-surface):where([data-state='checked'], [data-state='indeterminate'])::before {
