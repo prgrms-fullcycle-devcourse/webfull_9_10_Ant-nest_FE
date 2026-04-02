@@ -28,14 +28,6 @@ const profileEmojis : Emojis[] = [
   { id: 8, name: 'tired', url: tired },
 ];
 
-// 공감 이모지
-const reactionEmojis : Emojis[] = [
-  { id: 1, name: '기뻐요', url: joy },
-  { id: 2, name: '설레요', url: heart },
-  { id: 3, name: '슬퍼요', url: sad },
-  { id: 4, name: '화나요', url: angry },
-  { id: 5, name: '황당해요', url: panic },
-];
 
 const PostCard = ( {post} : {post:Post})=>{
   const {id, question, answer, isMine} = post;
@@ -43,7 +35,7 @@ const PostCard = ( {post} : {post:Post})=>{
   const navigate = useNavigate();
 
   return (
-    <article className={`min-h-[300px] rounded-2xl p-4 shadow-[var(--shadow-middle)] m-4 
+    <article className={`min-h-[18rem] rounded-2xl p-4 pb-0 shadow-[var(--shadow-middle)] m-4 
       ${isMine === true ? 'bg-[#FCFCF4]' : 'bg-white'}`}>
       
       <div className="mb-3 flex items-start gap-2">
@@ -77,12 +69,11 @@ const PostCard = ( {post} : {post:Post})=>{
       </div>
 
       <div className='bg-[#FAFAFA] p-2 mb-2 rounded-2xl border border-[#F1F1F1] shadow-[var(--shadow-middle)]'>
-        <p className="line-clamp-2 text-sm leading-6 text-[var(--color-text-default)]">
+        <p className="line-clamp-2 min-h-[2.5rem] text-sm leading-5.5 text-[var(--color-text-default)]">
           {answer}
         </p>
 
-        <div className="mt-1 flex justify-end">
-
+        <div className="flex justify-end">
           <a
             className="!text-sm !text-gray-400"
             onClick={()=>navigate(`/community/${id}`)}
@@ -91,8 +82,8 @@ const PostCard = ( {post} : {post:Post})=>{
       </div>
 
       {/* 감정 버튼 영역 */}
-      <div className="relative mt-3 flex items-start justify-end">
-        {showReactions && <ReactionEmojisToggle reactionEmojis={reactionEmojis}/>}
+      <div className="relative mt-4 flex items-start justify-end">
+        {showReactions && <ReactionEmojisToggle/>}
 
         {/* 버튼 클릭 시 감정 버튼들 나옴 */}
         <Button

@@ -26,3 +26,12 @@ export const SQUARE_EMO = [
     'sad',
     'angry'
 ] as const
+
+// 공감 이모지
+export const REACTION_EMO = [
+  { id: 1, name: '기뻐요', url: joy },
+  { id: 2, name: '설레요', url: heart },
+  { id: 3, name: '슬퍼요', url: sad },
+  { id: 4, name: '화나요', url: angry },
+  { id: 5, name: '황당해요', url: panic },
+] as const

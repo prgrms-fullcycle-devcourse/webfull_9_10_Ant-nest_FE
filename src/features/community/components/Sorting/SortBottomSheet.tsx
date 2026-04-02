@@ -9,11 +9,11 @@ const SortBottomSheet = () => {
   return (
     <div>
       <div
-        className="fixed inset-0 z-50 bg-black/25"
+        className="fixed inset-0 z-100 bg-black/25"
         onClick={() => activeBottomSheet === 'sort' && setActiveBottomSheet(null)}
       >
         <div
-          className="absolute bottom-0 left-0 w-full min-h-70 rounded-t-2xl bg-white p-5 pr-6"
+          className="absolute bottom-0 left-0 w-full min-h-65 rounded-t-2xl bg-white p-5 pr-6 pl-6"
           onClick={(e) => e.stopPropagation()}
         >
           <div className="flex justify-end">
@@ -25,7 +25,7 @@ const SortBottomSheet = () => {
             </Button>
           </div>
 
-          <div className="mt-2 gap-8 flex flex-col">
+          <div className="mt-4 gap-10 flex flex-col">
             {sortOptions.map((label) => (
               <Button
                 key={label}

@@ -28,10 +28,10 @@ const FilterBottomSheet = () => {
   return (
     <div>
       <div
-        className="fixed inset-0 z-50 bg-black/25"
+        className="fixed inset-0 z-100 bg-black/25"
         onClick={() => activeBottomSheet === 'filter' && setActiveBottomSheet(null)}
       >
-        <div className="absolute bottom-0 left-0 w-full min-h-70 rounded-t-2xl bg-white p-5 pr-6">
+        <div className="absolute bottom-0 left-0 w-full min-h-65 rounded-t-2xl bg-white p-5 pr-6 pl-6">
           <div onClick={(e) => e.stopPropagation()}>
             <div className="flex justify-end gap-6">
               <Button variant="ghost" className="!text-[#F8876E] !text-[15px] !font-medium">

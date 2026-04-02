@@ -40,8 +40,9 @@ export interface Emotion {
 
 export interface CommunityPostDetail {
   postId: number;
+  question: string;
   title: string;
-  content: string;
+  content: string | null ;
   emotionEmoji: Emotion; // 일기 감정
   empathyStats: EmpathyStat[]; // 받은 공감
   totalScore: 150;
@@ -59,7 +60,6 @@ export interface PostDetailFormProps {
   selectedEmotionData : Emotion;
   dateStr: string;
   title: string;
-  content: string;
+  content: string | null;
   images: string[];
-  setPreviewModal: (url: string) => void;
 }
