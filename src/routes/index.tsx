@@ -13,10 +13,11 @@ import DiaryDetailPage from '../pages/diary/DiaryDetailPage';
 import CommunityDetailPage from '../pages/community/CommunityDetailPage';
 import PlainLayout from '../layouts/PlainLayout';
 import { useAuthStore } from '@/store/authStore.ts';
+import NotFoundPage from '@/pages/not-found/NotFoundPage.tsx';
 
 function PrivateRoute() {
   const { isAuthenticated, isGuest } = useAuthStore();
-  return (isAuthenticated || isGuest) ? <Outlet /> : <Navigate to="/login" replace />;
+  return isAuthenticated || isGuest ? <Outlet /> : <Navigate to="/login" replace />;
 }
 
 function GuestRoute() {
@@ -64,5 +65,5 @@ export const router = createBrowserRouter([
     ],
   },
   // 잘못된 경로 처리
-  { path: '*', element: <Navigate to="/" replace /> },
+  { path: '*', element: <NotFoundPage replace /> },
 ]);
