@@ -65,5 +65,5 @@ export const router = createBrowserRouter([
     ],
   },
   // 잘못된 경로 처리
-  { path: '*', element: <NotFoundPage replace /> },
+  { path: '*', element: <NotFoundPage /> },
 ]);
