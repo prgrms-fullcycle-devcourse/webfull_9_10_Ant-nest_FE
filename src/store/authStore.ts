@@ -21,14 +21,11 @@ export const useAuthStore = create<AuthState>()(
       isAuthenticated: false,
       isGuest: false,
 
-      login: (user, token) =>
-        set({ user, token, isAuthenticated: true, isGuest: false }),
+      login: (user, token) => set({ user, token, isAuthenticated: true, isGuest: false }),
 
-      loginAsGuest: () =>
-        set({ isGuest: true }),
+      loginAsGuest: () => set({ isGuest: true }),
 
-      logout: () =>
-        set({ user: null, token: null, isAuthenticated: false, isGuest: false }),
+      logout: () => set({ user: null, token: null, isAuthenticated: false, isGuest: false }),
 
       updateUser: (partial) => {
         const current = get().user;
@@ -39,8 +36,12 @@ export const useAuthStore = create<AuthState>()(
     }),
     {
       name: 'auth-storage',
-      // token만 localStorage에 저장 (민감 정보 최소화)
-      partialize: (state) => ({ token: state.token, user: state.user }),
-    }
-  )
+      partialize: (state) => ({
+        token: state.token,
+        user: state.user,
+        isAuthenticated: state.isAuthenticated,
+        isGuest: state.isGuest,
+      }),
+    },
+  ),
 );
