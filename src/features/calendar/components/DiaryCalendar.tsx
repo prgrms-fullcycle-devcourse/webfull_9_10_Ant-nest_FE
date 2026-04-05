@@ -1,5 +1,6 @@
-import { useState } from 'react';
 import Calendar from 'react-calendar';
+import { useState } from 'react';
+import { cn } from '@/utils/cn.ts';
 
 /** 컴포넌트 **/
 import CalendarHeader from '@/components/common/CalendarHeader.tsx';
@@ -9,10 +10,22 @@ import flower from '@/assets/images/illustrations/illu-flower.png';
 
 /** 타입 **/
 import type { Value } from '@/types/index.types.ts';
+import type { CalendarList } from '@/features/calendar/types/calendar.types.ts';
 
-export default function DiaryCalendar() {
+interface Props {
+  diaryMap: Map<string, CalendarList>;
+  onClick: (data: Date) => void;
+}
+
+export default function DiaryCalendar({ diaryMap, onClick }: Props) {
   const [value, setValue] = useState<Value>(new Date());
   const [selectedDate, setSelectedDate] = useState<Date | null>(null);
+
+  const handleChange = (data: Date) => {
+    setSelectedDate(data);
+
+    onClick(data);
+  };
 
   return (
     <div>
@@ -40,19 +53,17 @@ export default function DiaryCalendar() {
             date.getMonth() === selectedDate.getMonth() &&
             date.getFullYear() === selectedDate.getFullYear();
 
-          if (isToday) return 'is-today';
-          if (isSelected) return 'is-active';
-
-          return null;
+          return cn({ 'is-active': isSelected, 'is-today': isToday }) || null;
         }}
-        tileContent={({ view }) => {
+        tileContent={({ date, view }) => {
           if (view !== 'month') return null;
 
-          return <img src={flower} alt="" />;
+          const key = date.toISOString().slice(0, 10);
+          const entry = diaryMap.get(key);
+
+          return <img src={entry ? entry.emotion.emojiUrl : flower} alt="" />;
         }}
-        onClickDay={(date) => {
-          setSelectedDate(date);
-        }}
+        onClickDay={(data) => handleChange(data)}
       />
     </div>
   );
