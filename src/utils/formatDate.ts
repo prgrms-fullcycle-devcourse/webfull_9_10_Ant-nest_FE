@@ -7,3 +7,7 @@ export const formatDateStr = (date: Date | string): string => {
 
   return `${d.getFullYear()}년 ${d.getMonth() + 1}월 ${d.getDate()}일`;
 };
+
+export const formatDateKey = (date: Date) => {
+  return date.toISOString().slice(0, 10);
+};

@@ -6,11 +6,11 @@ import iconDelete from '@/assets/images/icons/trashcan.svg';
 interface Props {
   emoji: string;
   title: string;
-  index: number;
+  count: string;
   onClick: () => void;
 }
 
-export default function CalendarDiaryCard({ emoji, title, index, onClick }: Props) {
+export default function CalendarDiaryCard({ emoji, title, count, onClick }: Props) {
   return (
     <div className="pr-[1rem] pb-[1rem] shadow-[var(--shadow-middle)] rounded-2xl">
       <div className="flex mb-[0.3rem]">
@@ -29,7 +29,7 @@ export default function CalendarDiaryCard({ emoji, title, index, onClick }: Prop
         <div className="flex flex-[0.24] items-center flex-col min-w-[7rem]">
           <img className="w-[3rem]" src={emoji} alt="" />
           <span className="inline-block mt-[0.4rem] text-xs text-[var(--color-text-default)]">
-            {index} 번째 일기
+            {count} 번째 일기
           </span>
         </div>
         <div className="flex-1 p-[1.7rem] border-x border-[var(--color-gray-light)] rounded-2xl shadow-[var(--shadow-middle)] bg-[var(--color-gray-light2)]">

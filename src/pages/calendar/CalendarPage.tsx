@@ -1,5 +1,6 @@
 import { useState } from 'react';
 import { useDiaryCalendar } from '@/features/calendar/hooks/useCalendar.ts';
+import { koreanOrder } from '@/utils/koreanOrder.ts';
 
 /** 컴포넌트 **/
 import CalendarDiaryCard from '@/features/calendar/components/CalendarDiaryCard.tsx';
@@ -11,14 +12,16 @@ import emptyEmoji from '@/assets/images/emotions/emotion-blank.png';
 
 /** 타입 **/
 import type { CalendarList } from '@/features/calendar/types/calendar.types.ts';
+import { formatDateKey } from '@/utils/formatDate.ts';
 
 export default function CalendarPage() {
   const [value, setValue] = useState<CalendarList | null>(null);
   const [modal, setModal] = useState(false);
+  // const { diaryMap, isLoading, error } = useDiaryCalendar();
   const diaryMap = useDiaryCalendar();
 
-  const calendarClick = (data: Date) => {
-    const key = data.toISOString().slice(0, 10);
+  const calendarClick = (date: Date) => {
+    const key = formatDateKey(date);
     const entry = diaryMap.get(key);
 
     setValue(entry ?? null);
@@ -34,13 +37,13 @@ export default function CalendarPage() {
 
   return (
     <div>
-      <DiaryCalendar diaryMap={diaryMap} onClick={(data) => calendarClick(data)} />
+      <DiaryCalendar diaryMap={diaryMap} onClick={calendarClick} />
       <div className="pt-[2rem] px-[1rem]">
         {value ? (
           <CalendarDiaryCard
             emoji={value?.emotion?.emojiUrl}
             title={value?.title}
-            index={value?.index ?? 0}
+            count={koreanOrder(value?.index ?? 0)}
             onClick={deleteClick}
           />
         ) : (

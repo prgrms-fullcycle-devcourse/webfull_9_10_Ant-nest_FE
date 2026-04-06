@@ -1,6 +1,7 @@
 import Calendar from 'react-calendar';
 import { useState } from 'react';
 import { cn } from '@/utils/cn.ts';
+import { formatDateKey } from '@/utils/formatDate.ts';
 
 /** 컴포넌트 **/
 import CalendarHeader from '@/components/common/CalendarHeader.tsx';
@@ -27,6 +28,33 @@ export default function DiaryCalendar({ diaryMap, onClick }: Props) {
     onClick(data);
   };
 
+  const getTileClassName = (date: Date, view: string) => {
+    if (view !== 'month') return null;
+
+    const today = new Date();
+    const isToday =
+      date.getDate() === today.getDate() &&
+      date.getMonth() === today.getMonth() &&
+      date.getFullYear() === today.getFullYear();
+
+    const isSelected =
+      selectedDate &&
+      date.getDate() === selectedDate.getDate() &&
+      date.getMonth() === selectedDate.getMonth() &&
+      date.getFullYear() === selectedDate.getFullYear();
+
+    return cn({ 'is-active': isSelected, 'is-today': isToday }) || null;
+  };
+
+  const getTileContent = (date: Date, view: string) => {
+    if (view !== 'month') return null;
+
+    const key = formatDateKey(date);
+    const entry = diaryMap.get(key);
+
+    return <img src={entry ? entry.emotion.emojiUrl : flower} alt="" />;
+  };
+
   return (
     <div>
       <CalendarHeader move="diary" value={value} onChange={setValue} />
@@ -39,30 +67,8 @@ export default function DiaryCalendar({ diaryMap, onClick }: Props) {
         activeStartDate={value as Date}
         formatDay={(_locale, date) => date.getDate().toString()}
         onChange={setValue}
-        tileClassName={({ date, view }) => {
-          if (view !== 'month') return null;
-          const today = new Date();
-          const isToday =
-            date.getDate() === today.getDate() &&
-            date.getMonth() === today.getMonth() &&
-            date.getFullYear() === today.getFullYear();
-
-          const isSelected =
-            selectedDate &&
-            date.getDate() === selectedDate.getDate() &&
-            date.getMonth() === selectedDate.getMonth() &&
-            date.getFullYear() === selectedDate.getFullYear();
-
-          return cn({ 'is-active': isSelected, 'is-today': isToday }) || null;
-        }}
-        tileContent={({ date, view }) => {
-          if (view !== 'month') return null;
-
-          const key = date.toISOString().slice(0, 10);
-          const entry = diaryMap.get(key);
-
-          return <img src={entry ? entry.emotion.emojiUrl : flower} alt="" />;
-        }}
+        tileClassName={({ date, view }) => getTileClassName(date, view)}
+        tileContent={({ date, view }) => getTileContent(date, view)}
         onClickDay={(data) => handleChange(data)}
       />
     </div>
