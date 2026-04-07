@@ -35,7 +35,7 @@ export const checkNicknameDuplicate = (nickname: string) => {
  * @returns 회원가입 응답 데이터
  **/
 export const signupUser = (data: SignupRequest) => {
-  return api.post<ApiResponse<SignupResponse>>('/auth/signup', data).then((res) => res.data);
+  return api.post<ApiResponse<SignupResponse>>('/auth', data).then((res) => res.data);
 };
 
 /**

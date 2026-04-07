@@ -9,7 +9,7 @@ import {
   validateEmail,
   validateNickname,
   validatePassword,
-  validatePasswordConfirm,
+  validateCheckPassword,
 } from '@/features/auth/utils/validate.ts';
 // ----------- Component -----------
 import FormField from '@/features/auth/components/FormField.tsx';
@@ -23,7 +23,7 @@ interface SignupFormValues {
   email: string;
   nickname: string;
   password: string;
-  passwordConfirm: string;
+  checkPassword: string;
 }
 
 export default function SignupPage() {
@@ -123,7 +123,7 @@ export default function SignupPage() {
                   className="mt-[1.5rem]"
                   label="닉네임"
                   type="text"
-                  placeholder="2~10자리 닉네임 입력"
+                  placeholder="2~8자리 닉네임 입력"
                   value={field.value}
                   error={fieldState.error?.message}
                   success={
@@ -146,7 +146,7 @@ export default function SignupPage() {
                   className="mt-[1.5rem]"
                   label="비밀번호"
                   type="password"
-                  placeholder="8~20자리 영문, 숫자, 특수문자 조합"
+                  placeholder="8~14자리 영문, 숫자, 특수문자 조합"
                   value={field.value}
                   error={fieldState.error?.message}
                   success={
@@ -160,10 +160,10 @@ export default function SignupPage() {
             />
 
             <Controller
-              name="passwordConfirm"
+              name="checkPassword"
               defaultValue=""
               control={control}
-              rules={{ validate: validatePasswordConfirm(password) }}
+              rules={{ validate: validateCheckPassword(password) }}
               render={({ field, fieldState }) => (
                 <FormField
                   className="mt-[1.5rem]"
