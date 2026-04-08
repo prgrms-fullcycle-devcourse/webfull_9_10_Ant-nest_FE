@@ -12,7 +12,7 @@ export default function MainLayout() {
   };
 
   return (
-    <div className="min-h-screen max-w-200 mx-auto">
+    <div className="min-h-screen max-w-200 mx-auto flex flex-col">
       <header
         style={{
           borderBottom: '1px solid var(--border)',
@@ -44,10 +44,9 @@ export default function MainLayout() {
             로그인
           </NavLink>
         )}
-
       </header>
 
-      <main className='flex-1 pb-16'>
+      <main className="flex-1 flex flex-col pb-16">
         <Outlet />
       </main>
 
