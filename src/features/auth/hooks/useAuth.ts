@@ -1,15 +1,14 @@
 import { useNavigate } from 'react-router-dom';
 import { useMutation } from '@tanstack/react-query'; // [fix] 사용하지 않는 useQuery import 제거
 import { useDebounce } from '@/hooks/useDebounce.ts';
-import { useEffect } from 'react';
-import type { UseFormSetError } from 'react-hook-form';
+import { useEffect, useState } from 'react';
 import { validateEmail, validateNickname } from '@/features/auth/utils/validate.ts';
 import {
   signupUser,
   checkEmailDuplicate,
   checkNicknameDuplicate,
   loginUser,
-} from '@/features/auth/services/authService.tsx';
+} from '@/features/auth/services/auth.service.ts';
 import { useAuthStore } from '@/store/authStore.ts';
 import type { LoginRequest, SignupRequest } from '@/features/auth/types/auth.types.ts';
 import type { User } from '@/types/index.types.ts';
@@ -26,18 +25,23 @@ interface SignupFormValues {
  * @param email
  * @param setError
  */
-export const useCheckEmail = (email: string, setError: UseFormSetError<SignupFormValues>) => {
-  const debouncedEmail = useDebounce(email, 500);
+export const useCheckEmailDuplicate = (email: string) => {
+  const debouncedEmail = useDebounce(email, 300);
+  const [isDuplicate, setIsDuplicate] = useState(false);
+
+  useEffect(() => {
+    setIsDuplicate(false);
+  }, [email]);
 
   useEffect(() => {
     if (!debouncedEmail || validateEmail(debouncedEmail) !== true) return;
 
     checkEmailDuplicate(debouncedEmail)
-      .then((isDuplicate) => {
-        if (isDuplicate) setError('email', { message: '이미 사용 중인 이메일입니다.' });
-      })
+      .then(setIsDuplicate)
       .catch(() => {});
-  }, [debouncedEmail, setError]);
+  }, [debouncedEmail]);
+
+  return isDuplicate;
 };
 
 /**
@@ -45,18 +49,23 @@ export const useCheckEmail = (email: string, setError: UseFormSetError<SignupFor
  * @param nickname
  * @param setError
  **/
-export const useCheckNickname = (nickname: string, setError: UseFormSetError<SignupFormValues>) => {
-  const debouncedNickname = useDebounce(nickname, 500);
+export const useCheckNicknameDuplicate = (nickname: string) => {
+  const debouncedNickname = useDebounce(nickname, 300);
+  const [isDuplicate, setIsDuplicate] = useState(false);
+
+  useEffect(() => {
+    setIsDuplicate(false);
+  }, [nickname]);
 
   useEffect(() => {
     if (!debouncedNickname || validateNickname(debouncedNickname) !== true) return;
 
     checkNicknameDuplicate(debouncedNickname)
-      .then((isDuplicate) => {
-        if (isDuplicate) setError('nickname', { message: '이미 사용중인 닉네임입니다.' });
-      })
+      .then(setIsDuplicate)
       .catch(() => {});
-  }, [debouncedNickname, setError]);
+  }, [debouncedNickname]);
+
+  return isDuplicate;
 };
 
 /**
@@ -66,7 +75,7 @@ export const useSignupMutation = () => {
   const navigate = useNavigate();
 
   return useMutation({
-    mutationFn: (data: SignupRequest) => signupUser(data),
+    mutationFn: signupUser,
 
     onSuccess: () => {
       navigate('/login', { replace: true });
@@ -82,7 +91,7 @@ export const useLoginMutation = () => {
   const { login } = useAuthStore();
 
   return useMutation({
-    mutationFn: (data: LoginRequest) => loginUser(data),
+    mutationFn: loginUser,
 
     onSuccess: (data, variables) => {
       if (variables.autoLogin) {

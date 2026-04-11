@@ -1,6 +1,6 @@
 import { Link, useNavigate } from 'react-router-dom';
 import { Controller, useForm } from 'react-hook-form';
-import { useLoginMutation } from '@/features/auth/hooks/useAuth.tsx';
+import { useLoginMutation } from '@/features/auth/hooks/useAuth.ts';
 import { useAuthStore } from '@/store/authStore.ts';
 import { motion, useAnimate } from 'motion/react';
 import { useEffect, useRef } from 'react';
