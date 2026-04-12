@@ -8,7 +8,7 @@ import type {
 } from '@/features/auth/types/auth.types.ts';
 
 /**
- * 이메일 중복 여부를 확인한다.
+ * 이메일 중복 여부를 확인
  * @param email
  * @returns 이메일 중복 여부
  **/
@@ -19,18 +19,20 @@ export const checkEmailDuplicate = (email: string) => {
 };
 
 /**
- * 닉네임 중복 여부를 확인한다.
+ * 닉네임 중복 여부를 확인
  * @param nickname
  * @returns 닉네임 중복 여부
  **/
 export const checkNicknameDuplicate = (nickname: string) => {
   return api
-    .get<ApiResponse<{ result: boolean }>>(`/auth/nicknames?nickname=${encodeURIComponent(nickname)}`)
+    .get<
+      ApiResponse<{ result: boolean }>
+    >(`/auth/nicknames?nickname=${encodeURIComponent(nickname)}`)
     .then((res) => res.data.data.result);
 };
 
 /**
- * 회원가입 요청을 보낸다.
+ * 회원가입 요청을 보냄
  * @param data
  * @returns 회원가입 응답 데이터
  **/
@@ -39,7 +41,7 @@ export const signupUser = (data: SignupRequest) => {
 };
 
 /**
- * 로그인 요청을 보낸다.
+ * 로그인 요청을 보냄
  * @param data
  * @returns 로그인 응답 데이터
  **/

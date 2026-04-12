@@ -8,7 +8,7 @@ import {
   checkEmailDuplicate,
   checkNicknameDuplicate,
   loginUser,
-} from '@/features/auth/services/auth.service.ts';
+} from '@/features/auth/api/auth.api.ts';
 import { useAuthStore } from '@/store/authStore.ts';
 import type { User } from '@/types/index.types.ts';
 
@@ -86,11 +86,12 @@ export const useLoginMutation = () => {
     mutationFn: loginUser,
 
     onSuccess: (data, variables) => {
-      if (variables.autoLogin) {
-        localStorage.setItem('token', data.data.accessToken);
-      } else {
-        sessionStorage.setItem('token', data.data.accessToken);
-      }
+      // if (variables.autoLogin) {
+      //   localStorage.setItem('token', data.data.accessToken);
+      // } else {
+      //
+      // }
+      // sessionStorage.setItem('token', data.data.accessToken);
 
       const user: User = {
         id: data.data.userId,
