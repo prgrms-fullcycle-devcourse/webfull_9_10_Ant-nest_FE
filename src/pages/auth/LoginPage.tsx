@@ -86,7 +86,7 @@ export default function LoginPage() {
       if (textRef.current) animate(textRef.current, { opacity: 0 }, { duration: 0 });
       await animate(el, { x, y, opacity: 0, scale: 5 }, { duration: 0 });
       await animate(el, { opacity: 1 }, { duration: 0.5 });
-      await new Promise((resolve) => setTimeout(resolve, 2000));
+      await new Promise((resolve) => setTimeout(resolve, 1000));
       await animate(el, { x: 0, y: 0, scale: 1 }, { duration: 0.8, ease: [0, 0.71, 0.2, 1.01] });
       if (formRef.current) animate(formRef.current, { opacity: 1 }, { duration: 0.5 });
       if (textRef.current) await animate(textRef.current, { opacity: 1 }, { duration: 0.5 });
