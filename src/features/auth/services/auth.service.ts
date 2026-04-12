@@ -14,7 +14,7 @@ import type {
  **/
 export const checkEmailDuplicate = (email: string) => {
   return api
-    .get<{ result: boolean }>(`/auth/emails?email=${encodeURIComponent(email)}`)
+    .get<ApiResponse<{ result: boolean }>>(`/auth/emails?email=${encodeURIComponent(email)}`)
     .then((res) => res.data.data.result);
 };
 
@@ -25,7 +25,7 @@ export const checkEmailDuplicate = (email: string) => {
  **/
 export const checkNicknameDuplicate = (nickname: string) => {
   return api
-    .get<{ result: boolean }>(`/auth/nicknames?nickname=${encodeURIComponent(nickname)}`)
+    .get<ApiResponse<{ result: boolean }>>(`/auth/nicknames?nickname=${encodeURIComponent(nickname)}`)
     .then((res) => res.data.data.result);
 };
 

@@ -10,15 +10,7 @@ import {
   loginUser,
 } from '@/features/auth/services/auth.service.ts';
 import { useAuthStore } from '@/store/authStore.ts';
-import type { LoginRequest, SignupRequest } from '@/features/auth/types/auth.types.ts';
 import type { User } from '@/types/index.types.ts';
-
-interface SignupFormValues {
-  email: string;
-  nickname: string;
-  password: string;
-  checkPassword: string;
-}
 
 /**
  * 이메일 중복 여부를 확인
@@ -78,7 +70,7 @@ export const useSignupMutation = () => {
     mutationFn: signupUser,
 
     onSuccess: () => {
-      navigate('/login', { replace: true });
+      navigate('/signup/success', { replace: true });
     },
   });
 };
