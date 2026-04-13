@@ -1,4 +1,4 @@
-import api from '@/services/api.ts';
+import api from '@/lib/api.ts';
 import type { ApiResponse } from '@/types/index.types.ts';
 import type {
   LoginRequest,
