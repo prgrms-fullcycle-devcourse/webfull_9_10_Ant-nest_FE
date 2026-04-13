@@ -2,7 +2,7 @@ export interface SignupRequest {
   email: string;
   nickname: string;
   password: string;
-  // checkPassword: string;
+  checkPassword: string;
 }
 
 export interface SignupResponse {
@@ -12,7 +12,7 @@ export interface SignupResponse {
 export interface LoginRequest {
   email: string;
   password: string;
-  autoLogin?: boolean;
+  // autoLogin?: boolean;
 }
 
 export interface LoginResponse {

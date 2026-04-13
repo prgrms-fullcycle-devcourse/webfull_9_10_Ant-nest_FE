@@ -1,21 +1,23 @@
 import { Controller, useForm } from 'react-hook-form';
+import { useEffect } from 'react';
+import { Button } from '@radix-ui/themes';
+
 import {
   useSignupMutation,
-  useCheckEmail,
-  useCheckNickname,
-} from '@/features/auth/hooks/useAuth.tsx';
-
+  useCheckEmailDuplicate,
+  useCheckNicknameDuplicate,
+} from '@/features/auth/hooks/useAuth.ts';
 import {
   validateEmail,
   validateNickname,
   validatePassword,
-  validatePasswordConfirm,
+  validateCheckPassword,
 } from '@/features/auth/utils/validate.ts';
+
 // ----------- Component -----------
 import FormField from '@/features/auth/components/FormField.tsx';
 import Header from '@/components/common/Header.tsx';
 
-import { Button } from '@radix-ui/themes';
 // ----------- IMG -----------
 import imgCharacter from '@/assets/images/characters/character-draw.gif';
 
@@ -23,7 +25,7 @@ interface SignupFormValues {
   email: string;
   nickname: string;
   password: string;
-  passwordConfirm: string;
+  checkPassword: string;
 }
 
 export default function SignupPage() {
@@ -32,17 +34,26 @@ export default function SignupPage() {
     handleSubmit,
     watch,
     setError,
-    formState: { isValid, isSubmitting },
+    trigger,
+    formState: { isValid },
   } = useForm<SignupFormValues>({ mode: 'onChange' });
 
   const password = watch('password');
   const email = watch('email');
   const nickname = watch('nickname');
 
-  useCheckEmail(email, setError);
-  useCheckNickname(nickname, setError);
+  const isEmailDuplicate = useCheckEmailDuplicate(email);
+  const isNicknameDuplicate = useCheckNicknameDuplicate(nickname);
 
   const signupMutation = useSignupMutation();
+
+  useEffect(() => {
+    if (isEmailDuplicate) trigger('email');
+  }, [isEmailDuplicate, trigger]);
+
+  useEffect(() => {
+    if (isNicknameDuplicate) trigger('nickname');
+  }, [isNicknameDuplicate, trigger]);
 
   const onSubmit = (data: SignupFormValues) => {
     signupMutation.mutate(data, {
@@ -95,7 +106,15 @@ export default function SignupPage() {
               name="email"
               defaultValue=""
               control={control}
-              rules={{ validate: validateEmail }}
+              rules={{
+                validate: (value) => {
+                  const result = validateEmail(value);
+
+                  if (result !== true) return result;
+                  if (isEmailDuplicate) return '이미 사용 중인 이메일 입니다.';
+                  return true;
+                },
+              }}
               render={({ field, fieldState }) => (
                 <FormField
                   label="이메일"
@@ -117,13 +136,21 @@ export default function SignupPage() {
               name="nickname"
               defaultValue=""
               control={control}
-              rules={{ validate: validateNickname }}
+              rules={{
+                validate: (value) => {
+                  const result = validateNickname(value);
+
+                  if (result !== true) return result;
+                  if (isNicknameDuplicate) return '이미 사용중인 닉네임입니다.';
+                  return true;
+                },
+              }}
               render={({ field, fieldState }) => (
                 <FormField
                   className="mt-[1.5rem]"
                   label="닉네임"
                   type="text"
-                  placeholder="2~10자리 닉네임 입력"
+                  placeholder="2~8자리 닉네임 입력"
                   value={field.value}
                   error={fieldState.error?.message}
                   success={
@@ -146,7 +173,7 @@ export default function SignupPage() {
                   className="mt-[1.5rem]"
                   label="비밀번호"
                   type="password"
-                  placeholder="8~20자리 영문, 숫자, 특수문자 조합"
+                  placeholder="8~14자리 영문, 숫자, 특수문자 조합"
                   value={field.value}
                   error={fieldState.error?.message}
                   success={
@@ -160,10 +187,10 @@ export default function SignupPage() {
             />
 
             <Controller
-              name="passwordConfirm"
+              name="checkPassword"
               defaultValue=""
               control={control}
-              rules={{ validate: validatePasswordConfirm(password) }}
+              rules={{ validate: validateCheckPassword(password) }}
               render={({ field, fieldState }) => (
                 <FormField
                   className="mt-[1.5rem]"
@@ -187,7 +214,7 @@ export default function SignupPage() {
               variant="solid"
               className="!mt-[3.1rem] !w-full !h-[4rem] !text-[1.3rem] !font-bold !text-base green-btn]
                         max-sm2:!text-[1.2rem]"
-              disabled={isSubmitting || !isValid}
+              disabled={signupMutation.isPending || !isValid}
             >
               회원가입
             </Button>
