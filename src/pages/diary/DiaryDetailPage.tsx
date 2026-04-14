@@ -5,9 +5,7 @@ import DiaryQuestion from '../../components/common/DiaryQuestion';
 import DiaryForm from '../../components/common/DiaryForm';
 import DiaryBottomBar from '../../components/common/DiaryBottomBar';
 import { EMOTIONS } from '../../features/diary/utils/emotions';
-import { formatDateStr } from '../../utils/formatDate';
 import ImagePreviewModal from '../../components/common/ImagePreviewModal';
-
 
 export default function DiaryDetailPage() {
   const navigate = useNavigate();
@@ -16,7 +14,8 @@ export default function DiaryDetailPage() {
   // TODO: API로 일기 데이터 가져오기
   const question = '오늘 당신을 미소 짓게 만든 것은 무엇인가요?';
   const title = '완전완전 맛있는 밥을 먹음.';
-  const content = '떡볶이 먹고 너무 매워서 아이스크림까지 먹었음 역시 맛있는 걸 먹는게 인생의 행복이다.';
+  const content =
+    '떡볶이 먹고 너무 매워서 아이스크림까지 먹었음 역시 맛있는 걸 먹는게 인생의 행복이다.';
   const dateStr = '2026년 3월 17일 화요일';
   const photoUrl = 'https://picsum.photos/200';
   const selectedEmotionData = EMOTIONS.find((e) => e.id === 'peaceful'); // 임시
@@ -33,9 +32,7 @@ export default function DiaryDetailPage() {
     navigate(`/diary/edit/${id}`);
   };
 
-  const images = photoUrl
-  ? [{ file: new File([], ''), preview: photoUrl }]
-  : [];
+  const images = photoUrl ? [{ file: new File([], ''), preview: photoUrl }] : [];
 
   return (
     <div>
@@ -60,10 +57,7 @@ export default function DiaryDetailPage() {
       <div className="h-[80px]" />
 
       {/* 이미지 확대 모달 */}
-      <ImagePreviewModal
-        imageUrl={previewImage}
-        onClose={() => setPreviewImage(null)}
-      />
+      <ImagePreviewModal imageUrl={previewImage} onClose={() => setPreviewImage(null)} />
     </div>
   );
 }
