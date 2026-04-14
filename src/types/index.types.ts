@@ -36,6 +36,7 @@ export interface DiaryContents {
   isEdited: boolean;
   emotion: Emotion;
   question: string;
+  index?: number;
 }
 
 export interface Emotion {

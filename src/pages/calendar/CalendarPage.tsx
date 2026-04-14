@@ -1,53 +1,78 @@
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 import { useDiaryCalendar } from '@/features/calendar/hooks/useCalendar.ts';
-import { koreanOrder } from '@/utils/koreanOrder.ts';
+import { formatDateKey } from '@/utils/formatDate.ts';
+import { useNavigate, useSearchParams } from 'react-router-dom';
 
 /** 컴포넌트 **/
 import CalendarDiaryCard from '@/features/calendar/components/CalendarDiaryCard.tsx';
 import DiaryCalendar from '@/features/calendar/components/DiaryCalendar.tsx';
 import ConfirmModal from '@/components/common/ConfirmModal.tsx';
-import { diaryCalendarList } from '@/features/calendar/api/calendar.api.ts';
-import { formatDateKey } from '@/utils/formatDate.ts';
 
 /** 이미지 **/
 import emptyEmoji from '@/assets/images/emotions/emotion-blank.png';
 
 /** 타입 **/
-import type { Diary } from '@/types/index.types.ts';
+import type { DiaryContents } from '@/types/index.types.ts';
 
 export default function CalendarPage() {
-  const [value, setValue] = useState<Diary | null>(null);
+  const [info, setInfo] = useState<DiaryContents | null>(null);
+  const [selectedDate, setSelectedDate] = useState<Date | null>(null);
+  const [pendingDeleteId, setPendingDeleteId] = useState<string | null>(null);
   const [modal, setModal] = useState(false);
-  const { diaryMap, isLoading, error } = useDiaryCalendar();
+  const [searchParams] = useSearchParams();
+  const { diaryMap, deleteDetail } = useDiaryCalendar();
+  const navigate = useNavigate();
+  const query = searchParams.get('id');
+
+  useEffect(() => {
+    if (!query) return;
+
+    const entry = [...diaryMap.values()].find((d) => d.diaryId === query);
+
+    setInfo(entry ?? null);
+
+    if (entry?.diaryDate) setSelectedDate(new Date(entry.diaryDate));
+  }, [query, diaryMap]);
 
   const calendarClick = (date: Date) => {
     const key = formatDateKey(date);
     const entry = diaryMap.get(key);
 
-    setValue(entry ?? null);
+    setSelectedDate(date);
+    navigate(entry?.diaryId ? `/diary/calendar?id=${entry.diaryId}` : `/diary/calendar`);
   };
 
-  diaryCalendarList();
+  const moveDetail = (diaryId: string) => {
+    navigate(`/diary/${diaryId}`);
+  };
 
-  const deleteClick = () => {
+  const deleteClick = (diaryId: string) => {
     setModal(true);
+    setPendingDeleteId(diaryId);
   };
 
   const modalConfirm = () => {
+    if (pendingDeleteId) {
+      deleteDetail(pendingDeleteId);
+      setPendingDeleteId(null);
+      setInfo(null);
+      setSelectedDate(null);
+    }
     setModal(false);
   };
 
   return (
     <div>
-      <DiaryCalendar diaryMap={diaryMap} onClick={calendarClick} />
+      <DiaryCalendar
+        diaryMap={diaryMap}
+        onClick={(data) => calendarClick(data)}
+        selectedDate={selectedDate}
+      />
       <div className="pt-[2rem] px-[1rem]">
-        {value ? (
-          <CalendarDiaryCard
-            emoji={value?.emotion?.emojiUrl}
-            title={value?.title}
-            count={koreanOrder(value?.index ?? 0)}
-            onClick={deleteClick}
-          />
+        {query ? (
+          info && (
+            <CalendarDiaryCard cardInfo={info} moveDetail={moveDetail} deleteClick={deleteClick} />
+          )
         ) : (
           <div className="flex items-center justify-center flex-col h-[7rem]">
             <img className="max-w-[3rem]" src={emptyEmoji} alt="" />

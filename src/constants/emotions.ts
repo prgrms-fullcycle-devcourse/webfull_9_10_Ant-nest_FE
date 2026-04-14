@@ -10,7 +10,7 @@ import tired from '@/assets/images/emotions/emotion-tired.png';
 export const EMOTIONS = {
   NORMAL: { id: 'normal', label: '기본', emo: normal },
   JOY: { id: 'joy', label: '기쁨', emo: joy },
-  HEART: { id: 'heart', label: '설렘', emo: heart },
+  FLUTTER: { id: 'heart', label: '설렘', emo: heart },
   PANIC: { id: 'panic', label: '당황', emo: panic },
   SAD: { id: 'sad', label: '슬픔', emo: sad },
   ANGRY: { id: 'angry', label: '화남', emo: angry },
@@ -18,7 +18,7 @@ export const EMOTIONS = {
   TIRED: { id: 'tired', label: '피곤', emo: tired },
 } as const;
 
-export const SQUARE_EMO = ['JOY', 'HEART', 'PANIC', 'SAD', 'ANGRY'] as const;
+export const SQUARE_EMO = ['JOY', 'FLUTTER', 'PANIC', 'SAD', 'ANGRY'] as const;
 
 // 공감 이모지
 export const REACTION_EMO = [
