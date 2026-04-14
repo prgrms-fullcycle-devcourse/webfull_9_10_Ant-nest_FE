@@ -46,19 +46,19 @@ export const monthlyEmoCount = [
   {
     month: '2026-03',
     emotions: [
-      { key: 'heart', label: '설렘', count: 14, color: '#F6A6D7', icon: EMOTIONS.heart.emo },
-      { key: 'joy', label: '기쁨', count: 10, color: '#f9e3c9', icon: EMOTIONS.joy.emo },
-      { key: 'normal', label: '기본', count: 1, color: '#ffb6b6', icon: EMOTIONS.normal.emo },
-      { key: 'sad', label: '슬픔', count: 1, color: '#accbef', icon: EMOTIONS.sad.emo },
-      { key: 'angry', label: '화남', count: 1, color: '#F8876E', icon: EMOTIONS.angry.emo },
-      { key: 'panic', label: '당황', count: 0, color: '#F8876E', icon: EMOTIONS.panic.emo },
-      { key: 'gross', label: '불쾌', count: 0, color: '#F8876E', icon: EMOTIONS.gross.emo },
-      { key: 'tired', label: '피곤', count: 0, color: '#F8876E', icon: EMOTIONS.tired.emo },
+      { key: 'heart', label: '설렘', count: 14, color: '#F6A6D7', icon: EMOTIONS.HEART.emo },
+      { key: 'joy', label: '기쁨', count: 10, color: '#f9e3c9', icon: EMOTIONS.JOY.emo },
+      { key: 'normal', label: '기본', count: 1, color: '#ffb6b6', icon: EMOTIONS.NORMAL.emo },
+      { key: 'sad', label: '슬픔', count: 1, color: '#accbef', icon: EMOTIONS.SAD.emo },
+      { key: 'angry', label: '화남', count: 1, color: '#F8876E', icon: EMOTIONS.ANGRY.emo },
+      { key: 'panic', label: '당황', count: 0, color: '#F8876E', icon: EMOTIONS.PANIC.emo },
+      { key: 'gross', label: '불쾌', count: 0, color: '#F8876E', icon: EMOTIONS.GROSS.emo },
+      { key: 'tired', label: '피곤', count: 0, color: '#F8876E', icon: EMOTIONS.TIRED.emo },
     ],
   },
 ];
 
 export const weeklyEmo: TWeeklyEmoItem[] = [
-  { index: 0, emotion: 'joy' },
-  { index: 2, emotion: 'sad' },
+  { index: 0, emotion: 'JOY' },
+  { index: 2, emotion: 'SAD' },
 ] as const;
