@@ -7,6 +7,8 @@ interface CreateDiaryRequest {
   questionId: number;
   questionType: 'AI' | 'DEFAULT';
   photoUrls: string[];
+  isPublic: boolean;
+
 }
 
 export const createDiary = (data: CreateDiaryRequest) => {

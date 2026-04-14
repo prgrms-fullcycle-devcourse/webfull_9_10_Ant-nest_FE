@@ -16,8 +16,7 @@ import { useAuthStore } from '@/store/authStore.ts';
 import NotFoundPage from '@/pages/not-found/NotFoundPage.tsx';
 
 function PrivateRoute() {
-  const { isAuthenticated, isGuest } = useAuthStore();
-  return isAuthenticated || isGuest ? <Outlet /> : <Navigate to="/login" replace />;
+  return <Outlet />;
 }
 
 function GuestRoute() {

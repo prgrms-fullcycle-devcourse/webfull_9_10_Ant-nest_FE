@@ -3,12 +3,14 @@ import { useState } from 'react';
 import DiaryHeader from '../../components/common/DiaryHeader';
 import DiaryQuestion from '../../components/common/DiaryQuestion';
 import EmotionSlider from '../../features/diary/components/EmotionSlider';
-import DiaryForm from '../../features/diary/components/DiaryForm';
-import DiaryBottomBar from '../../features/diary/components/DiaryBottomBar';
+import DiaryForm from '../../components/common/DiaryForm';
+import DiaryBottomBar from '../../components/common/DiaryBottomBar';
 import DiaryConfirmModal from '../../features/diary/components/DiaryConfirmModal';
 import { useNavigate } from 'react-router-dom';
 import { EMOTIONS } from '../../features/diary/utils/emotions';
 import { formatDateStr } from '../../utils/formatDate';
+import ImagePreviewModal from '../../components/common/ImagePreviewModal';
+
 
 export default function DiaryCreatePage() {
   const navigate = useNavigate();
@@ -125,18 +127,10 @@ export default function DiaryCreatePage() {
       />
 
       {/* 이미지 확대 모달 */}
-      {previewImage && (
-        <div
-          className="fixed inset-0 z-50 flex items-center justify-center bg-black bg-opacity-80 p-4"
-          onClick={() => setPreviewImage(null)}
-        >
-          <img
-            src={previewImage}
-            alt="미리보기 확대"
-            className="max-h-full max-w-full object-contain cursor-zoom-out"
-          />
-        </div>
-      )}
+      <ImagePreviewModal
+        imageUrl={previewImage}
+        onClose={() => setPreviewImage(null)}
+      />
     </div>
   );
 }
