@@ -10,11 +10,10 @@ import CalendarHeader from '@/components/common/CalendarHeader.tsx';
 import flower from '@/assets/images/illustrations/illu-flower.png';
 
 /** 타입 **/
-import type { Value } from '@/types/index.types.ts';
-import type { CalendarList } from '@/features/calendar/types/calendar.types.ts';
+import type { Diary, Value } from '@/types/index.types.ts';
 
 interface Props {
-  diaryMap: Map<string, CalendarList>;
+  diaryMap: Map<string, Diary>;
   onClick: (data: Date) => void;
 }
 

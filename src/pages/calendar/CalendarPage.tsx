@@ -6,19 +6,19 @@ import { koreanOrder } from '@/utils/koreanOrder.ts';
 import CalendarDiaryCard from '@/features/calendar/components/CalendarDiaryCard.tsx';
 import DiaryCalendar from '@/features/calendar/components/DiaryCalendar.tsx';
 import ConfirmModal from '@/components/common/ConfirmModal.tsx';
+import { diaryCalendarList } from '@/features/calendar/api/calendar.api.ts';
+import { formatDateKey } from '@/utils/formatDate.ts';
 
 /** 이미지 **/
 import emptyEmoji from '@/assets/images/emotions/emotion-blank.png';
 
 /** 타입 **/
-import type { CalendarList } from '@/features/calendar/types/calendar.types.ts';
-import { formatDateKey } from '@/utils/formatDate.ts';
+import type { Diary } from '@/types/index.types.ts';
 
 export default function CalendarPage() {
-  const [value, setValue] = useState<CalendarList | null>(null);
+  const [value, setValue] = useState<Diary | null>(null);
   const [modal, setModal] = useState(false);
-  // const { diaryMap, isLoading, error } = useDiaryCalendar();
-  const diaryMap = useDiaryCalendar();
+  const { diaryMap, isLoading, error } = useDiaryCalendar();
 
   const calendarClick = (date: Date) => {
     const key = formatDateKey(date);
@@ -26,6 +26,8 @@ export default function CalendarPage() {
 
     setValue(entry ?? null);
   };
+
+  diaryCalendarList();
 
   const deleteClick = () => {
     setModal(true);
