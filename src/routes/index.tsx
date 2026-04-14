@@ -17,7 +17,8 @@ import NotFoundPage from '@/pages/not-found/NotFoundPage.tsx';
 import SignupSuccessPage from '@/pages/auth/SignupSuccessPage.tsx';
 
 function PrivateRoute() {
-  return <Outlet />;
+  const { isAuthenticated, isGuest } = useAuthStore();
+  return isAuthenticated || isGuest ? <Outlet /> : <Navigate to="/login" replace />;
 }
 
 function GuestRoute() {
