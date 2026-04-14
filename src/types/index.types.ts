@@ -1,3 +1,5 @@
+import type { EMOTIONS } from '@/constants/emotions';
+
 // ===== API =====
 export interface ApiResponse<T> {
   statusCode: number;
@@ -77,3 +79,8 @@ export interface CalendarEntry {
   diaryId?: number;
   mood?: string;
 }
+
+// ===== 감정 타입 =====
+export type EmotionKey = keyof typeof EMOTIONS;
+
+export type EmotionLabel = (typeof EMOTIONS)[EmotionKey]['label'];

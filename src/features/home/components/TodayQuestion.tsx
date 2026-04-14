@@ -8,14 +8,14 @@ interface Props {
 }
 
 export default function TodayQuestion({ nickname, question }: Props) {
-  const questionLetter = question.split('');
+  const questionLetter = question?.split('');
 
   return (
     <div className="flex flex-col items-center gap-4">
       <div className="flex flex-col gap-1 text-center ">
         <p className="text-sm text-[var(--color-gray-dark)]">안녕하세요, {nickname}님 반가워요!</p>
         <div className="text-[var(--color-primary)] font-handwriting text-xl">
-          {questionLetter.map((char, i) => (
+          {questionLetter?.map((char, i) => (
             <motion.span
               key={i}
               initial={{ opacity: 0 }}

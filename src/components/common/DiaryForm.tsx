@@ -1,4 +1,4 @@
-  import DiaryImageUploader from "./DiaryImageUploader";
+  import DiaryImageUploader from "../../features/diary/components/DiaryImageUploader";
 
   interface Emotion {
     id: string;
@@ -10,15 +10,15 @@
     selectedEmotionData?: Emotion;
     dateStr: string;
     title: string;
-    setTitle: React.Dispatch<React.SetStateAction<string>>;
+    setTitle?: React.Dispatch<React.SetStateAction<string>>;
     content: string;
-    setContent: React.Dispatch<React.SetStateAction<string>>;
-    images: {file: File; preview: string}[];  // ← 이거 추가
-    handleAddImages: (e: React.ChangeEvent<HTMLInputElement>) => void;
-    handleRemoveImage: (index: number) => void;
+    setContent?: React.Dispatch<React.SetStateAction<string>>;
+    images: {file: File; preview: string}[];
+    handleAddImages?: (e: React.ChangeEvent<HTMLInputElement>) => void;
+    handleRemoveImage?: (index: number) => void;
     setPreviewModal: (url: string) => void;
-  }
-
+    readOnly?: boolean;
+}
   export default function DiaryForm({
     selectedEmotionData,
     dateStr,
@@ -30,6 +30,7 @@
     handleAddImages,
     handleRemoveImage,
     setPreviewModal,
+    readOnly
   }: DiaryFormProps) {
     return (
       <div className="diaryWrap border-0 shadow-[0_0_8px_rgba(0,0,0,0.05)] rounded-[16px] p-4 pb-[4px]">
@@ -49,7 +50,9 @@
         <input type="text"
           placeholder="오늘 하루 어땠나요?"
           value={title}
-          onChange={(e) => setTitle(e.target.value)}
+          readOnly={readOnly}
+          disabled={readOnly}
+          onChange={readOnly ? undefined : (e) => setTitle?.(e.target.value)}
           required
           className={`mb-[48px] h-[84px] w-full box-border rounded-[16px] border border-[#F1F1F1] shadow-[0_0_8px_rgba(0,0,0,0.05)] bg-[#FAFAFA] p-[14px] text-[16px] ${
             title ? 'text-left' : 'text-center'
@@ -58,16 +61,19 @@
         <div className="relative">
           <textarea placeholder='더 하고 싶은 말이 있나요?'
             value={content}
-            onChange={(e) => setContent(e.target.value)}
+            readOnly={readOnly}
+            disabled={readOnly} 
+            onChange={readOnly ? undefined : (e) => setContent?.(e.target.value)}
             className={`h-[210px] w-full box-border rounded-[16px] border border-[#F1F1F1] shadow-[0_0_8px_rgba(0,0,0,0.05)] bg-[#FAFAFA] text-[16px] ${content 
             ? 'p-[14px] text-left'
             : 'pt-[90px] text-center'}`}
           />
         <DiaryImageUploader
           images={images}
-          handleAddImages={handleAddImages}
-          handleRemoveImage={handleRemoveImage}
+          handleAddImages={handleAddImages ?? (() => {})}
+          handleRemoveImage={handleRemoveImage ?? (() => {})}
           setPreviewModal={setPreviewModal}
+          readOnly={readOnly}
         />  
         </div>
 

@@ -3,10 +3,13 @@ import { Button } from "@radix-ui/themes";
 interface DiaryBottomBarProps {
   isPublic: boolean;
   onTogglePublic: () => void;
-  onSave: () => void;
+  onSave?: () => void;      
+  onDelete?: () => void;    
+  onEdit?: () => void;      
+  mode?: 'create' | 'detail';  
 }
 
-export default function DiaryBottomBar({ isPublic, onTogglePublic, onSave }: DiaryBottomBarProps) {
+export default function DiaryBottomBar({ isPublic, onTogglePublic, onSave, onDelete, onEdit, mode = 'create' }: DiaryBottomBarProps) {
   return (
     <div className="fixed bottom-0 left-0 right-0 bg-white shadow-[0_-2px_8px_rgba(0,0,0,0.08)] z-50">
       <div className="max-w-200 mx-auto flex items-center justify-between px-[20px] py-[12px]">
@@ -26,14 +29,16 @@ export default function DiaryBottomBar({ isPublic, onTogglePublic, onSave }: Dia
           </button>
         </div>
 
-        {/* 저장 버튼 */}
+        {/* 버튼 */}
         
-        <Button
-          onClick={onSave}
-          className="basicButton"
-        >저장
-        </Button>
-
+        {mode === 'create' ? (
+          <Button onClick={onSave} className="basicButton">저장</Button>
+        ) : (
+          <div className="flex gap-[8px]">
+            <Button onClick={onDelete} className="basicButton !bg-[#FF7043]">삭제</Button>
+            <Button onClick={onEdit} className="basicButton">수정</Button>
+          </div>
+        )}
       </div>
     </div>
   );

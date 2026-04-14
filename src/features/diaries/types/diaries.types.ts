@@ -1,17 +1,18 @@
-type TDiaryQuestion = {
-  content: string;
-};
-type TDiaryAnswer = {
-  title: string;
-  content: string;
-  image?: string;
-  emo: string;
-};
+import type { EmotionKey, EmotionLabel } from '@/types/index.types';
 
-export type TDiaryItem = {
-  id: number;
-  date: string;
-  createdAt: string;
-  question: TDiaryQuestion;
-  answer: TDiaryAnswer;
-};
+export interface DiaryItem {
+  diaryId: number;
+  title: string;
+  diaryDate: string;
+  isEdited: boolean;
+  emotion: {
+    type: EmotionKey;
+    name: EmotionLabel;
+  };
+  question: string;
+}
+
+export interface DiariesResponse {
+  totalCount: number;
+  diaries: DiaryItem[];
+}
