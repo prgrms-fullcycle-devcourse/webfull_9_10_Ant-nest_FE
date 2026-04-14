@@ -1,6 +1,6 @@
-import { Link, useNavigate } from 'react-router-dom';
+import { Link, Navigate, useNavigate } from 'react-router-dom';
 import { Controller, useForm } from 'react-hook-form';
-import { useLoginMutation } from '@/features/auth/hooks/useAuth.tsx';
+import { useLoginMutation } from '@/features/auth/hooks/useAuth.ts';
 import { useAuthStore } from '@/store/authStore.ts';
 import { motion, useAnimate } from 'motion/react';
 import { useEffect, useRef } from 'react';
@@ -16,33 +16,59 @@ import imgCharacter from '@/assets/images/characters/character-draw.gif';
 interface LoginFormValues {
   email: string;
   password: string;
-  autoLogin: boolean;
+  saveEmail: boolean;
+  // autoLogin: boolean;
 }
 
 let animationPlayed = false;
 
 export default function LoginPage() {
+  const savedEmail = localStorage.getItem('savedEmail') ?? '';
   const {
     handleSubmit,
     setError,
     control,
     formState: { errors },
   } = useForm<LoginFormValues>({
-    defaultValues: { autoLogin: true },
+    defaultValues: {
+      // autoLogin: true,
+      email: savedEmail,
+      saveEmail: !!savedEmail,
+    },
   });
   const loginMutation = useLoginMutation();
-  const { loginAsGuest } = useAuthStore();
   const navigate = useNavigate();
   const [scope, animate] = useAnimate();
   const formRef = useRef<HTMLDivElement>(null);
   const textRef = useRef<HTMLDivElement>(null);
+  const { loginAsGuest, isAuthenticated } = useAuthStore();
+
+  if (isAuthenticated) return <Navigate to="/" replace />;
 
   const onSubmit = (data: LoginFormValues) => {
-    loginMutation.mutate(data, {
-      onError: () => {
-        setError('email', { message: '이메일 또는 비밀번호가 올바르지 않습니다.' });
+    if (!data.email) {
+      setError('email', { message: '이메일을 입력해주세요.' });
+      return;
+    }
+    if (!data.password) {
+      setError('email', { message: '비밀번호를 입력해주세요.' });
+      return;
+    }
+
+    if (data.saveEmail) {
+      localStorage.setItem('savedEmail', data.email);
+    } else {
+      localStorage.removeItem('savedEmail');
+    }
+
+    loginMutation.mutate(
+      { email: data.email, password: data.password },
+      {
+        onError: () => {
+          setError('email', { message: '이메일 또는 비밀번호가 올바르지 않습니다.' });
+        },
       },
-    });
+    );
   };
 
   useEffect(() => {
@@ -60,7 +86,7 @@ export default function LoginPage() {
       if (textRef.current) animate(textRef.current, { opacity: 0 }, { duration: 0 });
       await animate(el, { x, y, opacity: 0, scale: 5 }, { duration: 0 });
       await animate(el, { opacity: 1 }, { duration: 0.5 });
-      await new Promise((resolve) => setTimeout(resolve, 2000));
+      await new Promise((resolve) => setTimeout(resolve, 1000));
       await animate(el, { x: 0, y: 0, scale: 1 }, { duration: 0.8, ease: [0, 0.71, 0.2, 1.01] });
       if (formRef.current) animate(formRef.current, { opacity: 1 }, { duration: 0.5 });
       if (textRef.current) await animate(textRef.current, { opacity: 1 }, { duration: 0.5 });
@@ -134,14 +160,26 @@ export default function LoginPage() {
                 </p>
               )}
 
+              {/*<Controller*/}
+              {/*  name="autoLogin"*/}
+              {/*  control={control}*/}
+              {/*  render={({ field }) => (*/}
+              {/*    <Text as="label" size="2" className="inline-block !mt-[1rem]">*/}
+              {/*      <Flex gap="2">*/}
+              {/*        <Checkbox checked={field.value} onCheckedChange={field.onChange} />*/}
+              {/*        자동로그인*/}
+              {/*      </Flex>*/}
+              {/*    </Text>*/}
+              {/*  )}*/}
+              {/*/>*/}
               <Controller
-                name="autoLogin"
+                name="saveEmail"
                 control={control}
                 render={({ field }) => (
                   <Text as="label" size="2" className="inline-block !mt-[1rem]">
                     <Flex gap="2">
                       <Checkbox checked={field.value} onCheckedChange={field.onChange} />
-                      자동로그인
+                      이메일 저장
                     </Flex>
                   </Text>
                 )}
@@ -152,6 +190,7 @@ export default function LoginPage() {
                 variant="solid"
                 className="!mt-[1rem] !w-full !h-[4rem] !text-[1.3rem] !font-bold !text-base green-btn]
             max-sm2:!text-[1.2rem]"
+                disabled={loginMutation.isPending}
               >
                 로그인
               </Button>

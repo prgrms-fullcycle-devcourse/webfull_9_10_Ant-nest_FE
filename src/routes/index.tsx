@@ -14,6 +14,7 @@ import CommunityDetailPage from '../pages/community/CommunityDetailPage';
 import PlainLayout from '../layouts/PlainLayout';
 import { useAuthStore } from '@/store/authStore.ts';
 import NotFoundPage from '@/pages/not-found/NotFoundPage.tsx';
+import SignupSuccessPage from '@/pages/auth/SignupSuccessPage.tsx';
 
 function PrivateRoute() {
   return <Outlet />;
@@ -34,6 +35,7 @@ export const router = createBrowserRouter([
         children: [
           { path: '/login', element: <LoginPage /> }, // 로그인
           { path: '/signup', element: <SignupPage /> }, // 회원가입
+          { path: '/signup/success', element: <SignupSuccessPage /> }, // 회원가입 완료
         ],
       },
     ],
