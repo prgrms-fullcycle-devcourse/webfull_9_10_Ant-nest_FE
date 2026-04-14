@@ -1,6 +1,6 @@
 import { useMutation } from '@tanstack/react-query';
 import { useNavigate } from 'react-router-dom';
-import { createDiary } from '../services/diaryService';
+import { createDiary } from '../api/diary.api';
 
 export const useCreateDiary = () => {
   const navigate = useNavigate();
