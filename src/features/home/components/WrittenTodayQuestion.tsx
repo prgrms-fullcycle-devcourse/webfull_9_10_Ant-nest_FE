@@ -1,10 +1,10 @@
-import type { TDiaryItem } from '@/features/diaries/types/diaries.types';
+import type { DiaryItem } from '@/features/diaries/types/diaries.types';
 import { Pencil1Icon } from '@radix-ui/react-icons';
 import { Link } from 'react-router-dom';
 
 interface Props {
   question: string;
-  diary: TDiaryItem;
+  diary: DiaryItem;
 }
 
 export default function WrittenTodayQuestion({ question, diary }: Props) {
@@ -18,7 +18,7 @@ export default function WrittenTodayQuestion({ question, diary }: Props) {
         <p className="text-[var(--color-text-placeholder)] text-[var(--color-text-subtle)]] text-sm">
           {question}
         </p>
-        <p className="text-[var(--color-primary)]">{diary.answer.title}</p>
+        <p className="text-[var(--color-primary)]">{diary.title}</p>
         <Link to="/diary/1" className="absolute bottom-2 right-2">
           <Pencil1Icon className="text-[var(--color-primary)]" />
         </Link>
