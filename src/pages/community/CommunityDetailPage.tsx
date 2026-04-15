@@ -18,7 +18,7 @@ export default function CommunityDetailPage() {
     title: '완전 완전 맛있는 밥을 먹었음',
     content:
       '떡볶이 먹고 너무 매워서 아이스크림까지 먹었음. 역시 맛있는 걸 먹는 게 인생의 행복이다. 진정한 행복이란 이런 순간에 있는 것 같다. 배는 부른데 마음은 더 먹고 싶다고 외치는 중.',
-    emotionEmoji: { id: 'happy', label: '행복', img: EMOTIONS.JOY.emo }, // 일기 감정
+    emotionEmoji: { id: 'happy', label: '행복', img: EMOTIONS.HAPPY.emo }, // 일기 감정
     empathyStats: [{ typeId: 1, name: '응원해요', count: 10 }], // 받은 공감
     totalScore: 150,
     timeStamp: '2026-03-27T17:15:00.012Z',

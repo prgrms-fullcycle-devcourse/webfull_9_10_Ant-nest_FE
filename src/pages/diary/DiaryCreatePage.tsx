@@ -30,14 +30,12 @@ export default function DiaryCreatePage() {
   const question = questionData?.data?.content ?? '';
   const questionId = questionData?.data?.questionId ?? '';
 
-  const { mutate: createDiary, isPending } = useCreateDiary();
+  const { mutate: createDiary } = useCreateDiary();
 
   const emotionsPerview = 5;
   const startIndex = currentSlide;
   const visibleEmotions = EMOTIONS.slice(startIndex, startIndex + emotionsPerview);
   const selectedEmotionData = EMOTIONS.find((e) => e.id === selectedEmotion);
-  // emotionId 꺼내기
-  const emotionId = selectedEmotionData?.emotionId;
 
   const dateStr = formatDateStr(new Date());
 

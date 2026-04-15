@@ -7,7 +7,7 @@ export const diaries: DiaryItem[] = [
     diaryDate: '2026-03-29',
     isEdited: false,
     emotion: {
-      type: 'JOY',
+      type: 'HAPPY',
       name: '기쁨',
     },
     question: '오늘 당신을 미소 짓게 만든 것은 무엇인가요?',
