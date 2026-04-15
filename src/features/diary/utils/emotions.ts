@@ -8,12 +8,13 @@ import tiredImg from '../../../assets/images/emotions/emotion-tired.png';
 import disgustedImg from '../../../assets/images/emotions/emotion-disgusted.png';
 
 export const EMOTIONS = [
-  { id: 'peaceful', emotionId: 1, label: '평온', img: peacefulImg },
-  { id: 'happy',    emotionId: 2, label: '행복', img: happyImg },
-  { id: 'excited',  emotionId: 3, label: '설렘', img: excitedImg },
-  { id: 'absurd',   emotionId: 4, label: '황당', img: absurdImg },
-  { id: 'depressed',emotionId: 5, label: '우울', img: depressedImg },
-  { id: 'angry',    emotionId: 6, label: '화남', img: angryImg },
-  { id: 'tired',    emotionId: 7, label: '피곤', img: tiredImg },
-  { id: 'disgusted',emotionId: 8, label: '역겨움', img: disgustedImg },
+  { id: 'peaceful', emotion: 'BLANK',     label: '평온', img: peacefulImg },
+  { id: 'happy',    emotion: 'HAPPY',     label: '행복', img: happyImg },
+  { id: 'excited',  emotion: 'EXCITED',   label: '설렘', img: excitedImg },
+  { id: 'absurd',   emotion: 'ABSURD',    label: '황당', img: absurdImg },
+  { id: 'depressed',emotion: 'DEPRESSED', label: '우울', img: depressedImg },
+  { id: 'angry',    emotion: 'ANGRY',     label: '화남', img: angryImg },
+  { id: 'tired',    emotion: 'TIRED',     label: '피곤', img: tiredImg },
+  { id: 'disgusted',emotion: 'DISGUSTED', label: '역겨움', img: disgustedImg },
 ];
+
