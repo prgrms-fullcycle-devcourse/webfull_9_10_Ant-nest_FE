@@ -1,13 +1,12 @@
-import type { DiaryItem } from '@/features/diaries/types/diaries.types';
+import type { DiaryDetail } from '@/types/index.types';
 import { Pencil1Icon } from '@radix-ui/react-icons';
-import { Link } from 'react-router-dom';
 
 interface Props {
-  question: string;
-  diary: DiaryItem;
+  onClick: () => void;
+  diary: DiaryDetail;
 }
 
-export default function WrittenTodayQuestion({ question, diary }: Props) {
+export default function WrittenTodayQuestion({ onClick, diary }: Props) {
   return (
     <div className="flex flex-col gap-4">
       <div className="flex flex-col gap-2 text-[var(--color-text-subtle)]] text-sm">
@@ -16,12 +15,13 @@ export default function WrittenTodayQuestion({ question, diary }: Props) {
       </div>
       <div className="relative flex flex-col justify-center gap-2 px-2 py-4 text-center rounded-2xl min-w-75 bg-[var(--color-gray-light2)]">
         <p className="text-[var(--color-text-placeholder)] text-[var(--color-text-subtle)]] text-sm">
-          {question}
+          {diary.question}
         </p>
         <p className="text-[var(--color-primary)]">{diary.title}</p>
-        <Link to="/diary/1" className="absolute bottom-2 right-2">
-          <Pencil1Icon className="text-[var(--color-primary)]" />
-        </Link>
+        <Pencil1Icon
+          className="absolute bottom-2 right-2 text-[var(--color-primary)]"
+          onClick={onClick}
+        />
       </div>
     </div>
   );
