@@ -1,7 +1,8 @@
 import Calendar from 'react-calendar';
-import { useState } from 'react';
+import { useMemo, useState } from 'react';
 import { cn } from '@/utils/cn.ts';
 import { formatDateKey } from '@/utils/formatDate.ts';
+import { EMOTIONS } from '@/constants/emotions.ts';
 
 /** 컴포넌트 **/
 import CalendarHeader from '@/components/common/CalendarHeader.tsx';
@@ -10,28 +11,21 @@ import CalendarHeader from '@/components/common/CalendarHeader.tsx';
 import flower from '@/assets/images/illustrations/illu-flower.png';
 
 /** 타입 **/
-import type { Value } from '@/types/index.types.ts';
-import type { CalendarList } from '@/features/calendar/types/calendar.types.ts';
+import type { DiaryContents, Value } from '@/types/index.types.ts';
 
 interface Props {
-  diaryMap: Map<string, CalendarList>;
+  diaryMap: Map<string, DiaryContents>;
   onClick: (data: Date) => void;
+  selectedDate?: Date | null;
 }
 
-export default function DiaryCalendar({ diaryMap, onClick }: Props) {
+export default function DiaryCalendar({ diaryMap = new Map(), onClick, selectedDate = null }: Props) {
   const [value, setValue] = useState<Value>(new Date());
-  const [selectedDate, setSelectedDate] = useState<Date | null>(null);
-
-  const handleChange = (data: Date) => {
-    setSelectedDate(data);
-
-    onClick(data);
-  };
+  const today = useMemo(() => new Date(), []);
 
   const getTileClassName = (date: Date, view: string) => {
     if (view !== 'month') return null;
 
-    const today = new Date();
     const isToday =
       date.getDate() === today.getDate() &&
       date.getMonth() === today.getMonth() &&
@@ -52,7 +46,9 @@ export default function DiaryCalendar({ diaryMap, onClick }: Props) {
     const key = formatDateKey(date);
     const entry = diaryMap.get(key);
 
-    return <img src={entry ? entry.emotion.emojiUrl : flower} alt="" />;
+    const emotionKey = entry?.emotion?.type?.toUpperCase() as keyof typeof EMOTIONS;
+    const imgSrc = (entry && EMOTIONS[emotionKey]?.emo) ?? flower;
+    return <img src={imgSrc} alt="" />;
   };
 
   return (
@@ -69,7 +65,7 @@ export default function DiaryCalendar({ diaryMap, onClick }: Props) {
         onChange={setValue}
         tileClassName={({ date, view }) => getTileClassName(date, view)}
         tileContent={({ date, view }) => getTileContent(date, view)}
-        onClickDay={(data) => handleChange(data)}
+        onClickDay={onClick}
       />
     </div>
   );

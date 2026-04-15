@@ -25,14 +25,23 @@ export type Value = ValuePiece | [ValuePiece, ValuePiece];
 
 // ===== 다이어리 =====
 export interface Diary {
-  id: number;
-  userId: number;
+  totalCount: number;
+  diaries: DiaryContents[];
+}
+
+export interface DiaryContents {
+  diaryId: string;
   title: string;
-  content: string;
-  mood?: string;
-  isPublic: boolean;
-  createdAt: string;
-  updatedAt: string;
+  diaryDate: string;
+  isEdited: boolean;
+  emotion: Emotion;
+  question: string;
+  index?: number;
+}
+
+export interface Emotion {
+  type: string;
+  name: string;
 }
 
 export interface CreateDiaryRequest {
