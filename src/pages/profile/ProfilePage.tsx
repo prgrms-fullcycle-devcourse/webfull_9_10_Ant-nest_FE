@@ -7,6 +7,8 @@ import ProfileCard from '@/features/profile/components/ProfileCard';
 
 import { monthlyEmoCount, profile, weeklyEmo } from '@/features/profile/profile.mock';
 import WeeklyEmo from '@/features/profile/components/WeeklyEmo';
+import { useNavigate } from 'react-router-dom';
+import { useAuthStore } from '@/store/authStore';
 
 type TChangePassword = {
   currentPassword: string;
@@ -38,6 +40,9 @@ export default function ProfilePage() {
   const [isNicknameOpen, setIsNicknameOpen] = useState(false);
   const [isPasswordOpen, setIsPasswordOpen] = useState(false);
   const [nickname, setNickname] = useState(profile.profile.nickname);
+  const { logout } = useAuthStore();
+  const navigate = useNavigate();
+
   const user = {
     nickname,
     totalDiaries: profile.statistics.totalDiaries,
@@ -54,6 +59,11 @@ export default function ProfilePage() {
 
   const handleDeleteAccount = () => {
     console.log('회원탈퇴 api 정말 탈퇴하시겠습니까? 모달 띄우기!');
+  };
+
+  const handleLogout = () => {
+    logout();
+    navigate('/login');
   };
 
   return (
@@ -85,7 +95,11 @@ export default function ProfilePage() {
         <WeeklyEmo data={weeklyEmo} />
         <MonthlyEmo data={monthlyEmoCount} />
         {/* 로그아웃 */}
-        <button type="button" className="pt-2 text-sm font-medium text-red-400">
+        <button
+          type="button"
+          className="pt-2 text-sm font-medium text-red-400"
+          onClick={handleLogout}
+        >
           로그아웃
         </button>
       </div>
