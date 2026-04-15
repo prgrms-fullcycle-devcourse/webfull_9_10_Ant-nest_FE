@@ -55,7 +55,7 @@ export default function ChatBubble({ diaries }: TChatBubbleProps) {
             )} */}
               </div>
 
-              <img src={emotionKey.emo} className="size-10" />
+              <img src={emotionKey?.emo} className="size-10" />
             </div>
           </div>
         );

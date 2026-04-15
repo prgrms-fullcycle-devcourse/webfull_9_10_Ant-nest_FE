@@ -1,6 +1,7 @@
-import { useMutation } from '@tanstack/react-query';
+import { useMutation, useQuery } from '@tanstack/react-query'; 
 import { useNavigate } from 'react-router-dom';
-import { createDiary } from '../api/diary.api';
+import { createDiary, getQuestion } from '../api/diary.api';  
+
 
 export const useCreateDiary = () => {
   const navigate = useNavigate();
@@ -18,5 +19,13 @@ export const useCreateDiary = () => {
       if (status === 403) alert(message); // 날짜 제한
       if (status === 400) alert(message); // 유효성 오류
     },
+  });
+};
+
+
+export const useGetQuestion = () => {
+  return useQuery({
+    queryKey: ['question'],
+    queryFn: getQuestion,
   });
 };

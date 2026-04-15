@@ -1,4 +1,4 @@
-import { fetchIsWritten, fetchTodayQuestion } from '@/features/home/api/home.api';
+import { fetchDiaryDetail, fetchIsWritten, fetchTodayQuestion } from '@/features/home/api/home.api';
 import { useAuthStore } from '@/store/authStore';
 import { useQuery } from '@tanstack/react-query';
 
@@ -13,9 +13,18 @@ export const useTodayQuestion = () => {
 
 export const useIsWritten = () => {
   const { isAuthenticated } = useAuthStore();
+  const today = new Date().toISOString().split('T')[0];
   return useQuery({
-    queryKey: ['isWritten'],
+    queryKey: ['isWritten', today],
     queryFn: fetchIsWritten,
     enabled: isAuthenticated,
+  });
+};
+
+export const useDiaryDetail = (diaryId?: number) => {
+  return useQuery({
+    queryKey: ['diary', 'detail', diaryId],
+    queryFn: () => fetchDiaryDetail(diaryId!),
+    enabled: !!diaryId,
   });
 };

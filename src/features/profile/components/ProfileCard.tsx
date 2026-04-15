@@ -31,7 +31,7 @@ export default function ProfileCard({
       <div className="flex items-start justify-between px-4 py-4">
         <div className="flex gap-3">
           <div className="flex items-center justify-center rounded-full text-2xl ">
-            <img className="size-10" src={EMOTIONS.JOY.emo} />
+            <img className="size-10" src={EMOTIONS.HAPPY.emo} />
           </div>
 
           <div>
