@@ -10,6 +10,7 @@ import { useNavigate } from 'react-router-dom';
 import { EMOTIONS } from '../../features/diary/utils/emotions';
 import { formatDateStr } from '../../utils/formatDate';
 import ImagePreviewModal from '../../components/common/ImagePreviewModal';
+import { useCreateDiary, useGetQuestion } from '../../features/diary/hooks/useDiary';
 
 
 export default function DiaryCreatePage() {
@@ -24,7 +25,12 @@ export default function DiaryCreatePage() {
   const [exitModalOpen, setExitModalOpen] = useState(false);
   const [saveModalOpen, setSaveModalOpen] = useState(false);
   const [previewImage, setPreviewImage] = useState<string | null>(null);
-  const [question] = useState('오늘 당신을 미소 짓게 만든 것은 무엇인가요?');
+
+  const { data: questionData } = useGetQuestion();
+  const question = questionData?.data?.content ?? '';
+  const questionId = questionData?.data?.questionId ?? '';
+
+  const { mutate: createDiary, isPending } = useCreateDiary();
 
   const emotionsPerview = 5;
   const startIndex = currentSlide;
@@ -68,12 +74,22 @@ export default function DiaryCreatePage() {
     });
   };
 
-  const handleSave = () => {
-    // TODO: API 연동
-    console.log({ title, content, emotionId, isPublic, images });
-    setSaveModalOpen(false);
-    navigate('/');
-  };
+const handleSave = () => {
+  if (!selectedEmotionData) {
+    alert('감정을 선택해주세요');
+    return;
+  }
+
+  createDiary({
+    title,
+    content,
+    emotion: selectedEmotionData.emotion,
+    questionId: questionId,
+    photoUrls: [],
+  });
+
+  setSaveModalOpen(false);
+};
 
   return (
     <div className="diaryCreateWrap">
