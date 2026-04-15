@@ -51,6 +51,19 @@ export interface CreateDiaryRequest {
   isPublic: boolean;
 }
 
+export interface DiaryDetail extends DiaryContents {
+  content: string;
+  createdAt: string;
+  updatedAt: string | null;
+  photos: DiaryPhotos[];
+}
+
+export interface DiaryPhotos {
+  photoId: string;
+  imageUrl: string;
+  displayOrder: number;
+}
+
 // ===== 커뮤니티 =====
 export interface Post {
   id: number;
