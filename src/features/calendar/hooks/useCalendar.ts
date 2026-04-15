@@ -1,49 +1,53 @@
-import { useEffect, useState } from 'react';
+import { useMemo } from 'react';
+import { useMutation, useQuery, useQueryClient } from '@tanstack/react-query';
 import { deleteDiary, diaryCalendarList } from '@/features/calendar/api/calendar.api.ts';
+import { formatMonth } from '@/utils/formatDate.ts';
 import type { DiaryContents } from '@/types/index.types.ts';
+
+const QUERY_KEY = ['diaryCalendar'];
 
 /**
  * 캘린더 데이터 조회
  */
-export const useDiaryCalendar = () => {
-  const [diaryMap, setDiaryMap] = useState<Map<string, DiaryContents>>(new Map());
-  const [isLoading, setIsLoading] = useState(true);
-  const [error, setError] = useState<Error | null>(null);
+export const useDiaryCalendar = (currentMonth: Date) => {
+  const queryClient = useQueryClient();
+  const monthKey = formatMonth(currentMonth);
 
-  const deleteDetail = (diaryId: string) => {
-    const snapshot = new Map(diaryMap);
+  const { data: diaries = [], isLoading, error } = useQuery({
+    queryKey: [...QUERY_KEY, monthKey],
+    queryFn: async () => {
+      const data = await diaryCalendarList();
+      const monthly = data.diaries.filter((d) => d.diaryDate.startsWith(monthKey));
+      return data.diaries.map((entry) => {
+        const monthlyIndex = monthly.findIndex((m) => m.diaryId === entry.diaryId);
+        return {
+          ...entry,
+          index: monthlyIndex >= 0 ? monthly.length - monthlyIndex : undefined,
+        };
+      });
+    },
+  });
 
-    setDiaryMap((curr) => {
-      const next = new Map(curr);
+  const diaryMap = useMemo(() => buildDiaryMap(diaries), [diaries]);
 
-      for (const [key, val] of next) {
-        if (val.diaryId === diaryId) {
-          next.delete(key);
-          break;
-        }
-      }
+  const { mutate: deleteDetail } = useMutation({
+    mutationFn: deleteDiary,
+    onMutate: async (diaryId) => {
+      await queryClient.cancelQueries({ queryKey: [...QUERY_KEY, monthKey] });
 
-      return next;
-    });
+      const snapshot = queryClient.getQueryData([...QUERY_KEY, monthKey]);
 
-    deleteDiary(diaryId).catch(() => setDiaryMap(snapshot));
-  };
+      queryClient.setQueryData<DiaryContents[]>(
+        [...QUERY_KEY, monthKey],
+        (curr = []) => curr.filter((d) => d.diaryId !== diaryId)
+      );
 
-  useEffect(() => {
-    const fetchList = async () => {
-      try {
-        const data = await diaryCalendarList();
-
-        setDiaryMap(buildDiaryMap(data.diaries));
-      } catch (error) {
-        setError(error as Error);
-      } finally {
-        setIsLoading(false);
-      }
-    };
-
-    fetchList();
-  }, []);
+      return { snapshot };
+    },
+    onError: (_err, _diaryId, context) => {
+      queryClient.setQueryData([...QUERY_KEY, monthKey], context?.snapshot);
+    },
+  });
 
   return { diaryMap, deleteDetail, isLoading, error };
 };
@@ -54,9 +58,8 @@ export const useDiaryCalendar = () => {
  */
 const buildDiaryMap = (entries: DiaryContents[]): Map<string, DiaryContents> => {
   const map = new Map<string, DiaryContents>();
-  entries.forEach((entry, index) => {
-    map.set(entry.diaryDate, { ...entry, index: entries.length - index });
+  entries.forEach((entry) => {
+    map.set(entry.diaryDate, entry);
   });
-
   return map;
 };

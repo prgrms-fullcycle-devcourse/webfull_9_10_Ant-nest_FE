@@ -14,13 +14,20 @@ import flower from '@/assets/images/illustrations/illu-flower.png';
 import type { DiaryContents, Value } from '@/types/index.types.ts';
 
 interface Props {
+  value: Value;
   diaryMap: Map<string, DiaryContents>;
-  onClick: (data: Date) => void;
   selectedDate?: Date | null;
+  onClick: (data: Date) => void;
+  onMonthChange: (date: Date) => void;
 }
 
-export default function DiaryCalendar({ diaryMap = new Map(), onClick, selectedDate = null }: Props) {
-  const [value, setValue] = useState<Value>(new Date());
+export default function DiaryCalendar({
+  value,
+  diaryMap = new Map(),
+  onClick,
+  selectedDate = null,
+  onMonthChange,
+}: Props) {
   const today = useMemo(() => new Date(), []);
 
   const getTileClassName = (date: Date, view: string) => {
@@ -53,7 +60,7 @@ export default function DiaryCalendar({ diaryMap = new Map(), onClick, selectedD
 
   return (
     <div>
-      <CalendarHeader move="diary" value={value} onChange={setValue} />
+      <CalendarHeader move="diary" value={value} onChange={onMonthChange} />
 
       <Calendar
         calendarType="gregory"
@@ -62,7 +69,7 @@ export default function DiaryCalendar({ diaryMap = new Map(), onClick, selectedD
         showNeighboringMonth={false}
         activeStartDate={value as Date}
         formatDay={(_locale, date) => date.getDate().toString()}
-        onChange={setValue}
+        onChange={onMonthChange}
         tileClassName={({ date, view }) => getTileClassName(date, view)}
         tileContent={({ date, view }) => getTileContent(date, view)}
         onClickDay={onClick}

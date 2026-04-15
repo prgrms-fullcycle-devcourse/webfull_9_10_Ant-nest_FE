@@ -19,20 +19,21 @@ export default function CalendarPage() {
   const [selectedDate, setSelectedDate] = useState<Date | null>(null);
   const [pendingDeleteId, setPendingDeleteId] = useState<string | null>(null);
   const [modal, setModal] = useState(false);
+  const [currentMonth, setCurrentMonth] = useState<Date>(new Date());
   const [searchParams] = useSearchParams();
-  const { diaryMap, deleteDetail } = useDiaryCalendar();
+  const { diaryMap, deleteDetail } = useDiaryCalendar(currentMonth);
   const navigate = useNavigate();
   const query = searchParams.get('id');
 
   useEffect(() => {
-    if (!query) return;
+    if (!query || !diaryMap.size) return;
 
     const entry = [...diaryMap.values()].find((d) => d.diaryId === query);
 
     setInfo(entry ?? null);
 
     if (entry?.diaryDate) setSelectedDate(new Date(entry.diaryDate));
-  }, [query, diaryMap]);
+  }, [query, diaryMap.size]);
 
   const calendarClick = (date: Date) => {
     const key = formatDateKey(date);
@@ -57,6 +58,7 @@ export default function CalendarPage() {
       setPendingDeleteId(null);
       setInfo(null);
       setSelectedDate(null);
+      navigate('/diary/calendar');
     }
     setModal(false);
   };
@@ -64,9 +66,11 @@ export default function CalendarPage() {
   return (
     <div>
       <DiaryCalendar
+        value={currentMonth}
         diaryMap={diaryMap}
         onClick={(data) => calendarClick(data)}
         selectedDate={selectedDate}
+        onMonthChange={setCurrentMonth}
       />
       <div className="pt-[2rem] px-[1rem]">
         {query ? (
