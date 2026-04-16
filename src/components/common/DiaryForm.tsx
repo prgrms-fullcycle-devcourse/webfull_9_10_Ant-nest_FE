@@ -44,7 +44,7 @@
           </div>
         )}
         
-        <p className="text-[#8d8d8d] text-[9px] text-center mb-[20px]">
+        <p className="text-[#8d8d8d] text-base text-center mb-[20px]">
           {dateStr}
         </p>
         <input type="text"
