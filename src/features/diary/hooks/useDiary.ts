@@ -1,6 +1,6 @@
 import { useMutation, useQuery } from '@tanstack/react-query'; 
 import { useNavigate } from 'react-router-dom';
-import { createDiary, getQuestion } from '../api/diary.api';  
+import { createDiary, deleteDiary, getQuestion, updateDiary } from '../api/diary.api';  
 
 
 export const useCreateDiary = () => {
@@ -27,5 +27,36 @@ export const useGetQuestion = () => {
   return useQuery({
     queryKey: ['question'],
     queryFn: getQuestion,
+  });
+};
+
+export const useUpdateDiary = () => {
+  const navigate = useNavigate();
+
+  return useMutation({
+    mutationFn: ({ diaryId, data }: { diaryId: string; data: UpdateDiaryRequest }) =>
+      updateDiary(diaryId, data),
+    onSuccess: () => {
+      navigate('/');
+    },
+    onError: (error: any) => {
+      const message = error.response?.data?.message;
+      alert(message);
+    },
+  });
+};
+
+export const useDeleteDiary = () => {
+  const navigate = useNavigate();
+
+  return useMutation({
+    mutationFn: (diaryId: string) => deleteDiary(diaryId),
+    onSuccess: () => {
+      navigate('/');
+    },
+    onError: (error: any) => {
+      const message = error.response?.data?.message;
+      alert(message);
+    },
   });
 };

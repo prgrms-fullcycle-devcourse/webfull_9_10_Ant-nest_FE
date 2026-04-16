@@ -6,6 +6,8 @@ import DiaryForm from '../../components/common/DiaryForm';
 import DiaryBottomBar from '../../components/common/DiaryBottomBar';
 import { EMOTIONS } from '../../features/diary/utils/emotions';
 import ImagePreviewModal from '../../components/common/ImagePreviewModal';
+import { useDeleteDiary } from '../../features/diary/hooks/useDiary';
+
 
 export default function DiaryDetailPage() {
   const navigate = useNavigate();
@@ -21,11 +23,11 @@ export default function DiaryDetailPage() {
   const selectedEmotionData = EMOTIONS.find((e) => e.id === 'peaceful'); // 임시
   const [isPublic, setIsPublic] = useState(true);
   const [previewImage, setPreviewImage] = useState<string | null>(null);
+  const { mutate: removeDiary } = useDeleteDiary();
+
 
   const handleDelete = () => {
-    // TODO: API 연동 - DELETE /diaries/:id
-    console.log('삭제', id);
-    navigate('/');
+    removeDiary(id!);
   };
 
   const handleEdit = () => {
