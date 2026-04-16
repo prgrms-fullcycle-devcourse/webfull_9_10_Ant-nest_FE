@@ -8,7 +8,7 @@ import { useEffect, useRef } from 'react';
 import { Button, Checkbox, Flex, Text } from '@radix-ui/themes';
 
 /** 컴포넌트 **/
-import FormField from '@/features/auth/components/FormField.tsx';
+import FormField from '@/components/common/FormField.tsx';
 
 /** 이미지 **/
 import imgCharacter from '@/assets/images/characters/character-draw.gif';
