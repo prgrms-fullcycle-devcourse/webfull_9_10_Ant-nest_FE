@@ -1,7 +1,7 @@
-import { useMutation, useQuery } from '@tanstack/react-query'; 
+import { useMutation, useQuery } from '@tanstack/react-query';
 import { useNavigate } from 'react-router-dom';
-import { createDiary, deleteDiary, getQuestion, updateDiary } from '../api/diary.api';  
-
+import { createDiary, deleteDiary, getQuestion, updateDiary } from '../api/diary.api';
+import type { UpdateDiaryRequest } from '../api/diary.api';
 
 export const useCreateDiary = () => {
   const navigate = useNavigate();
@@ -21,7 +21,6 @@ export const useCreateDiary = () => {
     },
   });
 };
-
 
 export const useGetQuestion = () => {
   return useQuery({

@@ -3,7 +3,7 @@ import api from '@/lib/api.ts';
 interface CreateDiaryRequest {
   title: string;
   content: string;
-  emotion: string;        
+  emotion: string;
   questionId: string;
   photoUrls: string[];
 }
@@ -16,7 +16,7 @@ export const getQuestion = () => {
   return api.get('/questions').then((res) => res.data);
 };
 
-interface UpdateDiaryRequest {
+export interface UpdateDiaryRequest {
   title: string;
   content: string;
   emotion: string;
