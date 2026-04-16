@@ -55,7 +55,7 @@ export default function HomePage() {
           <GuestView />
         )}
       </QuestionBubble>
-      <img src={myCharacter} className="w-30 h-auto" />
+      <img alt="" src={myCharacter} className="w-30 h-auto" />
     </div>
   );
 }

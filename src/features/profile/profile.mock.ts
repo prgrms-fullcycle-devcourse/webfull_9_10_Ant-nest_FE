@@ -1,47 +1,6 @@
 import { EMOTIONS } from '@/constants/emotions';
 import type { TWeeklyEmoItem } from '@/pages/profile/ProfilePage';
 
-// 유저 정보
-export const profile = {
-  profile: {
-    email: 'email@email.com',
-    nickname: '달래',
-  },
-  statistics: {
-    totalDiaries: 1,
-    totalSharedDiaries: 1,
-    // streak: 4,
-    // plazaCount: 0,
-    // 회원가입 날짜? 함께한지 n일째.. api 에서 넘겨달라고 하기!
-
-    // registrationDate: 1,
-    // attendance: 1,
-    // 광장온도
-    empathyDetail: [
-      {
-        name: 'joy',
-        count: 15,
-      },
-      {
-        name: 'heart',
-        count: 8,
-      },
-      {
-        name: 'panic',
-        count: 5,
-      },
-      {
-        name: 'sad',
-        count: 8,
-      },
-      {
-        name: 'angry',
-        count: 2,
-      },
-    ],
-  },
-};
-
 export const monthlyEmoCount = [
   {
     month: '2026-03',

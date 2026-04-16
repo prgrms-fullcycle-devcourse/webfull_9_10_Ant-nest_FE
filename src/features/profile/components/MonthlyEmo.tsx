@@ -1,99 +1,62 @@
-import { useMemo, useState } from 'react';
-import { ChevronLeftIcon, ChevronRightIcon } from '@radix-ui/react-icons';
-import type { TMonthlyEmoItem } from '@/pages/profile/ProfilePage';
-import { addMonths, format, isSameMonth, subMonths } from 'date-fns';
+// import { useState } from 'react';
+// import { ChevronLeftIcon, ChevronRightIcon } from '@radix-ui/react-icons';
+// import { addMonths, format, isSameMonth, subMonths } from 'date-fns';
+import { EMOTIONS } from '@/constants/emotions';
+import type { EmoCount } from '../types/profile.types';
+import type { EmotionKey } from '@/types/index.types';
 
-type TMonthlyEmoProps = {
-  data: TMonthlyEmoItem[];
+type Props = {
+  data: EmoCount[];
 };
 
-export default function MonthlyEmo({ data }: TMonthlyEmoProps) {
-  const [currentMonth, setCurrentMonth] = useState(() => {
-    const today = new Date();
-    return new Date(today.getFullYear(), today.getMonth(), 1);
-  });
+export default function MonthlyEmo({ data }: Props) {
+  const emoMap = Object.fromEntries(data.map((e) => [e.type, e.count]));
+  const emotionKeys = Object.keys(EMOTIONS) as EmotionKey[];
 
-  const currentMonthData = useMemo(() => {
-    return data.find((item) => item.month === format(currentMonth, 'yyyy-MM'));
-  }, [data, currentMonth]);
+  const fullEmo = emotionKeys
+    .map((key) => ({
+      type: key,
+      count: emoMap[key] ?? 0,
+    }))
+    .sort((a, b) => b.count - a.count);
 
-  const maxCount = useMemo(() => {
-    if (!currentMonthData) return 1;
-    return Math.max(...currentMonthData.emotions.map((item) => item.count), 1);
-  }, [currentMonthData]);
-
-  const handlePrevMonth = () => {
-    setCurrentMonth((prev) => subMonths(prev, 1));
-  };
-
-  const handleNextMonth = () => {
-    setCurrentMonth((prev) => addMonths(prev, 1));
-  };
-
-  const isCurrentRealMonth = useMemo(() => {
-    return isSameMonth(currentMonth, new Date());
-  }, [currentMonth]);
+  const maxCount = Math.max(...fullEmo.map((e) => e.count), 1);
+  console.log(fullEmo);
 
   return (
-    <section className="rounded-2xl bg-white shadow-[var(--shadow-middle)]">
-      <div className="flex items-center justify-between px-4 py-4">
-        <button
-          type="button"
-          onClick={handlePrevMonth}
-          className="flex h-9 w-9 items-center justify-center rounded-full text-[var(--color-gray-dark)]"
-        >
-          <ChevronLeftIcon className="h-5 w-5" />
-        </button>
+    <div className="rounded-2xl bg-white py-3 shadow-[var(--shadow-middle)]">
+      <h2 className="pb-4 pl-8 font-bold text-[var(--color-gray-dark)] ">이 달의 감정</h2>
+      <div className="px-10 pb-5 min-h-76 flex justify-center items-center">
+        <div className="space-y-1 w-full">
+          {fullEmo.map((item, index) => {
+            const widthPercent = `${(item.count / maxCount) * 100}%`;
+            console.log(EMOTIONS[item.type].emo);
+            return (
+              <div key={index} className="grid grid-cols-[24px_1fr_36px] items-center gap-3">
+                <img
+                  src={EMOTIONS[item.type].emo}
+                  alt={EMOTIONS[item.type].label}
+                  className="h-8 w-8 object-contain"
+                />
 
-        <h2 className="text-base font-bold text-[var(--color-gray-dark)]">
-          {format(currentMonth, 'yyyy년 M월')}
-        </h2>
-
-        <button
-          type="button"
-          onClick={handleNextMonth}
-          disabled={isCurrentRealMonth}
-          className="flex h-9 w-9 items-center justify-center bg-white disabled:cursor-not-allowed disabled:bg-transparent disabled:text-[var(--color-gray-light)]"
-        >
-          <ChevronRightIcon className="h-5 w-5" />
-        </button>
-      </div>
-
-      <div className="px-10 pb-5 min-h-76">
-        {!currentMonthData ? (
-          <div className="flex flex-col items-center justify-center rounded-2xl px-4 py-10 text-center">
-            <p className="text-sm font-medium text-[var(--color-gray-dark)]">
-              아직 이 달의 감정 기록이 없어요
-            </p>
-          </div>
-        ) : (
-          <div className="space-y-1">
-            {currentMonthData.emotions.map((item) => {
-              const widthPercent = `${(item.count / maxCount) * 100}%`;
-
-              return (
-                <div key={item.key} className="grid grid-cols-[24px_1fr_36px] items-center gap-3">
-                  <img src={item.icon} alt={item.label} className="h-8 w-8 object-contain" />
-
-                  <div className="h-3 overflow-hidden rounded-full bg-[var(--color-gray-light)]">
-                    <div
-                      className="h-full rounded-full transition-all duration-500"
-                      style={{
-                        width: widthPercent,
-                        backgroundColor: item.color,
-                      }}
-                    />
-                  </div>
-
-                  <span className="text-right text-sm font-semibold text-[var(--color-gray-dark)]">
-                    {item.count}
-                  </span>
+                <div className="h-3 overflow-hidden rounded-full bg-[var(--color-gray-light)]">
+                  <div
+                    className="h-full rounded-full transition-all duration-500"
+                    style={{
+                      width: widthPercent,
+                      backgroundColor: EMOTIONS[item.type].color,
+                    }}
+                  />
                 </div>
-              );
-            })}
-          </div>
-        )}
+
+                <span className="text-right text-sm font-semibold text-[var(--color-gray-dark)]">
+                  {item.count}
+                </span>
+              </div>
+            );
+          })}
+        </div>
       </div>
-    </section>
+    </div>
   );
 }
