@@ -1,18 +1,10 @@
-import { EMOTIONS } from '@/constants/emotions';
-import { DotsVerticalIcon } from '@radix-ui/react-icons';
-import * as Popover from '@radix-ui/react-popover';
 import { useNavigate } from 'react-router-dom';
-
-type TProfile = {
-  nickname: string;
-  totalDiaries: number;
-  totalSharedDiaries: number;
-  registrationDate?: number;
-  attendance?: number;
-};
+import type { ProfileResponse } from '../types/profile.types';
+import { EMOTIONS } from '@/constants/emotions';
+import { ProfileEditPopover } from './ProfileEditPopover';
 
 type TProfileCardProps = {
-  profile: TProfile;
+  profile: ProfileResponse;
   onEditNickname: () => void;
   onEditPassword: () => void;
   onDeleteAccount: () => void;
@@ -37,10 +29,10 @@ export default function ProfileCard({
           <div>
             <div className="mb-1 flex flex-wrap gap-2">
               <span className="rounded-full bg-[var(--color-primary)] border border-[var(--color-primary)] px-2 py-1 text-[10px] font-medium text-white">
-                함께한 지 {profile.registrationDate ? profile.registrationDate : 1}일째
+                함께한 지 {profile.daysSinceJoining ? profile.daysSinceJoining : 1}일째
               </span>
               <span className="rounded-full border border-[var(--color-primary)] px-2 py-1 text-[10px] font-medium text-[var(--color-primary)]">
-                연속 출석 {profile.attendance ? profile.attendance : 1}일째
+                연속 출석 {profile.consecutiveDays ? profile.consecutiveDays : 1}일째
               </span>
             </div>
 
@@ -50,46 +42,11 @@ export default function ProfileCard({
             </p>
           </div>
         </div>
-        <Popover.Root>
-          <Popover.Trigger asChild>
-            <button
-              type="button"
-              className="flex h-8 w-8 items-center justify-center text-[var(--color-gray)]"
-            >
-              <DotsVerticalIcon className="h-4 w-4" />
-            </button>
-          </Popover.Trigger>
-          <Popover.Content
-            side="bottom"
-            align="center"
-            className="rounded-xl bg-white shadow-lg overflow-hidden min-w-35"
-          >
-            <Popover.Close asChild>
-              <div>
-                <p
-                  className="text-sm text-[var(--color-gray-dark)] text-center p-3 hover:bg-[var(--color-gray-light)] hover:text-[var(--color-primary)]"
-                  onClick={() => onEditNickname()}
-                >
-                  닉네임 변경
-                </p>
-                <div className="h-px bg-[var(--color-gray-light)]" />
-                <p
-                  className="text-sm text-[var(--color-gray-dark)] text-center p-3 hover:bg-[var(--color-gray-light)] hover:text-[var(--color-primary)]"
-                  onClick={() => onEditPassword()}
-                >
-                  비밀번호 변경
-                </p>
-                <div className="h-px bg-[var(--color-gray-light)]" />
-                <p
-                  className="text-sm text-[var(--color-secondary)] text-center p-3 hover:bg-[var(--color-gray-light)]"
-                  onClick={() => onDeleteAccount()}
-                >
-                  회원 탈퇴
-                </p>
-              </div>
-            </Popover.Close>
-          </Popover.Content>
-        </Popover.Root>
+        <ProfileEditPopover
+          onEditNickname={onEditNickname}
+          onEditPassword={onEditPassword}
+          onDeleteAccount={onDeleteAccount}
+        />
       </div>
 
       <div className="grid grid-cols-2 border-t border-[var(--color-gray-light)]">

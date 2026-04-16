@@ -10,7 +10,7 @@ type TWeeklyEmoProps = {
 
 export default function WeeklyEmo({ data }: TWeeklyEmoProps) {
   return (
-    <section className="rounded-2xl shadow-[var(--shadow-middle)] px-5 py-3 bg-[#fafafa]">
+    <div className="rounded-2xl shadow-[var(--shadow-middle)] px-5 py-3 bg-[#fafafa]">
       <h2 className="pb-4 pl-8 font-bold text-[var(--color-gray-dark)] ">이 주의 감정</h2>
       <div className="grid grid-cols-7 gap-2">
         {WEEK_LABELS.map((item, index) => {
@@ -28,6 +28,6 @@ export default function WeeklyEmo({ data }: TWeeklyEmoProps) {
           );
         })}
       </div>
-    </section>
+    </div>
   );
 }
