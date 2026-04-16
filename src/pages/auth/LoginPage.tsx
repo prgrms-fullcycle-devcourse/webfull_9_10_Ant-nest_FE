@@ -121,7 +121,7 @@ export default function LoginPage() {
         {/* 로그인 */}
         <div ref={formRef}>
           <div
-            className="pt-[4rem] pr-[3rem] pb-[3rem] pl-[3rem] rounded-[4rem] bg-white shadow-middle
+            className="py-[4rem] px-[3rem] rounded-[4rem] bg-white shadow-middle
         max-sm2:p-[2rem] max-sm2:boxshadow-none max-sm2:bg-transparent max-sm2:shadow-none"
           >
             <form className="block" onSubmit={handleSubmit(onSubmit)}>
@@ -195,16 +195,16 @@ export default function LoginPage() {
                 로그인
               </Button>
 
-              <b className="block mt-4 text-[var(--color-primary)] text-center text-sm">
-                <button
-                  onClick={() => {
-                    loginAsGuest();
-                    navigate('/');
-                  }}
-                >
-                  게스트로 시작하기
-                </button>
-              </b>
+              {/*<b className="block mt-4 text-[var(--color-primary)] text-center text-sm">*/}
+              {/*  <button*/}
+              {/*    onClick={() => {*/}
+              {/*      loginAsGuest();*/}
+              {/*      navigate('/');*/}
+              {/*    }}*/}
+              {/*  >*/}
+              {/*    게스트로 시작하기*/}
+              {/*  </button>*/}
+              {/*</b>*/}
             </form>
           </div>
 
