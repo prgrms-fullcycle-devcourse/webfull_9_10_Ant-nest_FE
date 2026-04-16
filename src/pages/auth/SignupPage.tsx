@@ -15,11 +15,11 @@ import {
 } from '@/features/auth/utils/validate.ts';
 
 // ----------- Component -----------
-import FormField from '@/features/auth/components/FormField.tsx';
 import Header from '@/components/common/Header.tsx';
 
 // ----------- IMG -----------
 import imgCharacter from '@/assets/images/characters/character-draw.gif';
+import FormField from '@/components/common/FormField.tsx';
 
 interface SignupFormValues {
   email: string;
