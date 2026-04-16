@@ -2,13 +2,8 @@ import { useNavigate } from 'react-router-dom';
 import { useMutation } from '@tanstack/react-query'; // [fix] 사용하지 않는 useQuery import 제거
 import { useDebounce } from '@/hooks/useDebounce.ts';
 import { useEffect, useState } from 'react';
-import { validateEmail, validateNickname } from '@/features/auth/utils/validate.ts';
-import {
-  signupUser,
-  checkEmailDuplicate,
-  checkNicknameDuplicate,
-  loginUser,
-} from '@/features/auth/api/auth.api.ts';
+import { validateEmail } from '@/features/auth/utils/validate.ts';
+import { signupUser, checkEmailDuplicate, loginUser } from '@/features/auth/api/auth.api.ts';
 import { useAuthStore } from '@/store/authStore.ts';
 import type { User } from '@/types/index.types.ts';
 

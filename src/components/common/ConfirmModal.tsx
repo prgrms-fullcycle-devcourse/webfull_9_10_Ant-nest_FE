@@ -1,6 +1,6 @@
 import { Button } from '@radix-ui/themes';
 
-interface DiaryConfirmModalProps {
+interface Props {
   isOpen: boolean;
   title: string;
   description: string;
@@ -16,7 +16,7 @@ export default function ConfirmModal({
   confirmLabel,
   onConfirm,
   onCancel,
-}: DiaryConfirmModalProps) {
+}: Props) {
   if (!isOpen) return null;
 
   return (

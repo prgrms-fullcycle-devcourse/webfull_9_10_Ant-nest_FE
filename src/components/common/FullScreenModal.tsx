@@ -19,7 +19,7 @@ export default function FullScreenModal({ isOpen, title, desc, children, onClose
         <div className="modal-header">
           <Dialog.Title>{title}</Dialog.Title>
 
-          <Dialog.Close asChild>
+          <Dialog.Close>
             <button onClick={onClose}>✕</button>
           </Dialog.Close>
         </div>
