@@ -21,3 +21,7 @@ export interface EmoCount {
   type: EmotionKey;
   count: number;
 }
+
+export interface updateNickname {
+  nickname: string;
+}

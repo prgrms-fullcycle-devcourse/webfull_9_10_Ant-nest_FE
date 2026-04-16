@@ -1,5 +1,4 @@
 import { useState } from 'react';
-import EditNicknameModal from '@/features/profile/components/EditNicknameModal';
 import EditPasswordModal from '@/features/profile/components/EditPasswordModal';
 import MonthlyEmo from '@/features/profile/components/MonthlyEmo';
 import ProfileCard from '@/features/profile/components/ProfileCard';
@@ -12,6 +11,8 @@ import Loading from '@/components/common/Loading';
 import CommunityEmo from '@/features/profile/components/CommunityEmo';
 import type { EmotionKey } from '@/types/index.types';
 import { useQueryClient } from '@tanstack/react-query';
+import FullScreenModal from '@/components/common/FullScreenModal.tsx';
+import EditNickname from '@/features/profile/components/EditNickname.tsx';
 
 type TDayIndex = 0 | 1 | 2 | 3 | 4 | 5 | 6;
 
@@ -29,9 +30,9 @@ export default function ProfilePage() {
   const logout = useLogoutMutation();
   const queryClient = useQueryClient();
 
-  const handleSaveNickname = () => {
-    // 닉네임 변경 후 프로필 반영
-    queryClient.invalidateQueries();
+  const handleSaveNickname = async () => {
+    await queryClient.invalidateQueries({ queryKey: ['profile'] });
+    setIsNicknameOpen(false);
   };
 
   const handleSavePassword = () => {
@@ -68,15 +69,26 @@ export default function ProfilePage() {
 
       {/* 닉네임 수정 모달 */}
       {isNicknameOpen && (
-        <EditNicknameModal
-          open={isNicknameOpen}
-          onOpenChange={setIsNicknameOpen}
-          currentNickname={profile.nickname}
-          onSave={handleSaveNickname}
-        />
+        <FullScreenModal
+          isOpen={isNicknameOpen}
+          title="닉네임 변경"
+          desc="사용할 닉네임을 입력해주세요."
+          onClose={() => {
+            setIsNicknameOpen(false);
+          }}
+        >
+          <EditNickname
+            currentNickname={profile.nickname}
+            onSave={handleSaveNickname}
+            onClose={() => {
+              setIsNicknameOpen(false);
+            }}
+          />
+        </FullScreenModal>
       )}
       {/* 비밀번호 수정 모달 */}
       {isPasswordOpen && (
+        // <FullScreenModal isOpen={true} title="g2"></FullScreenModal>
         <EditPasswordModal
           open={isPasswordOpen}
           onOpenChange={setIsPasswordOpen}

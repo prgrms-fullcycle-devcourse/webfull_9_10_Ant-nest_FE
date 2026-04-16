@@ -1,12 +1,9 @@
 import { Controller, useForm } from 'react-hook-form';
 import { useEffect } from 'react';
 import { Button } from '@radix-ui/themes';
+import { useCheckNicknameDuplicate } from '@/hooks/useAuth.ts';
 
-import {
-  useSignupMutation,
-  useCheckEmailDuplicate,
-  useCheckNicknameDuplicate,
-} from '@/features/auth/hooks/useAuth.ts';
+import { useSignupMutation, useCheckEmailDuplicate } from '@/features/auth/hooks/useAuth.ts';
 import {
   validateEmail,
   validateNickname,
