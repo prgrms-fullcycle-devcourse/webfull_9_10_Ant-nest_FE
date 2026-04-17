@@ -7,7 +7,7 @@ import PostCardReaction from "../PostCard/PostCardReaction";
 import type { EmpathyStat } from "../../types/community.types";
 
 interface Props {
-    myReactionId:number;
+    myReactionId:number | null;
     postId: string;
     empathyStats: EmpathyStat[];
 }
