@@ -7,11 +7,11 @@ export const CommunityHeader = ()=>{
     const setSelectedTab = useCommunityStore((state)=>state.setSelectedTab);
 
     return(
-        <div>
+        <div className="flex w-full">
             <Button
                 variant="ghost"
                 onClick={()=>{setSelectedTab("전체")}}
-                className={`!w-40 !relative !pb-3 !text-sm !font-medium 
+                className={`!flex-1 !relative !pb-3 !text-sm !font-medium !mr-0
                 ${selectedTab === "전체"
                 ? "!text-[var(--color-primary)]"
                 : "!text-[var(--color-text-subtle)]"
@@ -20,14 +20,14 @@ export const CommunityHeader = ()=>{
                 전체
 
                 {selectedTab === "전체" && (
-                    <span className="!absolute !bottom-0 !left-0 !h-[2px] !w-full !rounded-full bg-[var(--color-primary)]" />
+                    <span className="!absolute !bottom-0 !left-0 !h-[2px] !w-[100%] !rounded-full bg-[var(--color-primary)]" />
                 )}
             </Button>
 
             <Button
                 variant="ghost"
                 onClick={()=>{setSelectedTab("내글")}}
-                className={`!w-40 !relative !pb-3 !text-sm !font-medium 
+                className={`!flex-1 !relative !pb-3 !text-sm !font-medium  !ml-0
                 ${selectedTab === "내글"
                 ? "!text-[var(--color-primary)]"
                 : "!text-[var(--color-text-subtle)]"

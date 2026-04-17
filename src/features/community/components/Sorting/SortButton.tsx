@@ -1,9 +1,9 @@
-import type { SortProps } from "@/features/community/types/community.types";
+import type { SortType } from "@/features/community/types/community.types";
 import icon from "../../../../assets/images/icons/caret-down.svg";
 import { useCommunityStore } from "@/store/communityStore";
 import { Button } from "@radix-ui/themes";
 
-export const SortButton = ({selectedSort}:SortProps)=>{
+export const SortButton = ({selectedSort} : {selectedSort: SortType | null})=>{
     const activeBottomSheet = useCommunityStore((state)=>state.activeBottomSheet);
     const setActiveBottomSheet = useCommunityStore((state)=>state.setActiveBottomSheet);
     return(
@@ -13,7 +13,12 @@ export const SortButton = ({selectedSort}:SortProps)=>{
                 onClick={()=>activeBottomSheet === null && setActiveBottomSheet("sort")}
                 variant="ghost"
             >
-                {selectedSort}
+                {selectedSort === null
+                    ? "정렬"
+                    : selectedSort === 'LATEST'
+                    ? "최신순"
+                    : "공감많은순"
+                }
                 <img src={icon} className="h-5 w-5 translate-y-[1px]"></img>
             </Button>
         </div>
