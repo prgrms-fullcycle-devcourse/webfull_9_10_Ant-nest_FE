@@ -9,10 +9,12 @@ import { useProfile } from '@/features/profile/queries/useProfileQuery';
 import Loading from '@/components/common/Loading';
 import CommunityEmo from '@/features/profile/components/CommunityEmo';
 import type { EmotionKey } from '@/types/index.types';
-import { useQueryClient } from '@tanstack/react-query';
+import { useMutation, useQueryClient } from '@tanstack/react-query';
 import FullScreenModal from '@/components/common/FullScreenModal.tsx';
 import EditNickname from '@/features/profile/components/EditNickname.tsx';
 import EditPassword from '@/features/profile/components/EditPassword.tsx';
+import { deleteUser } from '@/features/profile/api/profile.api.ts';
+import ConfirmModal from '@/components/common/ConfirmModal.tsx';
 
 type TDayIndex = 0 | 1 | 2 | 3 | 4 | 5 | 6;
 
@@ -26,9 +28,15 @@ export default function ProfilePage() {
 
   const [isNicknameOpen, setIsNicknameOpen] = useState(false);
   const [isPasswordOpen, setIsPasswordOpen] = useState(false);
+  const [isConfirm, setIsConfirm] = useState(false);
 
   const logout = useLogoutMutation();
   const queryClient = useQueryClient();
+
+  const { mutate } = useMutation({
+    mutationFn: () => deleteUser(),
+    onSuccess: () => logout(),
+  });
 
   const handleSaveNickname = async () => {
     await queryClient.invalidateQueries({ queryKey: ['profile'] });
@@ -40,7 +48,7 @@ export default function ProfilePage() {
   };
 
   const handleDeleteAccount = () => {
-    console.log('회원탈퇴 api 정말 탈퇴하시겠습니까? 모달 띄우기!');
+    mutate();
   };
 
   if (isLoading) return <Loading />;
@@ -53,7 +61,7 @@ export default function ProfilePage() {
           profile={profile}
           onEditNickname={() => setIsNicknameOpen(true)}
           onEditPassword={() => setIsPasswordOpen(true)}
-          onDeleteAccount={handleDeleteAccount}
+          onDeleteAccount={() => setIsConfirm(true)}
         />
         {/* 나의 광장 온도 */}
         <CommunityEmo emo={profile.receivedEmpathies ?? []} />
@@ -104,6 +112,15 @@ export default function ProfilePage() {
           />
         </FullScreenModal>
       )}
+      {/* 탈퇴 확인 모달 */}
+      <ConfirmModal
+        isOpen={isConfirm}
+        title="정말 탈퇴하시겠어요?"
+        description="탈퇴 시 계정 정보와 모든 데이터가 삭제되며 복구할 수 없습니다."
+        confirmLabel="탈퇴"
+        onConfirm={handleDeleteAccount}
+        onCancel={() => setIsConfirm(false)}
+      />
     </div>
   );
 }
