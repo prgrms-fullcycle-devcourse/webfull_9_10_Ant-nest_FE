@@ -1,10 +1,28 @@
 import { Button } from "@radix-ui/themes"
 import { useState } from "react";
 import { ReactionEmojisToggle } from "../PostCard/PostCardReactionToggle";
-import reactionToggle from "../../../../assets/images/icons/community-reaction-icons.png"
+import reactionToggle from "@/assets/images/emotions/emotion-blank.png"
+import { useReaction } from "../../hooks/useReaction";
+import PostCardReaction from "../PostCard/PostCardReaction";
+import type { EmpathyStat } from "../../types/community.types";
 
-const PostDetailBottomBar = () => {
+interface Props {
+    myReactionId:number;
+    postId: string;
+    empathyStats: EmpathyStat[];
+}
+const PostDetailBottomBar = ({myReactionId, postId, empathyStats} : Props) => {
+    // 리액션 토글 스위치
     const [showReactions, setShowReactions] = useState<true|false>(false);
+    
+    const { mutate } = useReaction();
+    const handleReaction = (reactionId: number, isCancel: boolean) => {
+        mutate({
+        postId: postId,
+        reactionId,
+        isCancel,
+        });
+    };
 
     return (
         <div className="fixed bottom-0 left-0 right-0 bg-white shadow-[0_-2px_8px_rgba(0,0,0,0.08)] z-50
@@ -22,7 +40,17 @@ const PostDetailBottomBar = () => {
                             </Button>
                             <div className="text-[var(--color-text-default)] text-center mt-0.5 text-[11px] text-[#66BB6A] font-semibold text-center">7</div>
                         </div>
-                        {showReactions && <ReactionEmojisToggle/>}
+                        {showReactions 
+                            ?<ReactionEmojisToggle 
+                                onClose={() => setShowReactions(false)} 
+                                handleReaction = {handleReaction}
+                                myReactionId={myReactionId}/>
+                            :<PostCardReaction
+                                empathyStats={empathyStats}
+                                myReactionId = {myReactionId}   
+                                />
+                        }
+
 
                     </div>
                 </div>
