@@ -8,6 +8,9 @@ export const validateEmail = (email: string) => {
 export const validateNickname = (nickname: string) => {
   if (!nickname) return '닉네임을 입력해주세요.';
   if (nickname.length < 2 || nickname.length > 8) return '닉네임은 2~8자리여야 합니다.';
+  if (!/^[가-힣a-zA-Z]+$/.test(nickname)) {
+    return '닉네임은 완성형 한글과 영문만 사용할 수 있습니다.';
+  }
   return true;
 };
 

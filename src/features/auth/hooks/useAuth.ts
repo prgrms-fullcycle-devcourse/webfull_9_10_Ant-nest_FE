@@ -2,13 +2,8 @@ import { useNavigate } from 'react-router-dom';
 import { useMutation } from '@tanstack/react-query'; // [fix] 사용하지 않는 useQuery import 제거
 import { useDebounce } from '@/hooks/useDebounce.ts';
 import { useEffect, useState } from 'react';
-import { validateEmail, validateNickname } from '@/features/auth/utils/validate.ts';
-import {
-  signupUser,
-  checkEmailDuplicate,
-  checkNicknameDuplicate,
-  loginUser,
-} from '@/features/auth/api/auth.api.ts';
+import { validateEmail } from '@/features/auth/utils/validate.ts';
+import { signupUser, checkEmailDuplicate, loginUser } from '@/features/auth/api/auth.api.ts';
 import { useAuthStore } from '@/store/authStore.ts';
 import type { User } from '@/types/index.types.ts';
 
@@ -32,30 +27,6 @@ export const useCheckEmailDuplicate = (email: string) => {
       .then(setIsDuplicate)
       .catch(() => {});
   }, [debouncedEmail]);
-
-  return isDuplicate;
-};
-
-/**
- * 닉네임 중복 여부를 확인
- * @param nickname
- * @param setError
- **/
-export const useCheckNicknameDuplicate = (nickname: string) => {
-  const debouncedNickname = useDebounce(nickname, 300);
-  const [isDuplicate, setIsDuplicate] = useState(false);
-
-  useEffect(() => {
-    setIsDuplicate(false);
-  }, [nickname]);
-
-  useEffect(() => {
-    if (!debouncedNickname || validateNickname(debouncedNickname) !== true) return;
-
-    checkNicknameDuplicate(debouncedNickname)
-      .then(setIsDuplicate)
-      .catch(() => {});
-  }, [debouncedNickname]);
 
   return isDuplicate;
 };

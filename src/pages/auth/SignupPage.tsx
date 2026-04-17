@@ -1,12 +1,9 @@
 import { Controller, useForm } from 'react-hook-form';
 import { useEffect } from 'react';
 import { Button } from '@radix-ui/themes';
+import { useCheckNicknameDuplicate } from '@/hooks/useAuth.ts';
 
-import {
-  useSignupMutation,
-  useCheckEmailDuplicate,
-  useCheckNicknameDuplicate,
-} from '@/features/auth/hooks/useAuth.ts';
+import { useSignupMutation, useCheckEmailDuplicate } from '@/features/auth/hooks/useAuth.ts';
 import {
   validateEmail,
   validateNickname,
@@ -15,11 +12,11 @@ import {
 } from '@/features/auth/utils/validate.ts';
 
 // ----------- Component -----------
-import FormField from '@/features/auth/components/FormField.tsx';
 import Header from '@/components/common/Header.tsx';
 
 // ----------- IMG -----------
 import imgCharacter from '@/assets/images/characters/character-draw.gif';
+import FormField from '@/components/common/FormField.tsx';
 
 interface SignupFormValues {
   email: string;

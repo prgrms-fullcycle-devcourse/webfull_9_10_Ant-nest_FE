@@ -1,6 +1,4 @@
 import { useState } from 'react';
-import EditNicknameModal from '@/features/profile/components/EditNicknameModal';
-import EditPasswordModal from '@/features/profile/components/EditPasswordModal';
 import MonthlyEmo from '@/features/profile/components/MonthlyEmo';
 import ProfileCard from '@/features/profile/components/ProfileCard';
 
@@ -11,7 +9,12 @@ import { useProfile } from '@/features/profile/queries/useProfileQuery';
 import Loading from '@/components/common/Loading';
 import CommunityEmo from '@/features/profile/components/CommunityEmo';
 import type { EmotionKey } from '@/types/index.types';
-import { useQueryClient } from '@tanstack/react-query';
+import { useMutation, useQueryClient } from '@tanstack/react-query';
+import FullScreenModal from '@/components/common/FullScreenModal.tsx';
+import EditNickname from '@/features/profile/components/EditNickname.tsx';
+import EditPassword from '@/features/profile/components/EditPassword.tsx';
+import { deleteUser } from '@/features/profile/api/profile.api.ts';
+import ConfirmModal from '@/components/common/ConfirmModal.tsx';
 
 type TDayIndex = 0 | 1 | 2 | 3 | 4 | 5 | 6;
 
@@ -25,21 +28,27 @@ export default function ProfilePage() {
 
   const [isNicknameOpen, setIsNicknameOpen] = useState(false);
   const [isPasswordOpen, setIsPasswordOpen] = useState(false);
+  const [isConfirm, setIsConfirm] = useState(false);
 
   const logout = useLogoutMutation();
   const queryClient = useQueryClient();
 
-  const handleSaveNickname = () => {
-    // 닉네임 변경 후 프로필 반영
-    queryClient.invalidateQueries();
+  const { mutate } = useMutation({
+    mutationFn: () => deleteUser(),
+    onSuccess: () => logout(),
+  });
+
+  const handleSaveNickname = async () => {
+    await queryClient.invalidateQueries({ queryKey: ['profile'] });
+    setIsNicknameOpen(false);
   };
 
   const handleSavePassword = () => {
-    console.log('비밀번호 변경하기.. API');
+    logout();
   };
 
   const handleDeleteAccount = () => {
-    console.log('회원탈퇴 api 정말 탈퇴하시겠습니까? 모달 띄우기!');
+    mutate();
   };
 
   if (isLoading) return <Loading />;
@@ -52,7 +61,7 @@ export default function ProfilePage() {
           profile={profile}
           onEditNickname={() => setIsNicknameOpen(true)}
           onEditPassword={() => setIsPasswordOpen(true)}
-          onDeleteAccount={handleDeleteAccount}
+          onDeleteAccount={() => setIsConfirm(true)}
         />
         {/* 나의 광장 온도 */}
         <CommunityEmo emo={profile.receivedEmpathies ?? []} />
@@ -68,21 +77,50 @@ export default function ProfilePage() {
 
       {/* 닉네임 수정 모달 */}
       {isNicknameOpen && (
-        <EditNicknameModal
-          open={isNicknameOpen}
-          onOpenChange={setIsNicknameOpen}
-          currentNickname={profile.nickname}
-          onSave={handleSaveNickname}
-        />
+        <FullScreenModal
+          isOpen={isNicknameOpen}
+          title="닉네임 변경"
+          desc="사용할 닉네임을 입력해주세요."
+          onClose={() => {
+            setIsNicknameOpen(false);
+          }}
+        >
+          <EditNickname
+            currentNickname={profile.nickname}
+            onSave={handleSaveNickname}
+            onClose={() => {
+              setIsNicknameOpen(false);
+            }}
+          />
+        </FullScreenModal>
       )}
       {/* 비밀번호 수정 모달 */}
       {isPasswordOpen && (
-        <EditPasswordModal
-          open={isPasswordOpen}
-          onOpenChange={setIsPasswordOpen}
-          onSave={handleSavePassword}
-        />
+        <FullScreenModal
+          isOpen={isPasswordOpen}
+          title="비밀번호 변경"
+          desc="새로 사용할 비밀번호를 입력해주세요."
+          onClose={() => {
+            setIsPasswordOpen(false);
+          }}
+        >
+          <EditPassword
+            onClose={() => {
+              setIsPasswordOpen(false);
+            }}
+            onChange={handleSavePassword}
+          />
+        </FullScreenModal>
       )}
+      {/* 탈퇴 확인 모달 */}
+      <ConfirmModal
+        isOpen={isConfirm}
+        title="정말 탈퇴하시겠어요?"
+        description="탈퇴 시 계정 정보와 모든 데이터가 삭제되며 복구할 수 없습니다."
+        confirmLabel="탈퇴"
+        onConfirm={handleDeleteAccount}
+        onCancel={() => setIsConfirm(false)}
+      />
     </div>
   );
 }

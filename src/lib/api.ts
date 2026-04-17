@@ -10,8 +10,6 @@ const api = axios.create({
 
 // 요청 인터셉터 - 토큰 주입
 api.interceptors.request.use((config) => {
-  // Zustand persist가 localStorage에 저장한 토큰을 읽음
-  // (순환 import 방지를 위해 직접 접근)
   const raw = localStorage.getItem('auth-storage');
   if (raw) {
     try {
@@ -30,7 +28,11 @@ api.interceptors.request.use((config) => {
 api.interceptors.response.use(
   (response) => response,
   (error) => {
-    if (error.response?.status === 401) {
+    const url = error.config?.url ?? '';
+    const isPasswordChange = url.includes('/members/me/password');
+    const isLogin = url.includes('/login');
+
+    if (error.response?.status === 401 && !isPasswordChange && !isLogin) {
       localStorage.removeItem('auth-storage');
       window.location.href = '/login';
     }
