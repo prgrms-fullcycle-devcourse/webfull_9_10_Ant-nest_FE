@@ -1,5 +1,4 @@
 import { useState } from 'react';
-import EditPasswordModal from '@/features/profile/components/EditPasswordModal';
 import MonthlyEmo from '@/features/profile/components/MonthlyEmo';
 import ProfileCard from '@/features/profile/components/ProfileCard';
 
@@ -13,6 +12,7 @@ import type { EmotionKey } from '@/types/index.types';
 import { useQueryClient } from '@tanstack/react-query';
 import FullScreenModal from '@/components/common/FullScreenModal.tsx';
 import EditNickname from '@/features/profile/components/EditNickname.tsx';
+import EditPassword from '@/features/profile/components/EditPassword.tsx';
 
 type TDayIndex = 0 | 1 | 2 | 3 | 4 | 5 | 6;
 
@@ -88,12 +88,21 @@ export default function ProfilePage() {
       )}
       {/* 비밀번호 수정 모달 */}
       {isPasswordOpen && (
-        // <FullScreenModal isOpen={true} title="g2"></FullScreenModal>
-        <EditPasswordModal
-          open={isPasswordOpen}
-          onOpenChange={setIsPasswordOpen}
-          onSave={handleSavePassword}
-        />
+        <FullScreenModal
+          isOpen={isPasswordOpen}
+          title="비밀번호 변경"
+          desc="새로 사용할 비밀번호를 입력해주세요."
+          onClose={() => {
+            setIsPasswordOpen(false);
+          }}
+        >
+          <EditPassword
+            onClose={() => {
+              setIsPasswordOpen(false);
+            }}
+            onChange={handleSavePassword}
+          />
+        </FullScreenModal>
       )}
     </div>
   );

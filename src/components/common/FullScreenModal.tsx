@@ -24,25 +24,27 @@ export default function FullScreenModal({ isOpen, title, desc, children, onClose
           </Dialog.Close>
         </div>
 
-        <div className="modal-desc">
-          <motion.div
-            className="flex justify-center py-3"
-            animate={{ rotate: [-10, 10, -10] }}
-            transition={{
-              duration: 0.6,
-              repeat: Infinity,
-              ease: 'easeInOut',
-            }}
-          >
-            <img src={dallae} className="size-15" alt="" />
-          </motion.div>
+        <div className="scroll">
+          <div className="modal-desc">
+            <motion.div
+              className="flex justify-center py-3"
+              animate={{ rotate: [-10, 10, -10] }}
+              transition={{
+                duration: 0.6,
+                repeat: Infinity,
+                ease: 'easeInOut',
+              }}
+            >
+              <img src={dallae} className="size-15" alt="" />
+            </motion.div>
 
-          <Dialog.Description className="mt-2 text-center text-sm text-[var(--color-gray-dark)]">
-            {desc}
-          </Dialog.Description>
+            <Dialog.Description className="mt-2 text-center text-sm text-[var(--color-gray-dark)]">
+              {desc}
+            </Dialog.Description>
+          </div>
+
+          <div className="modal-contents">{children}</div>
         </div>
-
-        <div className="modal-contents">{children}</div>
       </Dialog.Content>
     </Dialog.Root>
   );

@@ -4,6 +4,7 @@
 @import './styles/fonts.css';
 @import './styles/radix-overrides.css';
 @import "./styles/calendar.css";
+@import "./styles/modal.css";
 
 @theme {
   /* 기본 */

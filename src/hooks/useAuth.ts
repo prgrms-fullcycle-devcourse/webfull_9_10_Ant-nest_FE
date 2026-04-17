@@ -3,7 +3,7 @@ import { useAuthStore } from '@/store/authStore.ts';
 import { useDebounce } from '@/hooks/useDebounce.ts';
 import { useEffect, useState } from 'react';
 import { validateNickname } from '@/features/auth/utils/validate.ts';
-import { checkNicknameDuplicate } from '@/features/auth/api/auth.api.ts';
+import { checkNicknameDuplicate } from '@/api/auth.api.ts';
 
 /**
  * 로그아웃 훅
