@@ -11,7 +11,7 @@ export interface ApiResponse<T> {
 }
 
 // ===== 사용자 =====
-export interface updatePassword {
+export interface UpdatePassword {
   currentPassword: string;
   newPassword: string;
   checkPassword: string;

@@ -36,7 +36,7 @@ export default function ProfilePage() {
   };
 
   const handleSavePassword = () => {
-    console.log('비밀번호 변경하기.. API');
+    logout();
   };
 
   const handleDeleteAccount = () => {

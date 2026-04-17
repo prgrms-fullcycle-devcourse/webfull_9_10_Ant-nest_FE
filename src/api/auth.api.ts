@@ -1,5 +1,5 @@
 import api from '@/lib/api.ts';
-import type { ApiResponse, updatePassword } from '@/types/index.types.ts';
+import type { ApiResponse, UpdatePassword } from '@/types/index.types.ts';
 
 /**
  * 닉네임 중복 여부를 확인
@@ -28,10 +28,7 @@ export const changePassword = (
 ) => {
   return api
     .patch<
-      ApiResponse<updatePassword>
+      ApiResponse<UpdatePassword>
     >('/members/me/password', { currentPassword, newPassword, checkPassword })
-    .then((res) => {
-      console.log('ghkrls', res.data);
-      debugger;
-    });
+    .then((res) => res.data);
 };
