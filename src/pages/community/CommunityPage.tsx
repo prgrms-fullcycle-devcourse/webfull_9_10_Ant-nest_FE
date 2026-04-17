@@ -5,59 +5,56 @@ import { SortButton } from '@/features/community/components/Sorting/SortButton';
 import FilterBottomSheet from '@/features/community/components/Filter/EmotionFilterBottomSheet';
 import SortBottomSheet from '@/features/community/components/Sorting/SortBottomSheet';
 import { useCommunityStore } from '@/store/communityStore';
-import type { Post } from '../../features/community/types/community.types';
+import { usePosts } from '@/features/community/hooks/usePosts';
+import { useState } from 'react';
+import type { SortType } from '@/features/community/types/community.types';
 
-// 목업 데이터
-const mockPosts: Post[] = [
-  {
-    id: 1,
-    question: '오늘 당신을 미소 짓게 만든 것은 무엇인가요?',
-    answer:
-      '완전 완전 맛있는 밥을 먹었음',
-    isMine: true,
-  },
-  {
-    id: 2,
-    question: '요즘 가장 자주 생각나는 사람은 누구인가요?',
-    answer:
-      '오랜만에 연락한 친구가 갑자기 “밥 먹었어?”라고 물어봐서 괜히 마음이 따뜻해졌다. 별거 아닌 말인데도 오랫동안 기억에 남을 것 같은 하루였다.',
-    isMine: false,
-  },
-  {
-    id: 3,
-    question: '오늘 하루 중 가장 길게 기억에 남은 순간은 언제였나요?',
-    answer:
-      '퇴근길 하늘이 생각보다 예뻐서 잠깐 멈춰 서서 봤다. 바쁜 날이었는데도 그 순간만큼은 아무 생각 없이 숨 돌릴 수 있어서 좋았다.',
-    isMine: false,
-  },
-];
 
 export default function CommunityPage() {
   const activeBottomSheet = useCommunityStore((state) => state.activeBottomSheet);
   const activeTab = useCommunityStore((state) => state.selectedTab);
+  const selectedEmotions = useCommunityStore((state) => state.selectedEmotions);
 
+  const [sort, setSort] = useState<SortType | null>(null);
+  const { data : posts } = usePosts(sort ?? undefined);
+
+  // 감정 필터 전체 선택
+  const isAllSelected =
+    selectedEmotions.length === 0 ||
+    selectedEmotions.length === 8;
+
+  // 포스트 필터링
+  const filteredPosts = posts?.filter((post) => {
+    // 내글 탭이면 필터 안함
+    if (activeTab === '내글') return post.isMine;
+
+    // 전체 선택이면 전부 통과
+    if (isAllSelected) return true;
+
+    // 감정 필터 적용
+    return (
+      selectedEmotions.includes(post.emotion.type)
+    );
+  });
+  
   return (
     <div>
+      <div className="m-5"></div>
       <CommunityHeader></CommunityHeader>
 
+      {
+      activeTab === '전체' &&
       <div className="flex items-center justify-end gap-8 mr-4 mt-4">
         <FilterButton />
-        <SortButton selectedSort="최신순" />
+        <SortButton selectedSort= {sort}/>
       </div>
+      }
 
-      {/* 일단 map으로 구현 */}
-      {activeTab === '전체' &&
-        mockPosts.map((post) => {
-          return <PostCard post={post}></PostCard>;
-        })}
-      {activeTab === '내글' &&
-        mockPosts
-          .filter((post) => post.isMine === true)
-          .map((post) => {
-            return <PostCard post={post}></PostCard>;
-          })}
-
-      {activeBottomSheet === 'sort' && <SortBottomSheet />}
+      {filteredPosts?.map((post)=>
+        <PostCard key={post.postId} post={post}></PostCard>
+      )}
+      
+      {activeBottomSheet === 'sort' && <SortBottomSheet setSort={setSort} currentSort={sort}/>}
       {activeBottomSheet === 'filter' && <FilterBottomSheet />}
     </div>
   );
