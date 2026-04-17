@@ -4,6 +4,7 @@ import { changeNickname } from '@/features/profile/api/profile.api.ts';
 import { useMutation } from '@tanstack/react-query';
 import { validateNickname } from '@/features/auth/utils/validate.ts';
 import { useCheckNicknameDuplicate } from '@/hooks/useAuth.ts';
+import { Button } from '@radix-ui/themes';
 
 // ----------- Component -----------
 import FormField from '@/components/common/FormField.tsx';
@@ -84,22 +85,17 @@ export default function EditNickname({ currentNickname, onClose, onSave }: Props
       </div>
 
       <div className="modal-bottom">
-        <button
-          type="button"
-          className="flex-1 rounded-xl bg-[var(--color-gray-light)] px-4 py-3 text-sm font-medium text-[var(--color-gray-dark)]"
-          onClick={onClose}
-        >
+        <Button type="button" onClick={onClose}>
           취소
-        </button>
+        </Button>
 
-        <button
+        <Button
           type="button"
-          className="flex-1 rounded-xl bg-[var(--color-primary)] px-4 py-3 text-sm font-medium text-white disabled:cursor-not-allowed disabled:opacity-50"
           disabled={isPending || !isValid || nickname === currentNickname}
           onClick={handleSave}
         >
           저장
-        </button>
+        </Button>
       </div>
     </div>
   );
