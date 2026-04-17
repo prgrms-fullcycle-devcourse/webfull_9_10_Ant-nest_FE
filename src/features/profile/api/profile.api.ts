@@ -1,6 +1,6 @@
 import api from '@/lib/api';
 import type { ApiResponse } from '@/types/index.types';
-import type { ProfileResponse, updateNickname } from '../types/profile.types';
+import type { MonthlyEmoResponse, ProfileResponse, updateNickname } from '../types/profile.types';
 
 export const fetchProfile = () => {
   return api.get<ApiResponse<ProfileResponse>>(`/members/me`).then((res) => res.data.data);
@@ -21,4 +21,12 @@ export const changeNickname = (nickname: string) => {
  **/
 export const deleteUser = () => {
   return api.delete<ApiResponse<null>>('/members/me').then((res) => res.data);
+};
+
+export const fetchMonthlyEmo = (year: number, month: number) => {
+  return api
+    .get<
+      ApiResponse<MonthlyEmoResponse>
+    >(`members/me/monthly-emotions`, { params: { year, month } })
+    .then((res) => res.data.data);
 };

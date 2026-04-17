@@ -1,6 +1,3 @@
-// import { useState } from 'react';
-// import { ChevronLeftIcon, ChevronRightIcon } from '@radix-ui/react-icons';
-// import { addMonths, format, isSameMonth, subMonths } from 'date-fns';
 import { EMOTIONS } from '@/constants/emotions';
 import type { EmoCount } from '../types/profile.types';
 import type { EmotionKey } from '@/types/index.types';
@@ -26,7 +23,7 @@ export default function MonthlyEmo({ data }: Props) {
   return (
     <div className="rounded-2xl bg-white py-3 shadow-[var(--shadow-middle)]">
       <h2 className="pb-4 pl-8 font-bold text-[var(--color-gray-dark)] ">이 달의 감정</h2>
-      <div className="px-10 pb-5 min-h-76 flex justify-center items-center">
+      <div className="px-6 pb-5 min-h-76 flex justify-center items-center">
         <div className="space-y-1 w-full">
           {fullEmo.map((item, index) => {
             const widthPercent = `${(item.count / maxCount) * 100}%`;
