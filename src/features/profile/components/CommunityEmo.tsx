@@ -8,9 +8,9 @@ type Props = {
 export default function CommunityEmo({ emo }: Props) {
   console.log('emo', emo);
   return (
-    <div className="rounded-2xl shadow-[var(--shadow-middle)] px-5 py-3 bg-[#fafafa]">
+    <div className="rounded-2xl shadow-[var(--shadow-middle)] py-3 bg-[#fafafa]">
       <h2 className="pb-4 pl-8 font-bold text-[var(--color-gray-dark)]">나의 광장 온도</h2>
-      <div className="grid grid-cols-5 gap-4 px-4 justify-items-center">
+      <div className="grid grid-cols-5 gap-4 px-8 justify-items-center">
         {REACTION_EMO.map((reaction) => {
           const matched = emo.find((e) => e.name === reaction.tag);
           const emoCount = matched?.count ?? 0;
