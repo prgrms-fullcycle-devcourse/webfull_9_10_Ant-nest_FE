@@ -1,4 +1,4 @@
-import type { EmotionKey } from '@/types/index.types';
+import type { Emotion, EmotionKey } from '@/types/index.types';
 
 export interface ProfileResponse {
   email: string;
@@ -24,4 +24,16 @@ export interface EmoCount {
 
 export interface updateNickname {
   nickname: string;
+}
+
+export interface Days {
+  day: number;
+  diaryId: number;
+  emotion: Emotion;
+}
+
+export interface MonthlyEmoResponse {
+  year: number;
+  month: number;
+  days: Days[];
 }

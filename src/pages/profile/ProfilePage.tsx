@@ -2,29 +2,21 @@ import { useState } from 'react';
 import MonthlyEmo from '@/features/profile/components/MonthlyEmo';
 import ProfileCard from '@/features/profile/components/ProfileCard';
 
-import { weeklyEmo } from '@/features/profile/profile.mock';
-import WeeklyEmo from '@/features/profile/components/WeeklyEmo';
 import { useLogoutMutation } from '@/hooks/useAuth';
-import { useProfile } from '@/features/profile/queries/useProfileQuery';
+import { useProfile, useWeeklyEmo } from '@/features/profile/queries/useProfileQuery';
 import Loading from '@/components/common/Loading';
 import CommunityEmo from '@/features/profile/components/CommunityEmo';
-import type { EmotionKey } from '@/types/index.types';
 import { useMutation, useQueryClient } from '@tanstack/react-query';
 import FullScreenModal from '@/components/common/FullScreenModal.tsx';
 import EditNickname from '@/features/profile/components/EditNickname.tsx';
 import EditPassword from '@/features/profile/components/EditPassword.tsx';
 import { deleteUser } from '@/features/profile/api/profile.api.ts';
 import ConfirmModal from '@/components/common/ConfirmModal.tsx';
-
-type TDayIndex = 0 | 1 | 2 | 3 | 4 | 5 | 6;
-
-export type TWeeklyEmoItem = {
-  index: TDayIndex;
-  emotion: EmotionKey;
-};
+import WeeklyEmo from '@/features/profile/components/WeeklyEmo';
 
 export default function ProfilePage() {
   const { data: profile, isLoading } = useProfile();
+  const { data: weeklyEmo = [] } = useWeeklyEmo();
 
   const [isNicknameOpen, setIsNicknameOpen] = useState(false);
   const [isPasswordOpen, setIsPasswordOpen] = useState(false);
@@ -67,7 +59,7 @@ export default function ProfilePage() {
         <CommunityEmo emo={profile.receivedEmpathies ?? []} />
 
         {/* 이달/이번주 감정 */}
-        <WeeklyEmo data={weeklyEmo} />
+        <WeeklyEmo weeklyEmo={weeklyEmo} />
         <MonthlyEmo data={profile.monthlyEmotions} />
         {/* 로그아웃 */}
         <button type="button" className="pt-2 text-sm font-medium text-red-400" onClick={logout}>
