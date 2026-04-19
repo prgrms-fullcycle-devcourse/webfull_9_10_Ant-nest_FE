@@ -3,7 +3,6 @@ import { useNavigate } from 'react-router-dom';
 import { createDiary, deleteDiary, getDiary, getQuestion, updateDiary } from '../api/diary.api';
 import type { UpdateDiaryRequest } from '../api/diary.api';
 
-
 export const useCreateDiary = () => {
   const navigate = useNavigate();
 
