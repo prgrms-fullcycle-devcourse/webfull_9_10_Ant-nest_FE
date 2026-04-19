@@ -1,6 +1,6 @@
 import { useAuthStore } from '@/store/authStore';
 import { useQuery } from '@tanstack/react-query';
-import { fetchMonthlyEmo, fetchProfile } from '../api/profile.api';
+import { fetchMonthlyEmo, fetchProfile, fetchSquareHistory } from '../api/profile.api';
 import { endOfWeek, startOfWeek } from 'date-fns';
 import { useMemo } from 'react';
 import { getCurrentWeek } from '@/utils/formatDate';
@@ -63,4 +63,11 @@ export const useWeeklyEmo = () => {
     isLoading: firstQuery.isLoading || secondQuery.isLoading,
     isError: firstQuery.isError || secondQuery.isError,
   };
+};
+
+export const useSquareHistory = () => {
+  return useQuery({
+    queryKey: ['squareHistory'],
+    queryFn: fetchSquareHistory,
+  });
 };

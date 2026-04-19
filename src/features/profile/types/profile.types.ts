@@ -37,3 +37,14 @@ export interface MonthlyEmoResponse {
   month: number;
   days: Days[];
 }
+
+export interface SquareHistoryResponse {
+  postId: string;
+  diaryId: string;
+  title: string;
+  content: string;
+  totalEmpathyCount: number;
+  empathyStats: ReceivedEmpathies[];
+  sharedAt: string;
+  isActive: boolean;
+}
