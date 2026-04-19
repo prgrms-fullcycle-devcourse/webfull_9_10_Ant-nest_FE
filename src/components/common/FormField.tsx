@@ -43,7 +43,7 @@ export default function FormField({
           'relative mt-[0.5rem] [&.rt-TextFieldRoot]:!h-[3.7rem] [&>input]:!py-0 [&>input]:!pr-[0.8rem] [&>input]:!pl-[1.4rem] input-shadow',
           { 'is-error': !!error, 'is-success': !error && !!success },
         )}
-        value={value}
+        value={value ?? ''}
         placeholder={placeholder}
         type={type === 'password' ? (show ? 'text' : 'password') : type}
         onChange={(e) => onChange(e.target.value)}
