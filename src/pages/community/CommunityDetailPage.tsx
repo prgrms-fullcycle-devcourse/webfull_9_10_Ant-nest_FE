@@ -35,7 +35,8 @@ export default function CommunityDetailPage() {
       <PostDetailBottomBar 
         myReactionId={post.myReactionId} 
         postId={id} 
-        empathyStats={post.empathyStats} 
+        empathyStats={post.empathyStats}
+        totalEmpathyCount={post.totalEmpathyCount} 
       />
       <div className="h-[80px]" />
     </div>
