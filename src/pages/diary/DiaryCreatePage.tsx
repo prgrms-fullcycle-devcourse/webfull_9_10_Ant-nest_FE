@@ -10,7 +10,7 @@ import { useNavigate, useParams } from 'react-router-dom';
 import { EMOTIONS } from '../../features/diary/utils/emotions';
 import { formatDateStr } from '../../utils/formatDate';
 import ImagePreviewModal from '../../components/common/ImagePreviewModal';
-import { useCreateDiary, useGetDiary, useGetQuestion, useUpdateDiary } from '../../features/diary/hooks/useDiary';
+import { useCreateDiary, useGetDiary, useGetQuestion, useUpdateDiary, useToggleShare } from '../../features/diary/hooks/useDiary';
 
 export default function DiaryCreatePage() {
   const navigate = useNavigate();
@@ -31,9 +31,16 @@ export default function DiaryCreatePage() {
   const { data: questionData } = useGetQuestion();
   const question = questionData?.data?.content ?? '';
   const questionId = questionData?.data?.questionId ?? '';
-  
 
-  const { mutate: createDiary } = useCreateDiary();
+
+  const { mutate: toggleShare } = useToggleShare();
+
+  const { mutate: createDiary } = useCreateDiary((diaryId) => {
+    if (isPublic) {
+      toggleShare({ diaryId, isActive: true });
+    }
+  });
+
   const { mutate: updateDiary } = useUpdateDiary();
 
   const emotionsPerview = 5;
@@ -111,7 +118,11 @@ export default function DiaryCreatePage() {
           title,
           content,
           emotion: selectedEmotionData.emotion,
-          photoUrls: [],
+          images: images.map((img) => img.file),
+        },
+      }, {
+        onSuccess: () => {
+          toggleShare({ diaryId, isActive: isPublic });
         },
       });
     } else {
@@ -120,7 +131,7 @@ export default function DiaryCreatePage() {
         content,
         emotion: selectedEmotionData.emotion,
         questionId: questionId,
-        photoUrls: [],
+        images: images.map((img) => img.file),
       });
     }
 
