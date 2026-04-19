@@ -1,7 +1,7 @@
 import { useCommunityStore } from '@/store/communityStore';
 import { Button } from '@radix-ui/themes';
 import type { SortType } from '../../types/community.types';
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 
 type Props = {
   setSort: (sort: SortType | null) => void;
@@ -13,6 +13,8 @@ const SortBottomSheet = ({ setSort, currentSort }: Props ) => {
   const setActiveBottomSheet = useCommunityStore((state) => state.setActiveBottomSheet);
 
   const [tempSort, setTempSort] = useState<SortType | null>(currentSort);
+
+  useEffect(() => { setTempSort(currentSort); }, [currentSort]);
 
   const sortOptions: { label: string; value: SortType | null}[] = [
   { label: '최신순', value: 'LATEST' },
@@ -27,6 +29,14 @@ const SortBottomSheet = ({ setSort, currentSort }: Props ) => {
     }
     setActiveBottomSheet(null);
   };
+
+  const handelClick = (value : SortType | null) => {
+    if (tempSort === value) {
+      setTempSort(null);
+    } else {
+      setTempSort(value);
+    }
+  }
 
   return (
     <div>
@@ -58,7 +68,8 @@ const SortBottomSheet = ({ setSort, currentSort }: Props ) => {
                     ? '!text-[var(--color-primary)]'
                     : '!text-[var(--color-text-default)]'}
                 `}
-                onClick={() => setTempSort(option.value)}
+                // onClick={() => setTempSort(option.value)}
+                onClick={() => handelClick(option.value)}
               >
                 {option.label}
               </Button>
