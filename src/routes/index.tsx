@@ -60,6 +60,7 @@ export const router = createBrowserRouter([
         element: <PlainLayout />,
         children: [
           { path: '/diary/new', element: <DiaryCreatePage /> }, // 일기작성
+          { path: '/diary/edit/:diaryId', element: <DiaryCreatePage /> },
           { path: '/diary/:id', element: <DiaryDetailPage /> }, // 내 일기 상세 페이지
           { path: '/community/:id', element: <CommunityDetailPage /> }, // 달래광장 상세 페이지
         ],

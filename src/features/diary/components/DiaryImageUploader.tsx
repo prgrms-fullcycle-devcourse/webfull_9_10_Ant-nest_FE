@@ -20,8 +20,8 @@ export default function DiaryImageUploader({
   return (
     <>
       <div className="absolute left-[16px] bottom-[18px] flex items-center gap-[8px]">
-        {/* + 버튼: readOnly면 숨김 */}
-        {!readOnly && (
+        {/* + 버튼: readOnly면 숨김, 5장이면 숨김 */}
+        {!readOnly && images.length < 5 && (
           <IconButton
             variant="ghost"
             className="!w-[55px] !h-[55px] !rounded-[16px] !shadow-[0px_4px_8px_rgba(0,0,0,0.05)] !bg-white !p-0"
@@ -32,31 +32,30 @@ export default function DiaryImageUploader({
             </label>
           </IconButton>
         )}
-        {/* 미리보기 */}
-        {images.length > 0 && (
-          <div className="relative w-[55px] h-[55px]">
+        {/* 미리보기 - 여러 장 */}
+        {images.map((img, index) => (
+          <div key={index} className="relative w-[55px] h-[55px]">
             <img
-              src={images[0].preview}
-              alt="첨부 사진"
-              onClick={() => setPreviewModal(images[0].preview)}
+              src={img.preview}
+              alt={`첨부 사진 ${index + 1}`}
+              onClick={() => setPreviewModal(img.preview)}
               className="w-full h-full object-cover rounded-[12px] cursor-pointer"
             />
-            {/* X 버튼: readOnly면 숨김 */}
             {!readOnly && (
               <IconButton
                 type="button"
                 variant="solid"
                 radius="full"
                 className="!absolute !top-[-6px] !right-[-6px] !w-[20px] !h-[20px] !bg-[#ff6b6b] !text-white !border-none"
-                onClick={() => handleRemoveImage(0)}>
+                onClick={() => handleRemoveImage(index)}>
                 <Cross2Icon />
               </IconButton>
             )}
           </div>
-        )}
+        ))}
       </div>
       {!readOnly && (
-        <input type="file" id="imageUpload" accept="image/*" className="hidden" onChange={handleAddImages} />
+        <input type="file" id="imageUpload" accept="image/*" multiple className="hidden" onChange={handleAddImages} />
       )}
     </>
   );

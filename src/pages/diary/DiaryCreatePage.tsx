@@ -1,4 +1,4 @@
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 
 import DiaryHeader from '../../components/common/DiaryHeader';
 import DiaryQuestion from '../../components/common/DiaryQuestion';
@@ -6,15 +6,17 @@ import EmotionSlider from '../../features/diary/components/EmotionSlider';
 import DiaryForm from '../../components/common/DiaryForm';
 import DiaryBottomBar from '../../components/common/DiaryBottomBar';
 import DiaryConfirmModal from '../../features/diary/components/DiaryConfirmModal';
-import { useNavigate } from 'react-router-dom';
+import { useNavigate, useParams } from 'react-router-dom';
 import { EMOTIONS } from '../../features/diary/utils/emotions';
 import { formatDateStr } from '../../utils/formatDate';
 import ImagePreviewModal from '../../components/common/ImagePreviewModal';
-import { useCreateDiary, useGetQuestion } from '../../features/diary/hooks/useDiary';
-
+import { useCreateDiary, useGetDiary, useGetQuestion, useUpdateDiary } from '../../features/diary/hooks/useDiary';
 
 export default function DiaryCreatePage() {
   const navigate = useNavigate();
+  const { diaryId } = useParams();     
+  const isEditMode = Boolean(diaryId);
+  const { data: diaryData } = useGetDiary(diaryId);
 
   const [currentSlide, setCurrentSlide] = useState(0);
   const [selectedEmotion, setSelectedEmotion] = useState('');
@@ -29,8 +31,10 @@ export default function DiaryCreatePage() {
   const { data: questionData } = useGetQuestion();
   const question = questionData?.data?.content ?? '';
   const questionId = questionData?.data?.questionId ?? '';
+  
 
   const { mutate: createDiary } = useCreateDiary();
+  const { mutate: updateDiary } = useUpdateDiary();
 
   const emotionsPerview = 5;
   const startIndex = currentSlide;
@@ -38,6 +42,23 @@ export default function DiaryCreatePage() {
   const selectedEmotionData = EMOTIONS.find((e) => e.id === selectedEmotion);
 
   const dateStr = formatDateStr(new Date());
+
+  useEffect(() => {
+    if (!diaryData?.data) return;
+    
+    const d = diaryData.data as {
+      title: string;
+      content: string;
+      emotion: { type: string; name: string };
+    };
+
+    queueMicrotask(() => {
+      setTitle(d.title);
+      setContent(d.content);
+      const matched = EMOTIONS.find((e) => e.emotion === d.emotion.type);
+      if (matched) setSelectedEmotion(matched.id);
+    });
+  }, [diaryData]);
 
   const handlePrevSlide = () => {
     setCurrentSlide((prev) => Math.max(prev - 1, 0));
@@ -50,12 +71,16 @@ export default function DiaryCreatePage() {
   const handleAddImages = (e: React.ChangeEvent<HTMLInputElement>) => {
     if (!e.target.files || e.target.files.length === 0) return;
 
-    if (images.length > 0) {
-      URL.revokeObjectURL(images[0].preview);
-    }
+    const newImages = Array.from(e.target.files).map((file) => ({
+      file,
+      preview: URL.createObjectURL(file),
+    }));
 
-    const file = e.target.files[0];
-    setImages([{ file, preview: URL.createObjectURL(file) }]);
+    setImages((prev) => {
+      const total = [...prev, ...newImages].slice(0, 5);
+      return total;
+    });
+
     e.target.value = '';
   };
 
@@ -72,22 +97,35 @@ export default function DiaryCreatePage() {
     });
   };
 
-const handleSave = () => {
-  if (!selectedEmotionData) {
-    alert('감정을 선택해주세요');
-    return;
-  }
 
-  createDiary({
-    title,
-    content,
-    emotion: selectedEmotionData.emotion,
-    questionId: questionId,
-    photoUrls: [],
-  });
+  const handleSave = () => {
+    if (!selectedEmotionData) {
+      alert('감정을 선택해주세요');
+      return;
+    }
 
-  setSaveModalOpen(false);
-};
+    if (isEditMode && diaryId) {
+      updateDiary({
+        diaryId,
+        data: {
+          title,
+          content,
+          emotion: selectedEmotionData.emotion,
+          photoUrls: [],
+        },
+      });
+    } else {
+      createDiary({
+        title,
+        content,
+        emotion: selectedEmotionData.emotion,
+        questionId: questionId,
+        photoUrls: [],
+      });
+    }
+
+    setSaveModalOpen(false);
+  };
 
   return (
     <div className="diaryCreateWrap">

@@ -24,9 +24,13 @@ export interface UpdateDiaryRequest {
 }
 
 export const updateDiary = (diaryId: string, data: UpdateDiaryRequest) => {
-  return api.put(`/diaries/${diaryId}`, data).then((res) => res.data);
+  return api.patch(`/diaries/${diaryId}`, data).then((res) => res.data);
 };
 
 export const deleteDiary = (diaryId: string) => {
   return api.delete(`/diaries/${diaryId}`).then((res) => res.data);
+};
+
+export const getDiary = (diaryId: string) => {
+  return api.get(`/diaries/${diaryId}`).then((res) => res.data);
 };
