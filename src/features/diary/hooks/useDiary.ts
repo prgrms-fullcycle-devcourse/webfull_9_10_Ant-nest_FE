@@ -73,8 +73,13 @@ export const useGetDiary = (diaryId?: string) => {
 };
 
 export const useToggleShare = () => {
+  const queryClient = useQueryClient();
+  
   return useMutation({
     mutationFn: ({ diaryId, isActive }: { diaryId: string; isActive: boolean }) =>
       toggleShareDiary(diaryId, isActive),
+    onSuccess: () => {
+      queryClient.invalidateQueries();
+    },
   });
 };
