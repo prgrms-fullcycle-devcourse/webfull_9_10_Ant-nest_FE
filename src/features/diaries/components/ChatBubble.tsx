@@ -2,13 +2,22 @@ import questionEmo from '@/assets/images/logos/logo.png';
 import { useNavigate } from 'react-router-dom';
 import type { DiaryItem } from '../types/diaries.types';
 import { EMOTIONS } from '@/constants/emotions';
+import Character from '@/assets/images/emotions/emotion-blank.png';
 
 type TChatBubbleProps = {
   diaries: DiaryItem[];
 };
 
 export default function ChatBubble({ diaries }: TChatBubbleProps) {
+  console.log(diaries);
   const navigate = useNavigate();
+  if (diaries.length === 0)
+    return (
+      <div className="flex flex-1 min-h-[calc(100vh-180px)] justify-center flex-col items-center gap-2">
+        <img alt="none" src={Character} className="w-25"></img>
+        <div className="text-[var(--color-gray)]">이 달에 기록된 감정이 없어요.</div>
+      </div>
+    );
   return (
     <div>
       {diaries.map((diary) => {
@@ -31,31 +40,21 @@ export default function ChatBubble({ diaries }: TChatBubbleProps) {
             {/* 답변 */}
             <div
               className="flex justify-end items-end py-2 gap-2"
-              onClick={() => navigate('/diary/1')}
+              onClick={() => navigate(`/diary/${diary.diaryId}`)}
             >
               <div className="w-20 shrink-0 text-xs text-right text-[var(--color-gray-dark)] p-2">
-                {/* {!chat.answer.image ? time : ''} */}
+                {diary.isEdited && <div>수정됨</div>}
               </div>
               <div className="flex flex-col max-w-[70%] items-end">
                 <div className="flex justify-end gap-1 items-end">
-                  <div className="rounded-2xl w-fit  bg-[#FAFAFA] text-sm text-[#788678] shadow-sm p-3">
+                  <div className="rounded-2xl w-fit flex flex-col gap-1 bg-[#FAFAFA] text-sm text-[#788678] shadow-sm p-3">
                     {diary.title}
-                    {/* {item.answer.content} */}
+                    <div className="text-xs text-end text-[var(--color-gray)]">자세히</div>
                   </div>
                 </div>
-                {/* {item.answer.image && (
-              <div className="mt-3 flex justify-end gap-2 items-end">
-                <div className="flex items-end gap-1">
-                  <div className="text-xs text-[var(--color-gray-dark)] p-2">{time}</div>
-                  <div className="rounded-2xl bg-[#FAFAFA] text-[#788678] shadow-sm p-3">
-                    <img src={item.answer.image} className="max-w-[180px] rounded-xl" />
-                  </div>
-                </div>
-              </div>
-            )} */}
               </div>
 
-              <img src={emotionKey.emo} className="size-10" />
+              <img src={emotionKey?.emo} className="size-10" />
             </div>
           </div>
         );

@@ -2,3 +2,4 @@ button[disabled] {
     background-color: var(--color-gray) !important;
     cursor: default !important;
 }
+

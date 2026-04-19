@@ -1,14 +1,30 @@
+import type { EMOTIONS } from "@/constants/emotions";
+
 export interface Emojis {
   id : number;
   name : string;
-  url : string
+  type: string;
+  inactiveUrl: string;
+  activeUrl: string;
 };
 
-export interface Post{
-  id: number;
-  question: string;
-  answer: string;
-  isMine: true | false;
+// 커뮤니티 페이지
+export interface Post {
+    postId: string;
+    diaryId: string;
+    question: string;
+    title: string;
+    content: string;
+    emotion: {
+        type: EmotionKey;
+        name: string;
+    };
+    isMine: boolean;
+    isEdited: boolean;
+    totalEmpathyCount: number;
+    empathyStats: EmpathyStat[];
+    myReactionId: number | null;
+    sharedAtRelative: string;
 }
 
 
@@ -18,48 +34,31 @@ export type CommunityHeaderProps = {
     selectedTab : HeaderTab;
 }
 
-export type SortOption = "최신순" | "오래된순" | "공감많은순";
-export type SortProps = {
-  selectedSort : SortOption;
-}
+export type SortType = 'LATEST' | 'POPULAR';
 
 export type BottomSheetTab = "sort" | "filter" | null;
 
+export type EmotionKey = keyof typeof EMOTIONS;
+
 // 커뮤니티 일기 상세페이지
 export interface EmpathyStat {
-  typeId: number;
+  typeId: string;
   name: string;
   count: number;
 }
 
-export interface Emotion {
-  id: string;
-  label: string;
-  img: string;
-}
-
 export interface CommunityPostDetail {
-  postId: number;
   question: string;
   title: string;
-  content: string | null ;
-  emotionEmoji: Emotion; // 일기 감정
-  empathyStats: EmpathyStat[]; // 받은 공감
-  totalScore: 150;
-  timeStamp: string;
-  images: string[];
-}
+  content: string;
+  emotion: {
+    type: EmotionKey;
+    name: string;
+  };
+  createdAt: string;
+  totalEmpathyCount: number;
+  empathyStats: EmpathyStat[];  
+  sharedAtRelative: string;
+  myReactionId: number | null;
 
-export interface Emotion {
-  id: string;
-  label: string;
-  img: string;
-}
-
-export interface PostDetailFormProps {
-  selectedEmotionData : Emotion;
-  dateStr: string;
-  title: string;
-  content: string | null;
-  images: string[];
 }

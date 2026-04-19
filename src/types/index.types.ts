@@ -11,6 +11,12 @@ export interface ApiResponse<T> {
 }
 
 // ===== 사용자 =====
+export interface UpdatePassword {
+  currentPassword: string;
+  newPassword: string;
+  checkPassword: string;
+}
+
 export interface User {
   id: number;
   email: string;
@@ -49,6 +55,19 @@ export interface CreateDiaryRequest {
   content: string;
   mood?: string;
   isPublic: boolean;
+}
+
+export interface DiaryDetail extends DiaryContents {
+  content: string;
+  createdAt: string;
+  updatedAt: string | null;
+  photos: DiaryPhotos[];
+}
+
+export interface DiaryPhotos {
+  photoId: string;
+  imageUrl: string;
+  displayOrder: number;
 }
 
 // ===== 커뮤니티 =====

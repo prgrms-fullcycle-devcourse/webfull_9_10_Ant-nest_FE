@@ -1,14 +1,13 @@
-import { Link, Navigate, useNavigate } from 'react-router-dom';
+import { Link } from 'react-router-dom';
 import { Controller, useForm } from 'react-hook-form';
 import { useLoginMutation } from '@/features/auth/hooks/useAuth.ts';
-import { useAuthStore } from '@/store/authStore.ts';
 import { motion, useAnimate } from 'motion/react';
 import { useEffect, useRef } from 'react';
 
 import { Button, Checkbox, Flex, Text } from '@radix-ui/themes';
 
 /** 컴포넌트 **/
-import FormField from '@/features/auth/components/FormField.tsx';
+import FormField from '@/components/common/FormField.tsx';
 
 /** 이미지 **/
 import imgCharacter from '@/assets/images/characters/character-draw.gif';
@@ -17,7 +16,6 @@ interface LoginFormValues {
   email: string;
   password: string;
   saveEmail: boolean;
-  // autoLogin: boolean;
 }
 
 let animationPlayed = false;
@@ -37,13 +35,9 @@ export default function LoginPage() {
     },
   });
   const loginMutation = useLoginMutation();
-  const navigate = useNavigate();
   const [scope, animate] = useAnimate();
   const formRef = useRef<HTMLDivElement>(null);
   const textRef = useRef<HTMLDivElement>(null);
-  const { loginAsGuest, isAuthenticated } = useAuthStore();
-
-  if (isAuthenticated) return <Navigate to="/" replace />;
 
   const onSubmit = (data: LoginFormValues) => {
     if (!data.email) {
@@ -121,7 +115,7 @@ export default function LoginPage() {
         {/* 로그인 */}
         <div ref={formRef}>
           <div
-            className="pt-[4rem] pr-[3rem] pb-[3rem] pl-[3rem] rounded-[4rem] bg-white shadow-middle
+            className="py-[4rem] px-[3rem] rounded-[4rem] bg-white shadow-middle
         max-sm2:p-[2rem] max-sm2:boxshadow-none max-sm2:bg-transparent max-sm2:shadow-none"
           >
             <form className="block" onSubmit={handleSubmit(onSubmit)}>
@@ -160,18 +154,6 @@ export default function LoginPage() {
                 </p>
               )}
 
-              {/*<Controller*/}
-              {/*  name="autoLogin"*/}
-              {/*  control={control}*/}
-              {/*  render={({ field }) => (*/}
-              {/*    <Text as="label" size="2" className="inline-block !mt-[1rem]">*/}
-              {/*      <Flex gap="2">*/}
-              {/*        <Checkbox checked={field.value} onCheckedChange={field.onChange} />*/}
-              {/*        자동로그인*/}
-              {/*      </Flex>*/}
-              {/*    </Text>*/}
-              {/*  )}*/}
-              {/*/>*/}
               <Controller
                 name="saveEmail"
                 control={control}
@@ -194,17 +176,6 @@ export default function LoginPage() {
               >
                 로그인
               </Button>
-
-              <b className="block mt-4 text-[var(--color-primary)] text-center text-sm">
-                <button
-                  onClick={() => {
-                    loginAsGuest();
-                    navigate('/');
-                  }}
-                >
-                  게스트로 시작하기
-                </button>
-              </b>
             </form>
           </div>
 

@@ -3,7 +3,7 @@ import api from '@/lib/api.ts';
 interface CreateDiaryRequest {
   title: string;
   content: string;
-  emotion: string;        
+  emotion: string;
   questionId: string;
   photoUrls: string[];
 }
