@@ -15,6 +15,7 @@ import PlainLayout from '../layouts/PlainLayout';
 import { useAuthStore } from '@/store/authStore.ts';
 import NotFoundPage from '@/pages/not-found/NotFoundPage.tsx';
 import SignupSuccessPage from '@/pages/auth/SignupSuccessPage.tsx';
+import SquareHistoryPage from '@/pages/profile/SquareHistoryPage';
 
 function PrivateRoute() {
   const { isAuthenticated, isGuest } = useAuthStore();
@@ -63,6 +64,7 @@ export const router = createBrowserRouter([
           { path: '/diary/edit/:diaryId', element: <DiaryCreatePage /> },
           { path: '/diary/:id', element: <DiaryDetailPage /> }, // 내 일기 상세 페이지
           { path: '/community/:id', element: <CommunityDetailPage /> }, // 달래광장 상세 페이지
+          { path: '/profile/history', element: <SquareHistoryPage /> }, // 내가 광장에 공유한 일기 목록
         ],
       },
     ],

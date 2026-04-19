@@ -60,7 +60,7 @@ export default function ProfileCard({
           </span>
         </div>
         <div
-          onClick={() => navigate('/community')}
+          onClick={() => navigate('/profile/history')}
           className="flex flex-col items-center justify-center py-2"
         >
           <span className="text-xs text-[var(--color-gray)]">내 광장</span>

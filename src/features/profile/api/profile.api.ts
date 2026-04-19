@@ -1,6 +1,11 @@
 import api from '@/lib/api';
 import type { ApiResponse } from '@/types/index.types';
-import type { MonthlyEmoResponse, ProfileResponse, updateNickname } from '../types/profile.types';
+import type {
+  MonthlyEmoResponse,
+  ProfileResponse,
+  SquareHistoryResponse,
+  updateNickname,
+} from '../types/profile.types';
 
 export const fetchProfile = () => {
   return api.get<ApiResponse<ProfileResponse>>(`/members/me`).then((res) => res.data.data);
@@ -27,6 +32,12 @@ export const fetchMonthlyEmo = (year: number, month: number) => {
   return api
     .get<
       ApiResponse<MonthlyEmoResponse>
-    >(`members/me/monthly-emotions`, { params: { year, month } })
+    >(`/members/me/monthly-emotions`, { params: { year, month } })
     .then((res) => res.data.data);
+};
+
+export const fetchSquareHistory = () => {
+  return api
+    .get<ApiResponse<SquareHistoryResponse[]>>(`members/me/square-history`)
+    .then((res) => res.data);
 };
