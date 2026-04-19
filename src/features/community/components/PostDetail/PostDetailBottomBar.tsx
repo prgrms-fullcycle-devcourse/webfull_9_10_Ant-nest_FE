@@ -10,8 +10,9 @@ interface Props {
     myReactionId:number | null;
     postId: string;
     empathyStats: EmpathyStat[];
+    totalEmpathyCount: number;
 }
-const PostDetailBottomBar = ({myReactionId, postId, empathyStats} : Props) => {
+const PostDetailBottomBar = ({myReactionId, postId, empathyStats,totalEmpathyCount} : Props) => {
     // 리액션 토글 스위치
     const [showReactions, setShowReactions] = useState<true|false>(false);
     
@@ -38,7 +39,9 @@ const PostDetailBottomBar = ({myReactionId, postId, empathyStats} : Props) => {
                                 >
                                 <img src={reactionToggle} className='h-8 w-8'/>
                             </Button>
-                            <div className="text-[var(--color-text-default)] text-center mt-0.5 text-[11px] text-[#66BB6A] font-semibold text-center">7</div>
+                            <div className="text-[var(--color-text-default)] text-center mt-0.5 text-[11px] text-[#66BB6A] font-semibold text-center">
+                                {totalEmpathyCount}
+                            </div>
                         </div>
                         {showReactions 
                             ?<ReactionEmojisToggle 

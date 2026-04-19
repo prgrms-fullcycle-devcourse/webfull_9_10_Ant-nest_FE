@@ -20,6 +20,9 @@ interface LoginFormValues {
 
 let animationPlayed = false;
 
+const introText = '매일 새로운 질문으로 나를 알아가는 시간';
+const dallaeText = 'Dallae';
+
 export default function LoginPage() {
   const savedEmail = localStorage.getItem('savedEmail') ?? '';
   const {
@@ -29,15 +32,19 @@ export default function LoginPage() {
     formState: { errors },
   } = useForm<LoginFormValues>({
     defaultValues: {
-      // autoLogin: true,
       email: savedEmail,
       saveEmail: !!savedEmail,
     },
   });
+
   const loginMutation = useLoginMutation();
   const [scope, animate] = useAnimate();
   const formRef = useRef<HTMLDivElement>(null);
-  const textRef = useRef<HTMLDivElement>(null);
+  const introRef = useRef<HTMLSpanElement>(null);
+  const introCursorRef = useRef<HTMLSpanElement>(null);
+  const dallaeWrapRef = useRef<HTMLHeadingElement>(null);
+  const dallaeRef = useRef<HTMLSpanElement>(null);
+  const dallaeCursorRef = useRef<HTMLSpanElement>(null);
 
   const onSubmit = (data: LoginFormValues) => {
     if (!data.email) {
@@ -66,7 +73,14 @@ export default function LoginPage() {
   };
 
   useEffect(() => {
-    if (animationPlayed) return;
+    // 이미 재생된 경우 완성된 텍스트 즉시 표시
+    if (animationPlayed) {
+      if (introRef.current) introRef.current.textContent = introText;
+      if (introCursorRef.current) introCursorRef.current.style.display = 'none';
+      if (dallaeWrapRef.current) dallaeWrapRef.current.style.display = 'block';
+      if (dallaeRef.current) dallaeRef.current.textContent = dallaeText;
+      return;
+    }
 
     const el = scope.current;
     if (!el) return;
@@ -75,16 +89,41 @@ export default function LoginPage() {
     const x = window.innerWidth / 2 - rect.left - rect.width / 2;
     const y = window.innerHeight / 2 - rect.top - rect.height / 2;
 
+    const startTyping = (
+      targetRef: React.RefObject<HTMLSpanElement | null>,
+      cursorRef: React.RefObject<HTMLSpanElement | null>,
+      text: string,
+      speed: number,
+      onDone: () => void,
+    ) => {
+      let i = 0;
+      const interval = setInterval(() => {
+        if (targetRef.current) targetRef.current.textContent = text.slice(0, i + 1);
+        i++;
+        if (i === text.length) {
+          clearInterval(interval);
+          if (cursorRef.current) cursorRef.current.style.display = 'none';
+          onDone();
+        }
+      }, speed);
+    };
+
     const sequence = async () => {
       if (formRef.current) animate(formRef.current, { opacity: 0 }, { duration: 0 });
-      if (textRef.current) animate(textRef.current, { opacity: 0 }, { duration: 0 });
+
       await animate(el, { x, y, opacity: 0, scale: 5 }, { duration: 0 });
       await animate(el, { opacity: 1 }, { duration: 0.5 });
       await new Promise((resolve) => setTimeout(resolve, 1000));
       await animate(el, { x: 0, y: 0, scale: 1 }, { duration: 0.8, ease: [0, 0.71, 0.2, 1.01] });
+
       if (formRef.current) animate(formRef.current, { opacity: 1 }, { duration: 0.5 });
-      if (textRef.current) await animate(textRef.current, { opacity: 1 }, { duration: 0.5 });
-      animationPlayed = true;
+
+      startTyping(introRef, introCursorRef, introText, 40, () => {
+        if (dallaeWrapRef.current) dallaeWrapRef.current.style.display = 'block';
+        startTyping(dallaeRef, dallaeCursorRef, dallaeText, 80, () => {
+          animationPlayed = true;
+        });
+      });
     };
 
     sequence();
@@ -97,31 +136,53 @@ export default function LoginPage() {
       max-sm2:top-[20%]"
       >
         <div
-          className="absolute left-0 right-0 top-[-25%]
-        max-sm2:top-[-13%]"
+          className="absolute left-0 right-0 top-[-24%]
+        max-sm2:top-[-15%]"
         >
           <motion.div ref={scope} className="m-auto w-[4rem] max-sm2:w-[3rem]">
             <img src={imgCharacter} alt="" />
           </motion.div>
-          <h2
-            ref={textRef}
-            className="font-handwriting text-[5rem] leading-[0.7] text-center
-          max-sm2:text-[4rem]"
-          >
-            Dallae
-          </h2>
+
+          <div className="text-center mt-2">
+            <p className="font-handwriting text-[1.2rem] text-[var(--color-gray-dark)]">
+              <span ref={introRef} />
+              <motion.span
+                ref={introCursorRef}
+                className="inline-block ml-1"
+                animate={{ opacity: [0, 1, 0] }}
+                transition={{ duration: 1, repeat: Infinity }}
+              >
+                |
+              </motion.span>
+            </p>
+
+            <h2
+              ref={dallaeWrapRef}
+              className="font-handwriting text-[3rem] leading-[0.7] text-center hidden
+              max-sm2:text-[2.4rem]"
+            >
+              <span ref={dallaeRef} />
+              <motion.span
+                ref={dallaeCursorRef}
+                className="inline-block ml-1"
+                animate={{ opacity: [0, 1, 0] }}
+                transition={{ duration: 1, repeat: Infinity }}
+              >
+                |
+              </motion.span>
+            </h2>
+          </div>
         </div>
 
         {/* 로그인 */}
         <div ref={formRef}>
           <div
-            className="py-[4rem] px-[3rem] rounded-[4rem] bg-white shadow-middle
+            className="pt-[4rem] pb-[3rem] px-[3rem] rounded-[4rem] bg-white shadow-middle
         max-sm2:p-[2rem] max-sm2:boxshadow-none max-sm2:bg-transparent max-sm2:shadow-none"
           >
             <form className="block" onSubmit={handleSubmit(onSubmit)}>
               <Controller
                 name="email"
-                defaultValue=""
                 control={control}
                 render={({ field }) => (
                   <FormField
@@ -135,7 +196,6 @@ export default function LoginPage() {
 
               <Controller
                 name="password"
-                defaultValue=""
                 control={control}
                 render={({ field }) => (
                   <FormField
@@ -170,7 +230,7 @@ export default function LoginPage() {
               <Button
                 type="submit"
                 variant="solid"
-                className="!mt-[1rem] !w-full !h-[4rem] !text-[1.3rem] !font-bold !text-base green-btn]
+                className="!mt-[1rem] !w-full !h-[4rem] !text-[1.3rem] !font-bold !text-base green-btn
             max-sm2:!text-[1.2rem]"
                 disabled={loginMutation.isPending}
               >
@@ -180,10 +240,7 @@ export default function LoginPage() {
           </div>
 
           {/* 안내 */}
-          <div
-            className="mt-[2rem] text-center
-        max-sm2:mt-0"
-          >
+          <div className="mt-[2rem] text-center max-sm2:mt-0">
             <p className="text-[var(--color-text-default)] text-sm font-bold">
               아직 회원이 아니신가요?{' '}
               <Link to="/signup" className="text-[var(--color-secondary)]">
