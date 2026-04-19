@@ -2,6 +2,7 @@ import { useEffect, useState } from 'react';
 import { useDiaryCalendar } from '@/features/calendar/hooks/useCalendar.ts';
 import { formatDateKey } from '@/utils/formatDate.ts';
 import { useNavigate, useSearchParams } from 'react-router-dom';
+import { useQueryClient } from '@tanstack/react-query';
 
 /** 컴포넌트 **/
 import CalendarDiaryCard from '@/features/calendar/components/CalendarDiaryCard.tsx';
@@ -23,6 +24,7 @@ export default function CalendarPage() {
   const { diaryMap, deleteDetail } = useDiaryCalendar();
   const navigate = useNavigate();
   const query = searchParams.get('id');
+  const queryClient = useQueryClient();
 
   useEffect(() => {
     if (!query) return;
@@ -57,6 +59,7 @@ export default function CalendarPage() {
       setPendingDeleteId(null);
       setInfo(null);
       setSelectedDate(null);
+      queryClient.clear();
     }
     setModal(false);
   };
