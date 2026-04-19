@@ -57,6 +57,7 @@ export default function DiaryCreatePage() {
       title: string;
       content: string;
       emotion: { type: string; name: string };
+      photos: { photoId: string; imageUrl: string; displayOrder: number }[];
     };
 
     queueMicrotask(() => {
@@ -64,6 +65,13 @@ export default function DiaryCreatePage() {
       setContent(d.content);
       const matched = EMOTIONS.find((e) => e.emotion === d.emotion.type);
       if (matched) setSelectedEmotion(matched.id);
+      
+      if (d.photos?.length > 0) {
+        setImages(d.photos.map((p) => ({
+          file: new File([], ''),
+          preview: p.imageUrl,
+        })));
+      }
     });
   }, [diaryData]);
 
