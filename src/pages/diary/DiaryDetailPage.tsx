@@ -6,7 +6,7 @@ import DiaryForm from '../../components/common/DiaryForm';
 import DiaryBottomBar from '../../components/common/DiaryBottomBar';
 import { EMOTIONS } from '../../features/diary/utils/emotions';
 import ImagePreviewModal from '../../components/common/ImagePreviewModal';
-import { useDeleteDiary } from '../../features/diary/hooks/useDiary';
+import { useDeleteDiary, useToggleShare } from '../../features/diary/hooks/useDiary';
 
 
 export default function DiaryDetailPage() {
@@ -24,7 +24,13 @@ export default function DiaryDetailPage() {
   const [isPublic, setIsPublic] = useState(true);
   const [previewImage, setPreviewImage] = useState<string | null>(null);
   const { mutate: removeDiary } = useDeleteDiary();
+  const { mutate: toggleShare } = useToggleShare();
 
+  const handleTogglePublic = () => {
+    const next = !isPublic;
+    setIsPublic(next);
+    toggleShare({ diaryId: id!, isActive: next });
+  };
 
   const handleDelete = () => {
     removeDiary(id!);
@@ -52,7 +58,7 @@ export default function DiaryDetailPage() {
       <DiaryBottomBar
         mode="detail"
         isPublic={isPublic}
-        onTogglePublic={() => setIsPublic(!isPublic)}
+        onTogglePublic={handleTogglePublic}
         onDelete={handleDelete}
         onEdit={handleEdit}
       />
